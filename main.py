@@ -1,5 +1,6 @@
 import telebot
 import re
+from config import TOKEN
 
 def greeting_check(greeting_message):
     if re.fullmatch(r'.риве.\S?', greeting_message.text):
@@ -10,7 +11,7 @@ def greeting_check(greeting_message):
 
 print('ok')
 
-bot = telebot.TeleBot('5097875553:AAGR3Mt8vaLxy6ny8n7uGSLQy_AUUFGOltM')
+bot = telebot.TeleBot(TOKEN)
 
 
 @bot.message_handler(commands = ['start'])
