@@ -200,8 +200,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int, ci
     count = 0
     bot.send_chat_action(chat_id = message.chat.id, action = telegram.ChatAction.TYPING)
     
-    for hotel in hotels_search_lowprice(message = message,
-                                        city_destination_id = city_id)['data']['body']['searchResults']['results']:
+    for hotel in hotels_search_lowprice(message = message, city_destination_id = city_id)['data']['body']['searchResults']['results']:
         
         search.hotels.update({hotel['name']: {'ID отеля': hotel['id'],
                                               'Адрес': '{}, {}'.format(hotel['address']['locality'],
