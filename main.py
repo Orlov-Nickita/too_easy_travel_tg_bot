@@ -1,5 +1,4 @@
-from handlers import *
-
+from message_handlers import *
 
 if __name__ == '__main__':
     bot.infinity_polling()

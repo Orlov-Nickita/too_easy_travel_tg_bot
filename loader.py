@@ -28,7 +28,11 @@ class User_search:
         который привязывается уже не к id отеля, а к id самого сообщения. Так как message_id для сообщения с
         фотографией и с клавиатурой одинаковые этот словарь позволяет программе понимать из какого словаря выбирать
         фотографии в зависимости от нажатой клавиши под соответствующей фотографией
+        check_in (str): Содержится дата въезда Пользователя
+        check_out (str): Содержится дата выезда Пользователя
+        rest_days (int): Содержится количество дней отдыха в отеле
     """
+    
     def __init__(self):
         self.city = None
         self.found_cities = None
@@ -36,6 +40,9 @@ class User_search:
         self.hotels = None
         self.photos_dict = None
         self.photos_dict_urls = None
-        
+        self.check_in = None
+        self.check_out = None
+        self.rest_days = None
+
 
 search = User_search()

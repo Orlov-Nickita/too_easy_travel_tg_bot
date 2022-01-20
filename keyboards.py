@@ -87,7 +87,7 @@ def IKM_photos_sliding() -> telegram.InlineKeyboardMarkup:
     Функция, которая определяет клавиатуру для смены фотографий в фотоальбоме для отелей
     :return: Возвращается клавиатура (функция) как объект
     :rtype: telegram.InlineKeyboardMarkup
- 
+
     """
     ikm_photo_slide = types.InlineKeyboardMarkup(row_width = 2)
     
@@ -97,3 +97,35 @@ def IKM_photos_sliding() -> telegram.InlineKeyboardMarkup:
     ikm_photo_slide.add(item1, item2)
     
     return ikm_photo_slide
+
+
+def IKM_date_chk_in_change() -> telegram.InlineKeyboardMarkup:
+    """
+    Функция, которая определяет клавиатуру-календарь для выбора даты въезда
+    :return: Возвращается клавиатура (функция) как объект
+    :rtype: telegram.InlineKeyboardMarkup
+
+    """
+    ikm_chk_in_date_change = types.InlineKeyboardMarkup()
+    
+    item1 = types.InlineKeyboardButton('Изменить дату', callback_data = 'cancel')
+    item2 = types.InlineKeyboardButton('Выбрать дату выезда', callback_data = 'continue')
+    ikm_chk_in_date_change.add(item1, item2)
+    
+    return ikm_chk_in_date_change
+
+
+def IKM_date_chk_out_change() -> telegram.InlineKeyboardMarkup:
+    """
+    Функция, которая определяет клавиатуру-календарь для выбора даты выезда
+    :return: Возвращается клавиатура (функция) как объект
+    :rtype: telegram.InlineKeyboardMarkup
+
+    """
+    ikm_chk_out_date_change = types.InlineKeyboardMarkup()
+    
+    item1 = types.InlineKeyboardButton('Изменить дату', callback_data = 'cancel')
+    item2 = types.InlineKeyboardButton('Выбрать кол-во отелей', callback_data = 'continue')
+    ikm_chk_out_date_change.add(item1, item2)
+    
+    return ikm_chk_out_date_change
