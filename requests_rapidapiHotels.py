@@ -5,6 +5,10 @@ import requests
 from loader import rapidkey, rapidhost, bot
 import logging
 
+headers = {
+    'x-rapidapi-host': rapidhost,
+    'x-rapidapi-key': rapidkey
+}
 
 def city_search(message: telebot.types.Message, city_name: str) -> None or Dict:
     """
@@ -22,10 +26,6 @@ def city_search(message: telebot.types.Message, city_name: str) -> None or Dict:
     try:
         url = "https://hotels4.p.rapidapi.com/locations/v2/search"
         querystring = {"query": city_name, "locale": "ru_RU", "currency": "RUB"}
-        headers = {
-            'x-rapidapi-host': rapidhost,
-            'x-rapidapi-key': rapidkey
-        }
         cities = requests.request(method = "GET", url = url, headers = headers, params = querystring,
                                   timeout = 10
                                   ).json()
@@ -65,10 +65,6 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
         url = "https://hotels4.p.rapidapi.com/properties/list"
         querystring = {"destinationId": city_destination_id, "checkIn": chk_in, "checkOut": chk_out,
                        "sortOrder": sort_price, "locale": "ru_RU", "currency": "RUB"}
-        headers = {
-            'x-rapidapi-host': rapidhost,
-            'x-rapidapi-key': rapidkey
-        }
         hotels = requests.request(method = "GET", url = url, headers = headers, params = querystring,
                                   timeout = 10
                                   ).json()
@@ -101,10 +97,6 @@ def photos_for_hotel(message: telebot.types.Message, hotel_id: int) -> None or D
     try:
         url = "https://hotels4.p.rapidapi.com/properties/get-hotel-photos"
         querystring = {"id": hotel_id}
-        headers = {
-            'x-rapidapi-host': rapidhost,
-            'x-rapidapi-key': rapidkey
-        }
         photos = requests.request(method = "GET", url = url, headers = headers, params = querystring,
                                   timeout = 10
                                   ).json()

@@ -3,7 +3,7 @@ import telebot.types
 import lowprice
 from loader import bot
 import logging
-from Logger import log_log
+from logger import log_log
 from auxiliary_functions import greeting_check
 
 
