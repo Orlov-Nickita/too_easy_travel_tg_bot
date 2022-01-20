@@ -482,6 +482,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                              user_rating = found_hotels[every_hotel]['Рейтинг по мнению посетителей'],
                          ),
                          parse_mode = telegram.ParseMode.HTML,
+                         disable_web_page_preview = True
                          )
         logging.info(f'Бот отправил сообщение c информацией по отелю')
         
