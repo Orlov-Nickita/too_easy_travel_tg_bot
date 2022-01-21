@@ -4,7 +4,7 @@ from location_by_ip_address import ip_search
 from typing import Dict
 
 
-def IKM_for_greeting_msg() -> telegram.InlineKeyboardMarkup:
+def IKM_for_greeting_msg() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру при запуске команды поиска отелей. Функция ip_search() определяет
     местоположение Пользователя и предлагает сделать поиск отеля по этому местоположению или задать другой город для
@@ -22,7 +22,7 @@ def IKM_for_greeting_msg() -> telegram.InlineKeyboardMarkup:
     return ikm_greeting_msg
 
 
-def IKM_for_city_choice(found_cities_dict: Dict) -> telegram.InlineKeyboardMarkup:
+def IKM_for_city_choice(found_cities_dict: Dict) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру со всеми найденными местоположениями
     :param found_cities_dict: В качестве параметра передается словарь из найденных местоположений по введенному запросу.
@@ -41,7 +41,7 @@ def IKM_for_city_choice(found_cities_dict: Dict) -> telegram.InlineKeyboardMarku
     return ikm_cities_found
 
 
-def IKM_for_hotels_poisk() -> telegram.InlineKeyboardMarkup:
+def IKM_for_hotels_poisk() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для выбора необходимого Пользователю количества отелей
     :return: Возвращается клавиатура (функция) как объект
@@ -64,7 +64,7 @@ def IKM_for_hotels_poisk() -> telegram.InlineKeyboardMarkup:
     return ikm_hotels_qty
 
 
-def IKM_for_photos_search() -> telegram.InlineKeyboardMarkup:
+def IKM_for_photos_search() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для принятия решения о необходимости фотографий для ознакомления с отелем
     :return: Возвращается клавиатура (функция) как объект
@@ -82,7 +82,7 @@ def IKM_for_photos_search() -> telegram.InlineKeyboardMarkup:
     return ikm_hotels_photo
 
 
-def IKM_photos_sliding() -> telegram.InlineKeyboardMarkup:
+def IKM_photos_sliding() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для смены фотографий в фотоальбоме для отелей
     :return: Возвращается клавиатура (функция) как объект
@@ -99,7 +99,7 @@ def IKM_photos_sliding() -> telegram.InlineKeyboardMarkup:
     return ikm_photo_slide
 
 
-def IKM_date_chk_in_change() -> telegram.InlineKeyboardMarkup:
+def IKM_date_chk_in_change() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру-календарь для выбора даты въезда
     :return: Возвращается клавиатура (функция) как объект
@@ -115,7 +115,7 @@ def IKM_date_chk_in_change() -> telegram.InlineKeyboardMarkup:
     return ikm_chk_in_date_change
 
 
-def IKM_date_chk_out_change() -> telegram.InlineKeyboardMarkup:
+def IKM_date_chk_out_change() -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру-календарь для выбора даты выезда
     :return: Возвращается клавиатура (функция) как объект
