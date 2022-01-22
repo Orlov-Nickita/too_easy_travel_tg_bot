@@ -17,7 +17,6 @@ def send_welcome(message: telebot.types.Message) -> None:
     :rtype telebot.types.Message
 
     """
-    log_log(message)
     logging.info('Запущена команда /start')
     bot.send_message(chat_id = message.chat.id,
                      text = 'Привет, {name} {emoji}!\n'
@@ -40,7 +39,6 @@ def send_welcome_to_the_world(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    log_log(message)
     logging.info('Запущена команда /hello_world')
     bot.send_message(chat_id = message.chat.id,
                      text = 'Привет всему миру! {emoji}'.format(
@@ -59,7 +57,6 @@ def low_price(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message)
     logging.info('Запущена команда /lowprice')
     lowprice.start(message)
 
@@ -74,7 +71,6 @@ def greeting(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    log_log(message)
     logging.info('Запущена команда /text')
     logging.info(f'Пользователь написал "{message.text}"')
     if greeting_check(message):
