@@ -8,13 +8,13 @@ def log_log() -> None:
     id Пользователя для создания одноименного файла с журналом событий
     :return: None
     """
-    logging.basicConfig(filename = 'logs/bot_detail.log',
-                        level = logging.INFO,
-                        encoding = 'utf-8',
-                        format = '[%(levelname)s] - '
-                                 '[%(asctime)s] - '
-                                 '[файл %(filename)s] - '
-                                 '[функция %(funcName)s] - '
-                                 '[строка %(lineno)d] - '
-                                 '[%(message)s]',
+    logging.basicConfig(filename='logs/bot_detail.log',
+                        level=logging.INFO,
+                        encoding='utf-8',
+                        format='[%(levelname)s] - '
+                               '[%(asctime)s] - '
+                               '[файл %(filename)s] - '
+                               '[функция %(funcName)s] - '
+                               '[строка %(lineno)d] - '
+                               '[%(message)s]',
                         )

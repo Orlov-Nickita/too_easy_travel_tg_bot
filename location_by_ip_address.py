@@ -14,6 +14,6 @@ def ip_search() -> str:
     response = urlopen(url)
     data = json.load(response)
     
-    city = translator.translate(data['city'], dest = 'ru')
+    city = translator.translate(data['city'], dest='ru')
     
     return city.text

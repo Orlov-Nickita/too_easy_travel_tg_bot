@@ -8,5 +8,5 @@ if __name__ == '__main__':
     
     log_log()
     logging.info('Бот запущен')
-
+    
     bot.infinity_polling()
