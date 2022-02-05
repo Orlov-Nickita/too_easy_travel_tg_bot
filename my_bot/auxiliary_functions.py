@@ -76,7 +76,7 @@ def user_rating_false(hotel):  # Я пока не решил проблему о
     try:
         hotel['guestReviews']
     except KeyError:
-        return 'Нет оценок'
+        return ''
     else:
         return hotel['guestReviews']['unformattedRating']
 
@@ -87,7 +87,7 @@ def streetaddress_false(hotel):  # Я пока не решил проблему 
     try:
         hotel['address']['streetAddress']
     except KeyError:
-        return 'Нет адреса'
+        return ''
     else:
         return hotel['address']['streetAddress']
 
@@ -98,7 +98,7 @@ def info_check(info):  # Я пока не решил проблему отсут
     try:
         info['ratePlan']['price']['info']
     except KeyError:
-        return 'Нет информации'
+        return ''
     else:
         return info['ratePlan']['price']['info']
 
@@ -109,7 +109,7 @@ def summary_check(info):  # Я пока не решил проблему отс�
     try:
         info['ratePlan']['price']['summary']
     except KeyError:
-        return 'Нет информации'
+        return ''
     else:
         return info['ratePlan']['price']['summary']
 

@@ -1,4 +1,3 @@
-import telebot
 import logging
 
 
@@ -8,13 +7,13 @@ def log_log() -> None:
     id Пользователя для создания одноименного файла с журналом событий
     :return: None
     """
-    logging.basicConfig(filename='logs/bot_detail.log',
+    logging.basicConfig(filename='../logs/bot_detail.log',
                         level=logging.INFO,
                         encoding='utf-8',
                         format='[%(levelname)s] - '
                                '[%(asctime)s] - '
-                               '[файл %(filename)s] - '
-                               '[функция %(funcName)s] - '
-                               '[строка %(lineno)d] - '
+                               '[file %(filename)s] - '
+                               '[func %(funcName)s] - '
+                               '[num_string %(lineno)d] - '
                                '[%(message)s]',
                         )

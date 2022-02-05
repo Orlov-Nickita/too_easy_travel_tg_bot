@@ -1,7 +1,9 @@
 import json
 from urllib.request import urlopen
 from googletrans import Translator
+from loader import search
 
+translator = Translator()
 
 def ip_search() -> str:
     """
@@ -9,11 +11,9 @@ def ip_search() -> str:
     :return: Возвращается название города, в котором находится сейчас Пользователь
     :rtype: str
     """
-    translator = Translator()
     url = 'http://ipinfo.io/json'
     response = urlopen(url)
     data = json.load(response)
-    
-    city = translator.translate(data['city'], dest='ru')
-    
-    return city.text
+    city = translator.translate(data['city'], dest=search.lang).text
+
+    return city

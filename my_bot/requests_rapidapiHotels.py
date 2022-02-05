@@ -5,47 +5,53 @@ import requests
 from loader import rapidkey, rapidhost, bot
 import logging
 
+from languages_for_bot import lang_dict
+from loader import search
+
 headers = {
     'x-rapidapi-host': rapidhost,
     'x-rapidapi-key': rapidkey
 }
 
 
-def city_search(message: telebot.types.Message, city_name: str) -> None or Dict:
+def city_search(message: telebot.types.Message, locale: str, city_name: str, currency: str) -> None or Dict:
     """
     Функция для поиска на сайте Hotels.com всех подходящих наименований городов по введенному наименованию
     Пользователем.
     :param message: В качестве параметра передается сообщение из чата
     :type message: telebot.types.Message
+    :param locale: Код языка для получения информации с сервера в нужном языковом формате
+    :type locale: str
     :param city_name: В качестве параметра передается введенный (или выбранный найденный по ip-адресу) город
     места нахождения
     :type city_name: str
+    :param currency: Валюта
+    :type currency: str
     :return: Если код ответа сервера 200, тогда возвращается словарь с информацией городов с сайта Hotels.com, если код
     ответа иной в чат отправляется сообщение о том, что сервер недоступен.
     :rtype: Dict
     """
     try:
         url = "https://hotels4.p.rapidapi.com/locations/v2/search"
-        querystring = {"query": city_name, "locale": "ru_RU", "currency": "RUB"}
+        querystring = {"query": city_name, "locale": locale, "currency": currency}
         cities = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=15
                                   ).json()
-        # with open('cities.json', 'w', encoding = 'utf-8') as file:
-        #     json.dump(cities, file, indent = 4, ensure_ascii = False)
-        logging.info('Запрос на сервер в функции city_poisk прошел успешно')
+        # with open('cities.json', 'w', encoding='utf-8') as file:
+        # json.dump(cities, file, indent=4, ensure_ascii=False)
+        logging.info(lang_dict[search.lang]['requests_rapidapiHotels_logging']['city_search']['log1'])
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text='К сожалению не удалось получить информацию '
-                                                       'с сервера. Сделайте, пожалуйста, выбор еще раз')
-        logging.warning('Ответ с сервера в функции city_search превысил заданный тайм-аут')
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[search.lang]['requests_rapidapiHotels']['text1'])
+        logging.warning(lang_dict[search.lang]['requests_rapidapiHotels_logging']['city_search']['log2'])
     except Exception as Ex:
-        logging.exception(f'В функции city_poisk произошла ошибка {Ex}')
+        logging.exception(lang_dict[search.lang]['requests_rapidapiHotels_logging']['city_search']['log3'].format(Ex))
     
     else:
         return cities
 
 
 def hotels_search_price(message: telebot.types.Message, city_destination_id: int, chk_in: str, chk_out: str,
-                        sort_price: str) -> None or Dict:
+                        sort_price: str, locale: str, currency: str) -> None or Dict:
     """
     Функция для нахождения самых дешевых отелей в выбранном городе
     :param message: В качестве параметра передается сообщение из чата
@@ -58,6 +64,10 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
     :type chk_out: str
     :param sort_price: В качестве параметра передается тип сортировки
     :type sort_price: str
+    :param locale: Код языка для получения информации с сервера в нужном языковом формате
+    :type locale: str
+    :param currency: Валюта
+    :type currency: str
     :return: Если код ответа сервера 200, тогда возвращается словарь с информацией отелей с сайта Hotels.com, если код
     ответа иной в чат отправляется сообщение о том, что сервер недоступен.
     :rtype: Dict
@@ -65,20 +75,20 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
     try:
         url = "https://hotels4.p.rapidapi.com/properties/list"
         querystring = {"destinationId": city_destination_id, "checkIn": chk_in, "checkOut": chk_out,
-                       "sortOrder": sort_price, "locale": "ru_RU", "currency": "RUB"}
+                       "sortOrder": sort_price, "locale": locale, "currency": currency}
         hotels = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=15
                                   ).json()
-        # with open('hotels_in_city.json', 'w', encoding = 'utf-8') as file:
-        #     json.dump(hotels, file, indent = 4, ensure_ascii = False)
-        logging.info('Запрос на сервер в функции hotels_search_price прошел успешно')
+        # with open('hotels_in_city.json', 'w', encoding='utf-8') as file:
+        #     json.dump(hotels, file, indent=4, ensure_ascii=False)
+        logging.info(lang_dict[search.lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log1'])
     
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text='К сожалению не удалось получить информацию '
-                                                       'с сервера. Сделайте, пожалуйста, выбор еще раз')
-        logging.warning('Ответ с сервера в функции hotels_search_price превысил заданный тайм-аут')
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[search.lang]['requests_rapidapiHotels']['text1'])
+        logging.warning(lang_dict[search.lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log2'])
     except Exception as Ex:
-        logging.exception(f'В функции hotels_search_price произошла ошибка {Ex}')
+        logging.exception(
+            lang_dict[search.lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log3'].format(Ex))
     
     else:
         return hotels
@@ -101,16 +111,16 @@ def photos_for_hotel(message: telebot.types.Message, hotel_id: int) -> None or D
         photos = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=15
                                   ).json()
-        # with open('photos.json', 'w', encoding = 'utf-8') as file:
-        #     json.dump(photos, file, indent = 4, ensure_ascii = False)
-        logging.info('Запрос на сервер в функции photos_for_hotel прошел успешно')
+        # with open('photos.json', 'w', encoding='utf-8') as file:
+        #     json.dump(photos, file, indent=4, ensure_ascii=False)
+        logging.info(lang_dict[search.lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log1'])
     
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text='К сожалению не удалось получить информацию '
-                                                       'с сервера. Сделайте, пожалуйста, выбор еще раз')
-        logging.warning('Ответ с сервера в функции photos_for_hotel превысил заданный тайм-аут')
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[search.lang]['requests_rapidapiHotels']['text1'])
+        logging.warning(lang_dict[search.lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log2'])
     except Exception as Ex:
-        logging.exception(f'В функции photos_for_hotel произошла ошибка {Ex}')
+        logging.exception(
+            lang_dict[search.lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log3'].format(Ex))
     
     else:
         return photos

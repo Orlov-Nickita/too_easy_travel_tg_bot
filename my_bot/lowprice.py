@@ -4,9 +4,10 @@ import re
 import emoji
 from telegram_bot_calendar import DetailedTelegramCalendar
 from loader import bot, search
+from my_bot.sqlite import data_add
 from requests_rapidapiHotels import city_search, hotels_search_price, photos_for_hotel
-from keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, IKM_for_greeting_msg, IKM_for_city_choice, \
-    IKM_photos_sliding, IKM_date_chk_in_change, IKM_date_chk_out_change
+from keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, IKM_for_greeting_msg, \
+    IKM_for_city_choice, IKM_photos_sliding, IKM_date_chk_in_change, IKM_date_chk_out_change
 from photo_album_class import Photo_album
 from location_by_ip_address import ip_search
 import logging
@@ -14,6 +15,7 @@ from auxiliary_functions import date_change, yandex_maps, user_rating_false, str
     summary_check, button_text
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from languages_for_bot import lang_dict
 
 
 def start(message: telebot.types.Message) -> None:
@@ -27,20 +29,19 @@ def start(message: telebot.types.Message) -> None:
     :rtype: None
 
     """
-    logging.info('Запущена функция start с определением местоположения Пользователя')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log1'])
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     cur_city = ip_search()
-    logging.info(f'Бот определил местоположение Пользователя в городе "{cur_city}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log2'].format(city=cur_city))
     msg = bot.send_message(chat_id=message.chat.id,
-                           text=f'Ваше местоположение город {cur_city}. '
-                                f'Хотите поменять город поиска или ищем по месту нахождения?',
+                           text=lang_dict[search.lang]['lowprice']['text1'].format(city=cur_city),
                            reply_markup=IKM_for_greeting_msg()
                            )
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
 
 
-@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text'
-                                              and call.message.text.startswith('Ваше'))
+@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+    lang_dict[search.lang]['lowprice']['text1'].split()[0]))
 def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     Функция, предназначенная для обработки нажатия на кнопки клавиатуры IKM_for_greeting_msg
@@ -52,13 +53,13 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     if call.data == ip_search():
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}" и выбрал текущее местоположение')
-        bot.answer_callback_query(callback_query_id=call.id, text='Принято')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log4'].format(button=button_text(call)))
+        bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['lowprice_acq']['acq1'])
         city_poisk(message=call.message, city=ip_search())
     
     else:
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}" и предпочел выбрать другой город для поиска')
-        bot.answer_callback_query(callback_query_id=call.id, text='Принято')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log5'].format(button=button_text(call)))
+        bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['lowprice_acq']['acq1'])
         city_choice(message=call.message)
 
 
@@ -72,10 +73,11 @@ def city_choice(message: telebot.types.Message) -> None:
     :rtype: None
     """
     
-    logging.info('Запущена функция city_choice')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log6'])
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
-    first_msg = bot.send_message(chat_id=message.chat.id, text='В каком городе будем искать отели?')
-    logging.info(f'Бот отправил сообщение "{first_msg.text}"')
+    first_msg = bot.send_message(chat_id=message.chat.id,
+                                 text=lang_dict[search.lang]['lowprice']['text2'])
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log7'].format(msg=first_msg.text))
     
     bot.register_next_step_handler(message=first_msg, callback=city_poisk)
 
@@ -93,7 +95,7 @@ def city_poisk(message: telebot.types.Message, city=None) -> None:
     к введенному, при нажатии на кнопки которой можно будет уточнить место поиска отелей.
     :rtype: None
     """
-    logging.info('Запущена функция city_poisk')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log8'])
     
     search.found_cities = dict()
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
@@ -102,30 +104,29 @@ def city_poisk(message: telebot.types.Message, city=None) -> None:
     else:
         search.city = message.text.title()
     
-    msg = bot.send_message(chat_id=message.chat.id, text=f'Хороший выбор, ищу город {search.city} на карте')
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    msg = bot.send_message(chat_id=message.chat.id,
+                           text=lang_dict[search.lang]['lowprice']['text3'].format(city=search.city))
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
     
-    for group in city_search(msg, search.city)['suggestions']:
+    for group in city_search(
+            message=msg, locale=search.locale, city_name=search.city, currency=search.currency)['suggestions']:
         if group['group'] == 'CITY_GROUP':
             for something in group['entities']:
-                search.found_cities.update({re.sub(r"<span class='highlighted'>|</span>", '', something['caption']):
-                                                int(something['destinationId'])
-                                            }
-                                           )
+                search.found_cities.update({re.sub(r"<span class='highlighted'>|</span>", '',
+                                                   something['caption']): int(something['destinationId'])})
     
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     bot.delete_message(chat_id=msg.chat.id, message_id=msg.message_id)
     
     msg2 = bot.send_message(chat_id=message.chat.id,
-                            text=f'Вот, что мне удалось найти по запросу - город {search.city} '
-                                 f'Нажмите кнопку соответствующую Вашему запросу',
+                            text=lang_dict[search.lang]['lowprice']['text4'].format(city=search.city),
                             reply_markup=IKM_for_city_choice(search.found_cities)
                             )
-    logging.info(f'Бот отправил сообщение "{msg2.text}", {search.found_cities}')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log9'].format(msg2=msg2.text, cities=search.found_cities))
 
 
-@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text'
-                                              and call.message.text.startswith('Вот'))
+@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+    lang_dict[search.lang]['lowprice']['text4'].split()[0]))
 def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     Функция, предназначенная для обработки нажатия на кнопки клавиатуры IKM_for_city_choice
@@ -135,15 +136,16 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     для поиска
     :rtype: None
     """
-    logging.info(f'Пользователь выбрал место поиска "{button_text(call)}"')
-    logging.info('Запущена функция city_choice_keyboard_callback')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log10'].format(button=button_text(call)))
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log11'])
     if call.data == 'Back':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log12'].format(button=button_text(call)))
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     else:
-        bot.answer_callback_query(callback_query_id=call.id, text='Выполняется поиск')
+        bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['lowprice_acq']['acq2'])
         bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
         search.city_id = call.data
+        
         check_in_date_choice(call.message)
 
 
@@ -155,16 +157,16 @@ def check_in_date_choice(message: telebot.types.Message) -> None:
     :return: Создается календарь для выбора даты въезда
     :rtype None
     """
-    logging.info('Запущена функция check_in_date_choice')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log12'])
     
     calendar, step = DetailedTelegramCalendar(calendar_id=1,
-                                              locale='ru',
+                                              locale=search.lang,
                                               min_date=date.today(),
                                               max_date=date.today() + relativedelta(months=2)).build()
     msg = bot.send_message(chat_id=message.chat.id,
-                           text="Выберите дату въезда",
+                           text=lang_dict[search.lang]['lowprice']['text5'],
                            reply_markup=calendar)
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func(calendar_id=1))
@@ -176,26 +178,30 @@ def chk_in_date_calendar(c: telebot.types.CallbackQuery) -> None:
     :return: Результатом выполнения является выбранная дата въезда Пользователя
     :rtype: None
     """
-    logging.info('Запущена функция chk_in_date_calendar')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log13'])
     
     result, key, step = DetailedTelegramCalendar(calendar_id=1,
-                                                 locale='ru',
+                                                 locale=search.lang,
                                                  min_date=date.today(),
                                                  max_date=date.today() + relativedelta(months=2)).process(c.data)
     if not result and key:
-        bot.edit_message_text("Выберите дату въезда",
-                              c.message.chat.id,
-                              c.message.message_id,
+        bot.edit_message_text(text=lang_dict[search.lang]['lowprice']['text5'],
+                              chat_id=c.message.chat.id,
+                              message_id=c.message.message_id,
                               reply_markup=key)
     elif result:
         search.check_in = result
-        bot.edit_message_text(f'Вы выбрали дату въезда {date_change(result)}', c.message.chat.id,
-                              c.message.message_id, reply_markup=IKM_date_chk_in_change())
-        logging.info(f'Пользователь выбрал дату въезда {search.check_in}')
+        bot.edit_message_text(text=lang_dict[search.lang]['lowprice']['text6'].format(res=date_change(result)),
+                              chat_id=c.message.chat.id,
+                              message_id=c.message.message_id,
+                              reply_markup=IKM_date_chk_in_change()
+                              )
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log14'].format(time_res=search.check_in))
 
 
 @bot.callback_query_handler(
-    func=lambda call: call.message.content_type == 'text' and call.message.text.startswith('Вы выбрали дату въезда'))
+    func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+        lang_dict[search.lang]['lowprice']['text6.1']))
 def chk_in_date_change(call: telebot.types.CallbackQuery) -> None:
     """
     Функция-обработчик нажатия кнопок на клавиатуре
@@ -205,15 +211,15 @@ def chk_in_date_change(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info('Запущена функция chk_in_date_change')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log15'])
     
     if call.data == 'cancel':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
-        bot.delete_message(call.message.chat.id, call.message.message_id)
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         check_in_date_choice(call.message)
     
     elif call.data == 'continue':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         check_out_date_choice(call.message)
 
 
@@ -225,16 +231,16 @@ def check_out_date_choice(message: telebot.types.Message) -> None:
     :return: Создается календарь для выбора даты въезда
     :rtype None
     """
-    logging.info('Запущена функция check_out_date_choice')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log17'])
     
     calendar, step = DetailedTelegramCalendar(calendar_id=2,
-                                              locale='ru',
+                                              locale=search.lang,
                                               min_date=date.today(),
                                               max_date=date.today() + relativedelta(months=2)).build()
     msg = bot.send_message(chat_id=message.chat.id,
-                           text="Выберите дату выезда",
+                           text=lang_dict[search.lang]['lowprice']['text7'],
                            reply_markup=calendar)
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func(calendar_id=2))
@@ -246,38 +252,38 @@ def chk_out_date_calendar(c: telebot.types.CallbackQuery) -> None:
     :return: Результатом выполнения является выбранная дата въезда Пользователя
     :rtype: None
     """
-    logging.info('Запущена функция check_out_date_choice')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log18'])
     
     result, key, step = DetailedTelegramCalendar(calendar_id=2,
-                                                 locale='ru',
+                                                 locale=search.lang,
                                                  min_date=date.today(),
                                                  max_date=date.today() + relativedelta(months=2)).process(c.data)
     if not result and key:
-        bot.edit_message_text("Выберите дату выезда",
-                              c.message.chat.id,
-                              c.message.message_id,
+        bot.edit_message_text(text=lang_dict[search.lang]['lowprice']['text7'],
+                              chat_id=c.message.chat.id,
+                              message_id=c.message.message_id,
                               reply_markup=key)
     elif result:
         if result == search.check_in:
             bot.answer_callback_query(callback_query_id=c.id,
-                                      text='Дата выезда не может совпадать с датой въезда. Минимальный срок '
-                                           'бронирования отеля составляет 1 сутки. Пожалуйста, выберите дату выезда '
-                                           'еще раз',
+                                      text=lang_dict[search.lang]['lowprice']['text9'],
                                       show_alert=True)
-            logging.info(f'Пользователь выбрал дату выезда {date_change(result)} такую же как дату въезда. Бот включил '
-                         f'уведомление об ошибке')
-            bot.delete_message(c.message.chat.id, c.message.message_id)
+            logging.info(lang_dict[search.lang]['lowprice_logging']['log19'].format(time_res=date_change(result)))
+            bot.delete_message(chat_id=c.message.chat.id, message_id=c.message.message_id)
             
             check_out_date_choice(c.message)
         else:
             search.check_out = result
-            bot.edit_message_text(f'Вы выбрали дату выезда {date_change(result)}', c.message.chat.id,
-                                  c.message.message_id, reply_markup=IKM_date_chk_out_change())
-            logging.info(f'Пользователь выбрал дату выезда {search.check_out}')
+            bot.edit_message_text(text=lang_dict[search.lang]['lowprice']['text8'].format(res=date_change(result)),
+                                  chat_id=c.message.chat.id,
+                                  message_id=c.message.message_id,
+                                  reply_markup=IKM_date_chk_out_change())
+            logging.info(lang_dict[search.lang]['lowprice_logging']['log20'].format(time_res=search.check_out))
 
 
 @bot.callback_query_handler(
-    func=lambda call: call.message.content_type == 'text' and call.message.text.startswith('Вы выбрали дату выезда'))
+    func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+        lang_dict[search.lang]['lowprice']['text8.1']))
 def chk_out_date_change(call: telebot.types.CallbackQuery) -> None:
     """
     Функция-обработчик нажатия кнопок на клавиатуре
@@ -287,15 +293,15 @@ def chk_out_date_change(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info('Запущена функция chk_out_date_change')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log21'])
     
     if call.data == 'cancel':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
-        bot.delete_message(call.message.chat.id, call.message.message_id)
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         check_out_date_choice(call.message)
     
     elif call.data == 'continue':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         qty_hotels(call.message)
 
 
@@ -307,20 +313,20 @@ def qty_hotels(message: telebot.types.Message) -> None:
     :return: После выбора количество отелей информация передается в функцию hotels_poisk_in_the_city
     :rtype: None
     """
-    logging.info('Запущена функция qty_hotels')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log22'])
     
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
-                           text='Итак, какое количество отелей подобрать?',
+                           text=lang_dict[search.lang]['lowprice']['text10'],
                            reply_markup=IKM_for_hotels_poisk()
                            )
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
     
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
 
 
-@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text'
-                                              and call.message.text.startswith('Итак'))
+@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+    lang_dict[search.lang]['lowprice']['text10'].split()[0]))
 def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     Функция предназначенная для обработки нажатия на кнопки клавиатуры IKM_for_hotels_poisk
@@ -329,16 +335,16 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     :return: Значение передается в функцию hotels_poisk_in_the_city
     :rtype: None
     """
-    logging.info('Запущена функция city_poisk_keyboard_callback')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log23'])
     
     if call.data == 'Back':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     else:
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         bot.answer_callback_query(callback_query_id=call.id,
-                                  text='Выполняется поиск')
+                                  text=lang_dict[search.lang]['lowprice_acq']['acq2'])
         bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
         hotels_poisk_in_the_city(message=call.message, hotels_qty=int(call.data))
 
@@ -356,7 +362,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
     Информация по отелю содержит в себе ID отеля, адрес, координаты, удаленность от центра, цену за 1 сутки, рейтинг
     отеля по мнению сайта, рейтинг отеля с точки зрения посетителей, ссылку на сайт.
     """
-    logging.info('Запущена функция hotels_poisk_in_the_city')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log24'])
     
     search.hotels = dict()
     count = 0
@@ -367,52 +373,51 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
                                 city_destination_id=search.city_id,
                                 chk_in=search.check_in,
                                 chk_out=search.check_out,
-                                sort_price='PRICE'
+                                sort_price='PRICE',
+                                locale=search.locale,
+                                currency=search.currency
                                 )['data']['body']['searchResults']['results']:
         
         search.hotels.update({hotel['name']: {
-            'ID отеля': hotel['id'],
-            'Адрес': '{}, {}'.format(hotel['address']['locality'],
-                                     streetaddress_false(hotel)),
-            'Координаты': hotel['coordinate'],
-            'Удаленность от центра': hotel['landmarks'][0]['distance'],
-            'Цена за весь период': '{price} {days} {tax}'.format(
+            lang_dict[search.lang]['lowprice_print_search_info']['key1']: hotel['id'],
+            lang_dict[search.lang]['lowprice_print_search_info']['key2']: '{}, {}'.format(hotel['address']['locality'],
+                                                                                          streetaddress_false(hotel)),
+            lang_dict[search.lang]['lowprice_print_search_info']['key3']: hotel['coordinate'],
+            lang_dict[search.lang]['lowprice_print_search_info']['key4']: hotel['landmarks'][0]['distance'],
+            lang_dict[search.lang]['lowprice_print_search_info']['key5']: '{price} {days} {tax}'.format(
                 price=hotel['ratePlan']['price']['current'],
                 days=info_check(hotel),
                 tax=summary_check(hotel)
             ),
-            'Цена за 1 сутки': int(
-                hotel['ratePlan']['price']['exactCurrent'] // (search.check_out.day - search.check_in.day)
+            lang_dict[search.lang]['lowprice_print_search_info']['key6']: int(
+                hotel['ratePlan']['price']['exactCurrent'] / int(str(search.check_out - search.check_in).split()[0])
             ),
-            'Рейтинг отеля': '{stars} звезд{letter}'.format(
+            lang_dict[search.lang]['lowprice_print_search_info']['key7']: '{stars} звезд{letter}'.format(
                 stars=hotel['starRating'],
                 letter='а' if hotel['starRating'] == 1
                 else 'ы'
             ),
-            'Рейтинг по мнению посетителей': '{user_rating}'.format(
-                user_rating=user_rating_false(hotel)
-            ),
-            'Сайт': 'https://ru.hotels.com/ho{hotelid}'.format(
-                hotelid=hotel['id']
-            )
+            lang_dict[search.lang]['lowprice_print_search_info']['key8']: '{user_rating}'.format(
+                user_rating=user_rating_false(hotel)),
+            lang_dict[search.lang]['lowprice_print_search_info']['key9']: 'https://ru.hotels.com/ho{hotelid}'.format(
+                hotelid=hotel['id'])
         }
         }
         )
-        
         count += 1
         
         if count == hotels_qty:
             break
     
     msg = bot.send_message(chat_id=message.chat.id,
-                           text='Потребуются ли фотографии для ознакомления?',
+                           text=lang_dict[search.lang]['lowprice']['text11'],
                            reply_markup=IKM_for_photos_search()
                            )
-    logging.info(f'Бот отправил сообщение "{msg.text}"')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log3'].format(msg=msg.text))
 
 
-@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text'
-                                              and call.message.text.startswith('Потребуются'))
+@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+    lang_dict[search.lang]['lowprice']['text11'].split()[0]))
 def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     Функция предназначенная для обработки нажатия на кнопки IKM_for_photos_search
@@ -422,22 +427,22 @@ def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     :return: Значение передается в функцию hotels_info
     :rtype: None
     """
-    logging.info('Запущена функция hotels_poisk_keyboard_callback')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log25'])
     
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
     if call.data == 'Back':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
-    bot.answer_callback_query(callback_query_id=call.id, text='Ответ принят')
+    bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['lowprice_acq']['acq3'])
     
-    if call.data == 'Да':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+    if call.data == 'Yes':
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         hotels_info(call.message, search.hotels, photo_need=True)
     
-    if call.data == 'Нет':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+    if call.data == 'No':
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         hotels_info(call.message, search.hotels, photo_need=False)
 
 
@@ -453,59 +458,65 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
     :return: Выводится сообщение ботом с информацией обо всех найденных отелях и фотоальбомом (опционально)
     :rtype: None
     """
-    logging.info('Запущена функция hotels_info')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log26'])
     search.photos_dict = dict()
     search.photos_dict_urls = dict()
     for every_hotel in found_hotels:
         bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
-        bot.send_message(chat_id=message.chat.id,
-                         text='{emoji1} Название отеля: <b>{hotel_name}</b>\n'
-                              '{emoji2} Веб-сайт отеля: <a>{web}</a>\n'
-                              '{emoji3} Адрес: <code>{address}</code>\n'
-                              '{emoji4} Открыть Яндекс карты: <a>{yamaps}</a>\n'
-                              '{emoji5} Удаленность от центра: <code>{center}</code>\n'
-                              '{emoji6} Цена за весь период: <code>{price}</code>\n'
-                              '{emoji7} Дата въезда: <code>{chk_in_date}</code>\n'
-                              '{emoji8} Дата выезда: <code>{chk_out_date}</code>\n'
-                              '{emoji9} Цена за сутки: <code>{one_day_price}</code>\n'
-                              '{emoji10} Рейтинг: <code>{rating}</code>\n'
-                              '{emoji11} Рейтинг по мнению посетителей: <code>{user_rating}</code>\n'.format(
-                             emoji1=emoji.emojize(":hotel:", use_aliases=True),
-                             hotel_name=every_hotel,
-                             emoji2=emoji.emojize(":globe_with_meridians:", use_aliases=True),
-                             web=found_hotels[every_hotel]['Сайт'],
-                             emoji3=emoji.emojize(":earth_americas:", use_aliases=True),
-                             address=found_hotels[every_hotel]['Адрес'],
-                             emoji4=emoji.emojize(":pushpin:", use_aliases=True),
-                             yamaps=yandex_maps(found_hotels[every_hotel]['Координаты']['lat'],
-                                                found_hotels[every_hotel]['Координаты']['lon']
-                                                ),
-                             emoji5=emoji.emojize(":left_right_arrow:", use_aliases=True),
-                             center=found_hotels[every_hotel]['Удаленность от центра'],
-                             emoji6=emoji.emojize(":credit_card:", use_aliases=True),
-                             price=found_hotels[every_hotel]['Цена за весь период'],
-                             emoji7=emoji.emojize(":soon:", use_aliases=True),
-                             emoji8=emoji.emojize(":back:", use_aliases=True),
-                             chk_in_date=date_change(search.check_in),
-                             chk_out_date=date_change(search.check_out),
-                             emoji9=emoji.emojize(":one:", use_aliases=True),
-                             one_day_price='{0:,} RUB'.format(found_hotels[every_hotel]['Цена за 1 сутки']),
-                             emoji10=emoji.emojize(":star:", use_aliases=True),
-                             rating=found_hotels[every_hotel]['Рейтинг отеля'],
-                             emoji11=emoji.emojize(":sparkles:", use_aliases=True),
-                             user_rating=found_hotels[every_hotel]['Рейтинг по мнению посетителей'],
-                         ),
-                         parse_mode=telegram.ParseMode.HTML,
-                         disable_web_page_preview=True
-                         )
-        logging.info(f'Бот отправил сообщение c информацией по отелю')
+        msg_info = bot.send_message(chat_id=message.chat.id,
+                                    text=lang_dict[search.lang]['lowprice']['text12'].format(
+                                        emoji1=emoji.emojize(":hotel:", use_aliases=True),
+                                        hotel_name=every_hotel,
+                                        emoji2=emoji.emojize(":globe_with_meridians:", use_aliases=True),
+                                        web=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key9']],
+                                        emoji3=emoji.emojize(":earth_americas:", use_aliases=True),
+                                        address=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key2']],
+                                        emoji4=emoji.emojize(":pushpin:", use_aliases=True),
+                                        yamaps=yandex_maps(found_hotels[every_hotel][
+                                                               lang_dict[search.lang]['lowprice_print_search_info'][
+                                                                   'key3']][
+                                                               'lat'],
+                                                           found_hotels[every_hotel][
+                                                               lang_dict[search.lang]['lowprice_print_search_info'][
+                                                                   'key3']]['lon']
+                                                           ),
+                                        emoji5=emoji.emojize(":left_right_arrow:", use_aliases=True),
+                                        center=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key4']],
+                                        emoji6=emoji.emojize(":credit_card:", use_aliases=True),
+                                        price=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key5']],
+                                        emoji7=emoji.emojize(":soon:", use_aliases=True),
+                                        emoji8=emoji.emojize(":back:", use_aliases=True),
+                                        chk_in_date=date_change(search.check_in),
+                                        chk_out_date=date_change(search.check_out),
+                                        emoji9=emoji.emojize(":one:", use_aliases=True),
+                                        one_day_price='{0:,} {cur}'.format(
+                                            found_hotels[every_hotel][lang_dict[search.lang][
+                                                'lowprice_print_search_info']['key6']],
+                                            cur=search.currency),
+                                        emoji10=emoji.emojize(":star:", use_aliases=True),
+                                        rating=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key7']],
+                                        emoji11=emoji.emojize(":sparkles:", use_aliases=True),
+                                        user_rating=found_hotels[every_hotel][
+                                            lang_dict[search.lang]['lowprice_print_search_info']['key8']],
+                                    ),
+                                    parse_mode=telegram.ParseMode.HTML,
+                                    disable_web_page_preview=True
+                                    )
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log27'])
+        data_add(sql_base='user_database.db', user_id=message.chat.id,
+                 message_id=msg_info.message_id, msg_content='hotel_information_message')
         
         if photo_need:
             bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
             
-            hotel_id = found_hotels[every_hotel]['ID отеля']
+            hotel_id = found_hotels[every_hotel][lang_dict[search.lang]['lowprice_print_search_info']['key1']]
             """
-            В рамках общего цикла, где мы перебираем все отели от 1 до выбранного Пользователя, мы сохраняем
+            В рамках общего цикла, где мы перебираем все отели от 1 до выбранного количества Пользователем, мы сохраняем
             значение ID каждого из этих отелей в переменную
             """
             hotel_photos = photos_for_hotel(message=message, hotel_id=hotel_id)
@@ -537,6 +548,9 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             имеющуюся в списке фотографию в чат бота
             """
             a = bot.send_photo(chat_id=message.chat.id, photo=str(all_photos), reply_markup=IKM_photos_sliding())
+            data_add(sql_base='user_database.db', user_id=message.chat.id,
+                     message_id=a.message_id, msg_content='hotel_photo_message')
+            
             """
             Сохраняем в переменную отправленное сообщение, чтобы иметь возможность созданный ранее список с новыми
             функциями присвоить в словаре ключу содержащий ID сообщения. Это позволит нам идентифицировать каждое
@@ -545,7 +559,10 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             call.message.id (в следующем обработчике) и a.message.id одинаковые.
             """
             search.photos_dict_urls.update({a.message_id: all_photos})
-            logging.info(f'Бот отправил сообщение фото')
+            logging.info(lang_dict[search.lang]['lowprice_logging']['log28'])
+    
+    # data_add(sql_base='user_database.db', user_id=message.chat.id,
+    #          message_id=a.message_id, msg_content=search.photos_dict_urls)
 
 
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'photo')
@@ -558,10 +575,10 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
     :return: При нажатии на кнопку меняется фотография.
     :rtype: None
     """
-    logging.info('Запущена функция photo_slide - открыта клавиатура')
+    logging.info(lang_dict[search.lang]['lowprice_logging']['log29'])
     
     if call.data == 'next':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         
         next_photo = search.photos_dict_urls[call.message.id].next()
         bot.edit_message_media(media=telebot.types.InputMedia(type='photo',
@@ -571,11 +588,11 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
                                reply_markup=IKM_photos_sliding())
     
     if call.data == 'previous':
-        logging.info(f'Пользователь нажал на кнопку "{button_text(call)}"')
+        logging.info(lang_dict[search.lang]['lowprice_logging']['log16'].format(button=button_text(call)))
         
-        next_photo = search.photos_dict_urls[call.message.id].prev()
+        prev_photo = search.photos_dict_urls[call.message.id].prev()
         bot.edit_message_media(media=telebot.types.InputMedia(type='photo',
-                                                              media=next_photo),
+                                                              media=prev_photo),
                                chat_id=call.message.chat.id,
                                message_id=call.message.message_id,
                                reply_markup=IKM_photos_sliding())
