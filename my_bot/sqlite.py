@@ -6,7 +6,7 @@ from languages_for_bot import lang_dict
 from loader import search, bot
 
 
-def data_add(sql_base, user_id, message_id, msg_content):
+def data_add(sql_base: str, user_id: int, message_id: int, msg_content: str) -> None:
     logging.info(lang_dict[search.lang]['sqlite_logging']['log1'])
     
     try:
@@ -35,7 +35,7 @@ def data_add(sql_base, user_id, message_id, msg_content):
         bot.send_message(chat_id=user_id, text=lang_dict[search.lang]['sqlite']['text1'])
 
 
-def data_select(sql_base, bot_user_id):
+def data_select(sql_base: str, bot_user_id: int) -> list:
     logging.info(lang_dict[search.lang]['sqlite_logging']['log3'])
     
     try:

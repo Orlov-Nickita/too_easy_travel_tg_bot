@@ -1,1 +1,0 @@
-Ограничения по Google Translate API

@@ -2,7 +2,6 @@
 Языковая поддержка Бота. Заранее определенные соответствующему языку фразы для журнала событий и для Пользователя
 """
 
-
 lang_dict = {
     'ru': {
         'keyboards': {
@@ -47,6 +46,10 @@ lang_dict = {
                 'text2': '{emoji2} Доллар',
                 'text3': '{emoji3} Евро',
                 'text4': 'Главное меню'
+            },
+            'IKM_price_distance_approve': {
+                'text1': 'Изменить',
+                'text2': 'Далее'
             }
         },
         'hello_world': {
@@ -56,12 +59,14 @@ lang_dict = {
             'log1': 'Запущена функция hello_world.start',
             'log2': 'Бот отправил сообщение "{msg}"'
         },
-        'lowprice': {
+        'command': {
             'text1': 'Ваше местоположение город {city}.\nХотите поменять город поиска или ищем по месту нахождения?',
+            'text1.1': 'Ваше местоположение город',
             'text2': 'В каком городе будем искать отели?',
             'text3': 'Хороший выбор, ищу город {city} на карте',
             'text4': 'Вот, что мне удалось найти по запросу - город {city}.\nНажмите кнопку соответствующую Вашему '
                      'запросу',
+            'text4.1': 'Вот, что мне удалось найти по запросу - город',
             'text5': 'Выберите дату въезда',
             'text6': 'Вы выбрали дату въезда {res}',
             'text6.1': 'Вы выбрали дату въезда',
@@ -82,10 +87,21 @@ lang_dict = {
                       '{emoji8} Дата выезда: <code>{chk_out_date}</code>\n'
                       '{emoji9} Цена за сутки: <code>{one_day_price}</code>\n'
                       '{emoji10} Рейтинг: <code>{rating}</code>\n'
-                      '{emoji11} Рейтинг по мнению посетителей: <code>{user_rating}</code>\n'
+                      '{emoji11} Рейтинг по мнению посетителей: <code>{user_rating}</code>\n',
+            'text13': 'Укажите допустимый диапазон цен за проживание в отеле через пробел',
+            'text14': 'Укажите допустимый диапазон расстояния в метрах, на котором может находиться отель '
+                      'от центра через пробел',
+            'text15': 'Вы выбрали диапазон цен от {} руб. до {} руб.',
+            'text15.1': 'Вы выбрали диапазон цен от',
+            'text16': 'Вы выбрали желаемое расстояние от центра города от {} метров до {} метров',
+            'text16.1': 'Вы выбрали желаемое расстояние от центра города от',
+            'text17': 'По Вашему запросу не удалось ничего найти. Попробуйте изменить параметры поиска',
+            'text18': 'Ошибка ввода данных. Диапазон цен необходимо написать через пробел',
+            'text19': 'Ошибка ввода данных. Диапазон расстояния необходимо написать через пробел'
+            
         },
-        'lowprice_logging': {
-            'log1': 'Запущена функция start с определением местоположения Пользователя',
+        'command_logging': {
+            'log1': 'Запущена функция command.start с определением местоположения Пользователя',
             'log2': 'Бот определил местоположение Пользователя в городе "{city}"',
             'log3': 'Бот отправил сообщение "{msg}"',
             'log4': 'Пользователь нажал на кнопку "{button}" и выбрал текущее местоположение',
@@ -115,13 +131,25 @@ lang_dict = {
             'log27': 'Бот отправил сообщение c информацией по отелю',
             'log28': 'Бот отправил фото',
             'log29': 'Запущена функция photo_slide - открыта клавиатура',
+            'log30': 'Запущена функция price_range',
+            'log31': 'Запущена функция price_limiter',
+            'log32': 'Запущена функция distance_range',
+            'log33': 'Запущена функция distance_limiter',
+            'log34': 'Запущена функция price_limiter_approve',
+            'log35': 'Запущена функция price_limiter_approve',
+            'log36': 'Ведется поиск отелей на странице {}',
+            'log37': 'Пользователь ввел диапазон цен с ошибкой',
+            'log38': 'В функции price_limiter произошла ошибка {}',
+            'log39': 'Пользователь ввел диапазон расстояния с ошибкой',
+            'log40': 'В функции distance_limiter произошла ошибка {}',
+    
         },
-        'lowprice_acq': {
+        'command_acq': {
             'acq1': 'Принято',
             'acq2': 'Выполняется поиск',
             'acq3': 'Ответ принят',
         },
-        'lowprice_print_search_info': {
+        'command_print_search_info': {
             'key1': 'ID отеля',
             'key2': 'Адрес',
             'key3': 'Координаты',
@@ -142,7 +170,9 @@ lang_dict = {
             'log4': 'Запущена команда /highprice',
             'log5': 'Запущена команда /settings_func',
             'log6': 'Запущена команда /text',
-            'log7': 'Запущена команда /history'
+            'log7': 'Запущена команда /history',
+            'log8': 'Запущена команда /bestdeal',
+            
         },
         'requests_rapidapiHotels_logging': {
             'city_search': {
@@ -174,7 +204,7 @@ lang_dict = {
             'text3': '{emoji} <b>Меню бота</b>\n'
                      'Выберите валюту {emoji1}',
             'text03': 'Выберите валюту {emoji1}',
-    
+            
             'text4': 'Выбран язык - {lan}',
             'text5': 'Выбрана валюта {cur}'
             
@@ -227,7 +257,7 @@ lang_dict = {
             'log3': 'Запущена команда sqlite.data_select',
             'log4': 'В базу данных добавлена запись',
             'log5': 'Из базы данных получена запись/записи',
-    
+            
         },
     },
     'en': {
@@ -273,6 +303,10 @@ lang_dict = {
                 'text2': '{emoji2} Dollar',
                 'text3': '{emoji3} Euro',
                 'text4': 'Main menu'
+            },
+            'IKM_price_distance_approve': {
+                'text1': 'Change',
+                'text2': 'Next step'
             }
         },
         'hello_world': {
@@ -282,13 +316,15 @@ lang_dict = {
             'log1': 'The hello_world.start function is running',
             'log2': 'The bot sent the message "{msg}"'
         },
-        'lowprice': {
+        'command': {
             'text1': 'Your location is city {city}.\n'
                      'Do you want to change the search city or are we looking by location?',
+            'text1.1': 'Your location is city',
             'text2': 'In which city will we look for hotels?',
             'text3': 'Good choice, looking for a city {city} on the map',
             'text4': 'This is what I managed to find on the query - city {city}.\n'
                      'Press the button corresponding to your request',
+            'text4.1': 'This is what I managed to find on the query - city',
             'text5': 'Select the date of entry',
             'text6': 'You have chosen the date of entry {res}',
             'text6.1': 'You have chosen the date of entry',
@@ -309,10 +345,20 @@ lang_dict = {
                       '{emoji8} Departure date: <code>{chk_out_date}</code>\n'
                       '{emoji9} Price per day: <code>{one_day_price}</code>\n'
                       '{emoji10} Rating: <code>{rating}</code>\n'
-                      '{emoji11} Rating according to visitors: <code>{user_rating}</code>\n'
+                      '{emoji11} Rating according to visitors: <code>{user_rating}</code>\n',
+            'text13': 'Please indicate the acceptable range of prices for hotel accommodation separated by a space',
+            'text14': 'Specify the acceptable range of distance in meters at which the hotel can be located '
+                      'from the center separated by a space',
+            'text15': 'You have selected a price range from {} rub to {} rub.',
+            'text15.1': 'You have selected a price range from',
+            'text16': 'You have selected the desired distance from the city center from {} meters to {} meters',
+            'text16.1': 'You have selected the desired distance from the city center from',
+            'text17': 'Nothing could be found for your query. Try changing the search parameters',
+            'text18': 'Data entry error. The price range must be separated by a space',
+            'text19': 'Data entry error. The distance range must be separated by a space'
         },
-        'lowprice_logging': {
-            'log1': 'The start function with User location detection is started',
+        'command_logging': {
+            'log1': 'The command.start function with User location detection is started',
             'log2': 'The bot has determined the User`s location in the city "{city}"',
             'log3': 'The bot sent a message "{msg}"',
             'log4': 'The user clicked on the button "{button}" and chose the current location',
@@ -342,13 +388,24 @@ lang_dict = {
             'log27': 'The bot sent a message with information about the hotel',
             'log28': 'The bot sent a photo',
             'log29': 'photo_slide - the keyboard is open function started',
+            'log30': 'price_range function started',
+            'log31': 'The price_limiter function is running',
+            'log32': 'The distance_range function is running',
+            'log33': 'The distance_limiter function is running',
+            'log34': 'The price_limiter_approve function is running',
+            'log35': 'The price_limiter_approve function is running',
+            'log36': 'Hotels are being searched on the {} page',
+            'log37': 'The user entered the price range with an error',
+            'log38': 'An error occurred in the price_limiter function {}',
+            'log39': 'The user entered the distance range with an error',
+            'log40': 'An error occurred in the distance_limiter function {}',
         },
-        'lowprice_acq': {
+        'command_acq': {
             'acq1': 'Accepted',
             'acq2': 'A search is being performed',
             'acq3': 'The answer is accepted',
         },
-        'lowprice_print_search_info': {
+        'command_print_search_info': {
             'key1': 'ID hotel',
             'key2': 'Address',
             'key3': 'Coordinates',
@@ -369,7 +426,9 @@ lang_dict = {
             'log4': '/highprice command is running',
             'log5': '/settings_func command is running',
             'log6': '/text command is running',
-            'log7': '/history command is running'
+            'log7': '/history command is running',
+            'log8': '/bestdeal command is running',
+            
         },
         'requests_rapidapiHotels_logging': {
             'city_search': {

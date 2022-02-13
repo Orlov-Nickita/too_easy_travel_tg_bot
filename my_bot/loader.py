@@ -14,9 +14,14 @@ class User_search:
     Класс, необходимый для хранения поисковой информации
     Attributes:
         user_id (str or int): Содержится id номер Пользователя
+        sort_price (str): Содержится параметр сортировки отелей
         lang (str): Содержится аббревиатура выбранного языка интерфейса Бота. По умолчанию - Русский
         locale (str): Условное обозначение кода языка для получения информации с сервера в правильном языковом формате
         currency (str): Содержится информация выбранной валюты. По умолчанию - Рубль
+        min_price (int): Содержится минимальная стоимость проживания в отеле
+        max_price (int): Содержится максимальная стоимость проживания в отеле
+        min_dist (int): Минимально желаемое расстояние отеля от центра города
+        max_dist (int): Максимально желаемое расстояние отеля от центра города
         city (str): Содержится название города, в котором осуществляется поиск.
         found_cities (dict): Содержится информация обо всех найденных городах похожих по названию к искомому.
         city_id (int): Содержится идентификационный номер id, необходимый для поиска информации по сайту hotels.com,
@@ -39,11 +44,18 @@ class User_search:
     
     def __init__(self):
         self.user_id = None
+        self.sort = None
         self.lang = 'ru'
         self.locale = 'ru_RU'
         self.currency = 'RUB'
+        self.pagenumber = 1
+        self.min_price = None
+        self.max_price = None
+        self.min_dist = None
+        self.max_dist = None
         self.location = None
         self.city = None
+        self.hotels_qty = None
         self.found_cities = None
         self.city_id = None
         self.hotels = None

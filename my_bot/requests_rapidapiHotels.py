@@ -34,6 +34,7 @@ def city_search(message: telebot.types.Message, locale: str, city_name: str, cur
     try:
         url = "https://hotels4.p.rapidapi.com/locations/v2/search"
         querystring = {"query": city_name, "locale": locale, "currency": currency}
+        
         cities = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=15
                                   ).json()
@@ -50,20 +51,27 @@ def city_search(message: telebot.types.Message, locale: str, city_name: str, cur
         return cities
 
 
-def hotels_search_price(message: telebot.types.Message, city_destination_id: int, chk_in: str, chk_out: str,
-                        sort_price: str, locale: str, currency: str) -> None or Dict:
+def hotels_search_price(message: telebot.types.Message, city_destination_id: int, pagenumber: int, chk_in: str,
+                        chk_out: str, sort: str, locale: str, currency: str, min_price: int = None,
+                        max_price: int = None) -> None or Dict:
     """
     Функция для нахождения самых дешевых отелей в выбранном городе
     :param message: В качестве параметра передается сообщение из чата
     :type message: telebot.types.Message
     :param city_destination_id: В качестве параметра передается id выбранного города для осуществления поиска отелей
     :type city_destination_id: int
+    :param pagenumber: Номер страницы поиска отелей
+    :type pagenumber: int
     :param chk_in: В качестве параметра передается желаемая дата въезда Пользователя
     :type chk_in: str
     :param chk_out: В качестве параметра передается желаемая дата выезда Пользователя
     :type chk_out: str
-    :param sort_price: В качестве параметра передается тип сортировки
-    :type sort_price: str
+    :param min_price: Минимальная стоимость проживания в отеле
+    :type min_price: int
+    :param max_price: Максимальная стоимость проживания в отеле
+    :type max_price: int
+    :param sort: В качестве параметра передается тип сортировки
+    :type sort: str
     :param locale: Код языка для получения информации с сервера в нужном языковом формате
     :type locale: str
     :param currency: Валюта
@@ -74,8 +82,10 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
     """
     try:
         url = "https://hotels4.p.rapidapi.com/properties/list"
-        querystring = {"destinationId": city_destination_id, "checkIn": chk_in, "checkOut": chk_out,
-                       "sortOrder": sort_price, "locale": locale, "currency": currency}
+        querystring = {"destinationId": city_destination_id, "pageNumber": pagenumber, "pageSize": 25,
+                       "checkIn": chk_in, "checkOut": chk_out, "priceMin": min_price, "priceMax": max_price,
+                       "sortOrder": sort, "locale": locale, "currency": currency}
+        
         hotels = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=15
                                   ).json()

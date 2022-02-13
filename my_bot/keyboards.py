@@ -120,7 +120,7 @@ def IKM_photos_sliding() -> types.InlineKeyboardMarkup:
 
 def IKM_date_chk_in_change() -> types.InlineKeyboardMarkup:
     """
-    Функция, которая определяет клавиатуру-календарь для выбора даты въезда
+    Функция, которая определяет клавиатуру для подтверждения даты въезда
     :return: Возвращается клавиатура (функция) как объект
     :rtype: telegram.InlineKeyboardMarkup
 
@@ -139,7 +139,7 @@ def IKM_date_chk_in_change() -> types.InlineKeyboardMarkup:
 
 def IKM_date_chk_out_change() -> types.InlineKeyboardMarkup:
     """
-    Функция, которая определяет клавиатуру-календарь для выбора даты выезда
+    Функция, которая определяет клавиатуру для подтверждения даты выезда
     :return: Возвращается клавиатура (функция) как объект
     :rtype: telegram.InlineKeyboardMarkup
 
@@ -229,3 +229,21 @@ def IKM_settings_currency() -> types.InlineKeyboardMarkup:
     ikm_settings_currency.add(item1, item2, item3, item4)
     
     return ikm_settings_currency
+
+
+def IKM_price_distance_approve() -> types.InlineKeyboardMarkup:
+    """
+    Функция, которая определяет клавиатуру для подтверждения диапазонов цен и расстояния от центра для отелей
+    :return: Возвращается клавиатура (функция) как объект
+    :rtype: telegram.InlineKeyboardMarkup
+    """
+    ikm_price_distance_approve = types.InlineKeyboardMarkup()
+    
+    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_price_distance_approve']['text1'],
+                                       callback_data='cancel')
+    
+    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_price_distance_approve']['text2'],
+                                       callback_data='continue')
+    ikm_price_distance_approve.add(item1, item2)
+    
+    return ikm_price_distance_approve
