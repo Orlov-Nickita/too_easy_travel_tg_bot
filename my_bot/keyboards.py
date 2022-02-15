@@ -4,7 +4,7 @@ from telebot import types
 from location_by_ip_address import ip_search
 from typing import Dict
 
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import search
 
 

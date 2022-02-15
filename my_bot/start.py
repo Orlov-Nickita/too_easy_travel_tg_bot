@@ -3,7 +3,7 @@ import telebot
 import emoji
 
 from loader import bot
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import search
 
 

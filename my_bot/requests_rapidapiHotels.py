@@ -5,7 +5,7 @@ import requests
 from loader import rapidkey, rapidhost, bot
 import logging
 
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import search
 
 headers = {

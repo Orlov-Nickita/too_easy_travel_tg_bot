@@ -1,6 +1,6 @@
 import os.path
 
-from logger import log_log
+from utils.logger import log_log
 from message_handlers import *
 
 if __name__ == '__main__':

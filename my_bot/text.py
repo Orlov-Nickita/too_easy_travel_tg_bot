@@ -2,7 +2,7 @@ import logging
 import telebot
 from loader import bot
 from auxiliary_functions import greeting_check
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import search
 
 

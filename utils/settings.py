@@ -2,11 +2,11 @@ import logging
 import telebot
 import emoji
 import telegram
-from keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
-from loader import bot
-from loader import search
-from auxiliary_functions import button_text
-from languages_for_bot import lang_dict
+
+from my_bot.auxiliary_functions import button_text
+from my_bot.loader import bot, search
+from my_bot.keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
+from utils.languages_for_bot import lang_dict
 
 
 def start(message: telebot.types.Message) -> None:

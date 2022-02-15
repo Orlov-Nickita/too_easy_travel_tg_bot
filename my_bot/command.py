@@ -5,7 +5,7 @@ import emoji
 from telegram_bot_calendar import DetailedTelegramCalendar
 from loader import bot, search
 from keyboards import IKM_price_distance_approve
-from sqlite import data_add
+from utils.sqlite import data_add
 from requests_rapidapiHotels import city_search, hotels_search_price, photos_for_hotel
 from keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, IKM_for_greeting_msg, \
     IKM_for_city_choice, IKM_photos_sliding, IKM_date_chk_in_change, IKM_date_chk_out_change
@@ -16,7 +16,7 @@ from auxiliary_functions import date_change, yandex_maps, user_rating_false, str
     summary_check, button_text
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 
 
 def start(message: telebot.types.Message) -> None:

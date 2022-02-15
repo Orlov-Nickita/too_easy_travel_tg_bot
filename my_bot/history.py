@@ -2,9 +2,9 @@ import logging
 import telebot
 import telegram
 
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import bot, search
-from sqlite import data_select
+from utils.sqlite import data_select
 
 
 def start(message: telebot.types.Message) -> None:

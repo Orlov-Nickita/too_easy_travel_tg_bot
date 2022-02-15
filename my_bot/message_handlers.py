@@ -1,11 +1,12 @@
 import telebot.types
-from my_bot import hello_world, command, settings, text, history, start
+from my_bot import hello_world, command, text, history, start
+from utils import settings
 from loader import bot
 import logging
 
-from languages_for_bot import lang_dict
+from utils.languages_for_bot import lang_dict
 from loader import search
-from sqlite import data_add
+from utils.sqlite import data_add
 
 
 @bot.message_handler(commands=['start'])
