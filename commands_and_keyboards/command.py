@@ -147,16 +147,12 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     logging.info(lang_dict[search.lang]['command_logging']['log10'].format(button=button_text(call)),
                  extra=search.user_id)
     logging.info(lang_dict[search.lang]['command_logging']['log11'], extra=search.user_id)
-    if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log12'].format(button=button_text(call)),
-                     extra=search.user_id)
-        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
-    else:
-        bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq2'])
-        bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
-        search.city_id = call.data
-        
-        check_in_date_choice(call.message)
+
+    bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq2'])
+    bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
+    search.city_id = call.data
+    
+    check_in_date_choice(call.message)
     bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
@@ -252,7 +248,7 @@ def check_out_date_choice(message: telebot.types.Message) -> None:
     
     calendar, step = DetailedTelegramCalendar(calendar_id=2,
                                               locale=search.lang,
-                                              min_date=search.check_in,
+                                              min_date=search.check_in + relativedelta(days=1),
                                               max_date=search.check_in + relativedelta(months=2)).build()
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text7'],
@@ -273,7 +269,7 @@ def chk_out_date_calendar(c: telebot.types.CallbackQuery) -> None:
     
     result, key, step = DetailedTelegramCalendar(calendar_id=2,
                                                  locale=search.lang,
-                                                 min_date=search.check_in,
+                                                 min_date=search.check_in + relativedelta(days=1),
                                                  max_date=search.check_in + relativedelta(months=2)).process(c.data)
     if not result and key:
         bot.edit_message_text(text=lang_dict[search.lang]['command']['text7'],
@@ -533,19 +529,14 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
-    if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
-                     extra=search.user_id)
-        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
-    
-    else:
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
-                     extra=search.user_id)
-        bot.answer_callback_query(callback_query_id=call.id,
-                                  text=lang_dict[search.lang]['command_acq']['acq2'])
-        bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
-        search.hotels_qty = int(call.data)
-        hotels_poisk_in_the_city(message=call.message, hotels_qty=search.hotels_qty)
+
+    logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                 extra=search.user_id)
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text=lang_dict[search.lang]['command_acq']['acq2'])
+    bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
+    search.hotels_qty = int(call.data)
+    hotels_poisk_in_the_city(message=call.message, hotels_qty=search.hotels_qty)
     
     bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
     bot.edit_message_text(text=lang_dict[search.lang]['command']['text25'].format(button=button_text(call)),
@@ -668,11 +659,6 @@ def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     logging.info(lang_dict[search.lang]['command_logging']['log25'], extra=search.user_id)
     
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
-    
-    if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
-                     extra=search.user_id)
-        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq3'])
     

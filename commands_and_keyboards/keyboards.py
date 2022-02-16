@@ -44,9 +44,6 @@ def IKM_for_city_choice(found_cities_dict: Dict) -> types.InlineKeyboardMarkup:
     for i_city in found_cities_dict:
         ikm_cities_found.add(
             types.InlineKeyboardButton(text=i_city, callback_data=found_cities_dict[i_city]))
-    ikm_cities_found.add(
-        types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_city_choice']['text1'],
-                                   callback_data='Back'))
     
     return ikm_cities_found
 
@@ -67,10 +64,8 @@ def IKM_for_hotels_poisk() -> types.InlineKeyboardMarkup:
     item6 = types.InlineKeyboardButton(text='10', callback_data=10)
     item7 = types.InlineKeyboardButton(text='15', callback_data=15)
     item8 = types.InlineKeyboardButton(text='20', callback_data=20)
-    item9 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_hotels_poisk']['text1'],
-                                       callback_data='Back')
     
-    ikm_hotels_qty.add(item1, item2, item3, item4, item5, item6, item7, item8, item9)
+    ikm_hotels_qty.add(item1, item2, item3, item4, item5, item6, item7, item8)
     
     return ikm_hotels_qty
 
@@ -89,11 +84,8 @@ def IKM_for_photos_search() -> types.InlineKeyboardMarkup:
     
     item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_photos_search']['text2'],
                                        callback_data='No')
-    
-    item3 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_photos_search']['text3'],
-                                       callback_data='Back')
-    
-    ikm_hotels_photo.add(item1, item2, item3)
+        
+    ikm_hotels_photo.add(item1, item2)
     
     return ikm_hotels_photo
 

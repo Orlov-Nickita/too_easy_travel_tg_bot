@@ -1,6 +1,6 @@
 # Editors
 .vscode/
-../.idea/
+.idea/
 
 # Vagrant
 .vagrant/
@@ -70,6 +70,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+*.db
 
 # Flask stuff:
 instance/
