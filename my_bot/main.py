@@ -1,13 +1,12 @@
 import os.path
 
-from utils.logger import log_log
 from message_handlers import *
+from utils.logger import logger
 
 if __name__ == '__main__':
     if not os.path.exists("../logs/"):
         os.makedirs("../logs/")
     
-    log_log()
-    logging.info(lang_dict[search.lang]['main_logging']['log1'])
+    logger.info('the log message', extra={'user': 'Jane'})
     
     bot.infinity_polling()
