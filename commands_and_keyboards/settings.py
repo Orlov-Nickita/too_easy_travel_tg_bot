@@ -3,9 +3,9 @@ import telebot
 import emoji
 import telegram
 
-from my_bot.auxiliary_functions import button_text
+from useful_add_func.auxiliary_functions import button_text
 from my_bot.loader import bot, search
-from my_bot.keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
+from commands_and_keyboards.keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
 from utils.languages_for_bot import lang_dict
 
 
@@ -18,7 +18,7 @@ def start(message: telebot.types.Message) -> None:
     :rtype: telebot.types.Message
 
     """
-    logging.info(lang_dict[search.lang]['settings_logging']['log1'])
+    logging.info(lang_dict[search.lang]['settings_logging']['log1'], extra=search.user_id)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['settings']['text1'].format(
                                emoji=emoji.emojize(":file_folder:", use_aliases=True)),
@@ -26,7 +26,7 @@ def start(message: telebot.types.Message) -> None:
                            parse_mode=telegram.ParseMode.HTML
                            )
     
-    logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text))
+    logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text), extra=search.user_id)
 
 
 # Реакция в главном меню
@@ -41,10 +41,10 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logging.info(lang_dict[search.lang]['settings_logging']['log3'])
+    logging.info(lang_dict[search.lang]['settings_logging']['log3'], extra=search.user_id)
     
     if call.data == 'language':
-        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)))
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -54,10 +54,10 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     reply_markup=IKM_settings_lang(),
                                     parse_mode=telegram.ParseMode.HTML)
         
-        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text))
+        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text), extra=search.user_id)
     
-    if call.data == 'currency':
-        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)))
+    elif call.data == 'currency':
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -68,7 +68,12 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     reply_markup=IKM_settings_currency(),
                                     parse_mode=telegram.ParseMode.HTML)
         
-        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text))
+        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text), extra=search.user_id)
+    
+    elif call.data == 'close':
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
+        
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
 
 # Выбор языка
@@ -83,10 +88,10 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logging.info(lang_dict[search.lang]['settings_logging']['log5'])
+    logging.info(lang_dict[search.lang]['settings_logging']['log5'], extra=search.user_id)
     
     if call.data == 'mainmenu':
-        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)))
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -95,10 +100,15 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     reply_markup=IKM_for_settings(),
                                     parse_mode=telegram.ParseMode.HTML)
         
-        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text))
+        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text), extra=search.user_id)
     
-    else:
-        logging.info(lang_dict[search.lang]['settings_logging']['log7'].format(button_text(call)))
+    elif call.data == 'close':
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
+        
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    
+    elif call.data == 'ru' or call.data == 'en':
+        logging.info(lang_dict[search.lang]['settings_logging']['log7'].format(button_text(call)), extra=search.user_id)
         
         bot.answer_callback_query(callback_query_id=call.id,
                                   text=lang_dict[search.lang]['settings']['text4'].format(lan=button_text(call)))
@@ -108,15 +118,15 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
             search.locale = 'ru_RU'
         elif call.data == 'en':
             search.locale = 'en_US'
-            
+        
         bot.edit_message_text(chat_id=call.message.chat.id,
                               message_id=call.message.message_id,
                               text=lang_dict[search.lang]['settings']['text2'].format(
                                   emoji=emoji.emojize(":open_file_folder:", use_aliases=True)),
-
+        
                               reply_markup=IKM_settings_lang(),
                               parse_mode=telegram.ParseMode.HTML)
-        
+
 
 # Выбор валюты
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.endswith(
@@ -130,10 +140,10 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logging.info(lang_dict[search.lang]['settings_logging']['log6'])
+    logging.info(lang_dict[search.lang]['settings_logging']['log6'], extra=search.user_id)
     
     if call.data == 'mainmenu':
-        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)))
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -141,10 +151,15 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                         emoji=emoji.emojize(":file_folder:", use_aliases=True)),
                                     reply_markup=IKM_for_settings(),
                                     parse_mode=telegram.ParseMode.HTML)
-        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text))
+        logging.info(lang_dict[search.lang]['settings_logging']['log2'].format(msg.text), extra=search.user_id)
     
-    else:
-        logging.info(lang_dict[search.lang]['settings_logging']['log8'].format(button_text(call)))
+    elif call.data == 'close':
+        logging.info(lang_dict[search.lang]['settings_logging']['log4'].format(button_text(call)), extra=search.user_id)
+        
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    
+    elif call.data == 'RUB' or call.data == 'USD' or call.data == 'EUR':
+        logging.info(lang_dict[search.lang]['settings_logging']['log8'].format(button_text(call)), extra=search.user_id)
         
         bot.answer_callback_query(callback_query_id=call.id,
                                   text=lang_dict[search.lang]['settings']['text5'].format(cur=button_text(call)))

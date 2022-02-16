@@ -1,11 +1,9 @@
 import telebot.types
-from my_bot import hello_world, command, text, history, start
-from utils import settings
-from loader import bot
+from commands_and_keyboards import text, hello_world, start, command, history, settings, help_command
+from my_bot.loader import bot, search
 import logging
 
 from utils.languages_for_bot import lang_dict
-from loader import search
 from utils.sqlite import data_add
 
 
@@ -19,9 +17,25 @@ def send_welcome_func(message: telebot.types.Message) -> None:
     :rtype telebot.types.Message
 
     """
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log1'])
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log1'], extra=search.user_id)
     search.lang = message.from_user.language_code
     start.start(message)
+
+
+@bot.message_handler(commands=['help'])
+def help_command_func(message: telebot.types.Message) -> None:
+    """
+    Функция, которая реагирует на команду /help и отправляет Пользователю вспомогательное сообщение с подсказками
+    :param message: В качестве параметра передается сообщение из чата
+    :type message: telebot.types.Message
+    :return: Отправляется сообщение в чат
+    :rtype telebot.types.Message
+
+    """
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log9'], extra=search.user_id)
+    help_command.start(message)
 
 
 @bot.message_handler(commands=['hello_world'])
@@ -34,7 +48,8 @@ def hello_world_func(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log2'])
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log2'], extra=search.user_id)
     hello_world.start(message)
 
 
@@ -47,8 +62,9 @@ def low_price_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
     data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id, msg_content=message.text)
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log3'])
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log3'], extra=search.user_id)
     search.sort = 'PRICE'
     command.start(message)
 
@@ -62,8 +78,9 @@ def high_price_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
     data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id, msg_content=message.text)
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log4'])
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log4'], extra=search.user_id)
     search.sort = 'PRICE_HIGHEST_FIRST'
     command.start(message)
 
@@ -78,8 +95,9 @@ def bestdeal_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
     data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id, msg_content=message.text)
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log8'])
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log8'], extra=search.user_id)
     search.sort = 'DISTANCE_FROM_LANDMARK'
     command.start(message)
 
@@ -93,7 +111,8 @@ def history_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log7'])
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log7'], extra=search.user_id)
     history.start(message)
 
 
@@ -106,7 +125,8 @@ def settings_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log5'])
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log5'], extra=search.user_id)
     settings.start(message)
 
 
@@ -120,5 +140,6 @@ def text_func(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    logging.info(lang_dict[search.lang]['message_handlers_logging']['log6'])
+    search.user_id = {'username': message.from_user.username, 'userid': message.from_user.id}
+    logging.info(lang_dict[search.lang]['message_handlers_logging']['log6'], extra=search.user_id)
     text.start(message)

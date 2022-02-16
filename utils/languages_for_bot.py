@@ -34,18 +34,23 @@ lang_dict = {
             },
             'IKM_for_settings': {
                 'text1': 'Сменить язык',
-                'text2': 'Сменить валюту'
+                'text2': 'Сменить валюту',
+                'text3': 'Закрыть меню',
             },
             'IKM_settings_lang': {
                 'text1': 'Русский',
                 'text2': 'Английский',
-                'text3': 'Главное меню'
+                'text3': 'Главное меню',
+                'text4': 'Закрыть меню',
+    
             },
             'IKM_settings_currency': {
                 'text1': '{emoji1} Рубль',
                 'text2': '{emoji2} Доллар',
                 'text3': '{emoji3} Евро',
-                'text4': 'Главное меню'
+                'text4': 'Главное меню',
+                'text5': 'Закрыть меню',
+    
             },
             'IKM_price_distance_approve': {
                 'text1': 'Изменить',
@@ -97,7 +102,14 @@ lang_dict = {
             'text16.1': 'Вы выбрали желаемое расстояние от центра города от',
             'text17': 'По Вашему запросу не удалось ничего найти. Попробуйте изменить параметры поиска',
             'text18': 'Ошибка ввода данных. Диапазон цен необходимо написать через пробел',
-            'text19': 'Ошибка ввода данных. Диапазон расстояния необходимо написать через пробел'
+            'text19': 'Ошибка ввода данных. Диапазон расстояния необходимо написать через пробел',
+            'text20': 'Ошибка ввода данных. Стоимость не может быть отрицательной',
+            'text21': 'Ошибка ввода данных. Максимальная стоимость не может быть меньше минимальной',
+            'text22': 'Ошибка ввода данных. Необходимо ввести число',
+            'text23': 'Ошибка ввода данных. Расстояние не может быть отрицательным',
+            'text24': 'Ошибка ввода данных. Максимальное расстояние не может быть меньше минимального',
+            'text25': 'Итак, какое количество отелей подобрать?\n - <code>Вы выбрали {button}</code>',
+            'text26': 'Потребуются ли фотографии для ознакомления?\n - <code>Вы выбрали {button}</code>',
             
         },
         'command_logging': {
@@ -136,13 +148,13 @@ lang_dict = {
             'log32': 'Запущена функция distance_range',
             'log33': 'Запущена функция distance_limiter',
             'log34': 'Запущена функция price_limiter_approve',
-            'log35': 'Запущена функция price_limiter_approve',
+            'log35': 'Запущена функция distance_limiter_approve',
             'log36': 'Ведется поиск отелей на странице {}',
             'log37': 'Пользователь ввел диапазон цен с ошибкой',
             'log38': 'В функции price_limiter произошла ошибка {}',
             'log39': 'Пользователь ввел диапазон расстояния с ошибкой',
             'log40': 'В функции distance_limiter произошла ошибка {}',
-    
+            'log41': 'Пользователь отправил сообщение {msg}',
         },
         'command_acq': {
             'acq1': 'Принято',
@@ -172,6 +184,7 @@ lang_dict = {
             'log6': 'Запущена команда /text',
             'log7': 'Запущена команда /history',
             'log8': 'Запущена команда /bestdeal',
+            'log9': 'Запущена команда /help',
             
         },
         'requests_rapidapiHotels_logging': {
@@ -259,6 +272,25 @@ lang_dict = {
             'log5': 'Из базы данных получена запись/записи',
             
         },
+        'help_command': {
+            'text1': 'Бот поможет Вам найти:\n'
+                     ' • Топ самых дешёвых отелей в городе - /lowprice\n'
+                     ' • Топ самых дорогих отелей в городе - /highprice\n'
+                     ' • Топ отелей, наиболее подходящих по цене и расположению от центра (самые дешёвые и '
+                     'находятся ближе всего к центру) - /bestdeal\n'
+                     '\n'
+                     'Служебные команды:\n'
+                     ' • История поиска отелей - /history\n'
+                     ' • Сменить настройки - /settings\n'
+                     '\n'
+                     '_______________________________________\n'
+                     '\n'
+                     'Автор бота - @NickitaOrlov'
+        },
+        'help_command_logging': {
+            'log1': 'Запущена функция help_command.start',
+            'log2': 'Бот отправил сообщение "{}"'
+        },
     },
     'en': {
         'keyboards': {
@@ -291,18 +323,24 @@ lang_dict = {
             },
             'IKM_for_settings': {
                 'text1': 'Change language',
-                'text2': 'Change currency'
+                'text2': 'Change currency',
+                'text3': 'Close menu',
+    
             },
             'IKM_settings_lang': {
                 'text1': 'Russian',
                 'text2': 'English',
-                'text3': 'Main menu'
+                'text3': 'Main menu',
+                'text4': 'Close menu',
+    
             },
             'IKM_settings_currency': {
                 'text1': '{emoji1} Ruble',
                 'text2': '{emoji2} Dollar',
                 'text3': '{emoji3} Euro',
-                'text4': 'Main menu'
+                'text4': 'Main menu',
+                'text5': 'Close menu',
+    
             },
             'IKM_price_distance_approve': {
                 'text1': 'Change',
@@ -355,7 +393,14 @@ lang_dict = {
             'text16.1': 'You have selected the desired distance from the city center from',
             'text17': 'Nothing could be found for your query. Try changing the search parameters',
             'text18': 'Data entry error. The price range must be separated by a space',
-            'text19': 'Data entry error. The distance range must be separated by a space'
+            'text19': 'Data entry error. The distance range must be separated by a space',
+            'text20': 'Data entry error. The cost cannot be negative',
+            'text21': 'Data entry error. The maximum cost cannot be less than the minimum',
+            'text22': 'Data entry error. You must enter a number',
+            'text23': 'Data entry error. The distance cannot be negative',
+            'text24': 'Data entry error. The maximum distance cannot be less than the minimum',
+            'text25': 'So, how many hotels to pick up?\n - <code>You have selected {button}</code>',
+            'text26': 'Will photos be required for familiarization?\n - <code>You have selected {button}</code>',
         },
         'command_logging': {
             'log1': 'The command.start function with User location detection is started',
@@ -393,12 +438,13 @@ lang_dict = {
             'log32': 'The distance_range function is running',
             'log33': 'The distance_limiter function is running',
             'log34': 'The price_limiter_approve function is running',
-            'log35': 'The price_limiter_approve function is running',
+            'log35': 'The distance_limiter_approve function is running',
             'log36': 'Hotels are being searched on the {} page',
             'log37': 'The user entered the price range with an error',
             'log38': 'An error occurred in the price_limiter function {}',
             'log39': 'The user entered the distance range with an error',
             'log40': 'An error occurred in the distance_limiter function {}',
+            'log41': 'User sent message {msg}',
         },
         'command_acq': {
             'acq1': 'Accepted',
@@ -428,6 +474,7 @@ lang_dict = {
             'log6': '/text command is running',
             'log7': '/history command is running',
             'log8': '/bestdeal command is running',
+            'log9': '/bestdeal command is running',
             
         },
         'requests_rapidapiHotels_logging': {
@@ -514,7 +561,25 @@ lang_dict = {
             'log3': 'The sqlite.data_select command is running',
             'log4': 'An entry has been added to the database',
             'log5': 'A record/records was obtained from the database',
-            
         },
-    },
+        'help_command': {
+            'text1': 'The bot will help you find:\n'
+                     ' • Top cheapest hotels in the city - /lowprice\n'
+                     ' • Top most expensive hotels in the city - / high price\n'
+                     ' • Top hotels most suitable for the price and location from the center (the cheapest and '
+                     'are closest to the center) - /best deal\n'
+                     '\n'
+                     'Service commands:\n'
+                     ' • Hotel search history - /history\n'
+                     ' • Change settings - /settings\n'
+                     '\n'
+                     '_______________________________________\n'
+                     '\n'
+                     'The author of the bot - @NickitaOrlov'
+        },
+        'help_command_logging': {
+            'log1': 'The help_command.start function is running',
+            'log2': 'The bot sent the message "{}"'
+        }
+    }
 }

@@ -1,11 +1,11 @@
 import emoji
 import telegram
 from telebot import types
-from location_by_ip_address import ip_search
+from useful_add_func.location_by_ip_address import ip_search
 from typing import Dict
 
 from utils.languages_for_bot import lang_dict
-from loader import search
+from my_bot.loader import search
 
 
 def IKM_for_greeting_msg() -> types.InlineKeyboardMarkup:
@@ -171,7 +171,10 @@ def IKM_for_settings() -> types.InlineKeyboardMarkup:
     item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_settings']['text2'],
                                        callback_data='currency')
     
-    ikm_for_settings.add(item1, item2)
+    item3 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_settings']['text3'],
+                                       callback_data='close')
+    
+    ikm_for_settings.add(item1, item2, item3)
     
     return ikm_for_settings
 
@@ -194,7 +197,10 @@ def IKM_settings_lang() -> types.InlineKeyboardMarkup:
     item3 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text3'],
                                        callback_data='mainmenu')
     
-    ikm_settings_lang.add(item1, item2, item3)
+    item4 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text4'],
+                                       callback_data='close')
+    
+    ikm_settings_lang.add(item1, item2, item3, item4)
     
     return ikm_settings_lang
 
@@ -226,7 +232,10 @@ def IKM_settings_currency() -> types.InlineKeyboardMarkup:
     item4 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text4'],
                                        callback_data='mainmenu')
     
-    ikm_settings_currency.add(item1, item2, item3, item4)
+    item5 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text5'],
+                                       callback_data='close')
+    
+    ikm_settings_currency.add(item1, item2, item3, item4, item5)
     
     return ikm_settings_currency
 

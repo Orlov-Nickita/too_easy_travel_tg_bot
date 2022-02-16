@@ -3,16 +3,18 @@ import telegram
 import re
 import emoji
 from telegram_bot_calendar import DetailedTelegramCalendar
-from loader import bot, search
-from keyboards import IKM_price_distance_approve
+from my_bot.loader import bot, search
+from commands_and_keyboards.keyboards import IKM_price_distance_approve
+from utils.errors import Negative_value, Max_more_min
 from utils.sqlite import data_add
-from requests_rapidapiHotels import city_search, hotels_search_price, photos_for_hotel
-from keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, IKM_for_greeting_msg, \
+from useful_add_func.requests_rapidapiHotels import city_search, hotels_search_price, photos_for_hotel
+from commands_and_keyboards.keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, IKM_for_greeting_msg, \
     IKM_for_city_choice, IKM_photos_sliding, IKM_date_chk_in_change, IKM_date_chk_out_change
-from photo_album_class import Photo_album
-from location_by_ip_address import ip_search
+from useful_add_func.photo_album_class import Photo_album
+from useful_add_func.location_by_ip_address import ip_search
 import logging
-from auxiliary_functions import date_change, yandex_maps, user_rating_false, streetaddress_false, info_check, \
+from useful_add_func.auxiliary_functions import date_change, yandex_maps, user_rating_false, streetaddress_false, \
+    info_check, \
     summary_check, button_text
 from datetime import date
 from dateutil.relativedelta import relativedelta
@@ -30,16 +32,16 @@ def start(message: telebot.types.Message) -> None:
     :rtype: None
 
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log1'])
+    logging.info(lang_dict[search.lang]['command_logging']['log1'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     
     cur_city = ip_search()
-    logging.info(lang_dict[search.lang]['command_logging']['log2'].format(city=cur_city))
+    logging.info(lang_dict[search.lang]['command_logging']['log2'].format(city=cur_city), extra=search.user_id)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text1'].format(city=cur_city),
                            reply_markup=IKM_for_greeting_msg()
                            )
-    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
 
 
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
@@ -55,14 +57,17 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     if call.data == ip_search():
-        logging.info(lang_dict[search.lang]['command_logging']['log4'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log4'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq1'])
         city_poisk(message=call.message, city=ip_search())
     
     else:
-        logging.info(lang_dict[search.lang]['command_logging']['log5'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log5'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq1'])
         city_choice(message=call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def city_choice(message: telebot.types.Message) -> None:
@@ -75,11 +80,11 @@ def city_choice(message: telebot.types.Message) -> None:
     :rtype: None
     """
     
-    logging.info(lang_dict[search.lang]['command_logging']['log6'])
+    logging.info(lang_dict[search.lang]['command_logging']['log6'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     first_msg = bot.send_message(chat_id=message.chat.id,
                                  text=lang_dict[search.lang]['command']['text2'])
-    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=first_msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=first_msg.text), extra=search.user_id)
     
     bot.register_next_step_handler(message=first_msg, callback=city_poisk)
 
@@ -97,7 +102,7 @@ def city_poisk(message: telebot.types.Message, city=None) -> None:
     к введенному, при нажатии на кнопки которой можно будет уточнить место поиска отелей.
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log8'])
+    logging.info(lang_dict[search.lang]['command_logging']['log8'], extra=search.user_id)
     
     search.found_cities = dict()
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
@@ -108,7 +113,7 @@ def city_poisk(message: telebot.types.Message, city=None) -> None:
     
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text3'].format(city=search.city))
-    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
     
     for group in city_search(
             message=msg, locale=search.locale, city_name=search.city, currency=search.currency)['suggestions']:
@@ -124,7 +129,8 @@ def city_poisk(message: telebot.types.Message, city=None) -> None:
                             text=lang_dict[search.lang]['command']['text4'].format(city=search.city),
                             reply_markup=IKM_for_city_choice(search.found_cities)
                             )
-    logging.info(lang_dict[search.lang]['command_logging']['log9'].format(msg2=msg2.text, cities=search.found_cities))
+    logging.info(lang_dict[search.lang]['command_logging']['log9'].format(msg2=msg2.text, cities=search.found_cities),
+                 extra=search.user_id)
 
 
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
@@ -138,10 +144,12 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     для поиска
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log10'].format(button=button_text(call)))
-    logging.info(lang_dict[search.lang]['command_logging']['log11'])
+    logging.info(lang_dict[search.lang]['command_logging']['log10'].format(button=button_text(call)),
+                 extra=search.user_id)
+    logging.info(lang_dict[search.lang]['command_logging']['log11'], extra=search.user_id)
     if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log12'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log12'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     else:
         bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq2'])
@@ -149,6 +157,7 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
         search.city_id = call.data
         
         check_in_date_choice(call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def check_in_date_choice(message: telebot.types.Message) -> None:
@@ -159,7 +168,7 @@ def check_in_date_choice(message: telebot.types.Message) -> None:
     :return: Создается календарь для выбора даты въезда
     :rtype None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log12'])
+    logging.info(lang_dict[search.lang]['command_logging']['log12'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     
     calendar, step = DetailedTelegramCalendar(calendar_id=1,
@@ -169,7 +178,7 @@ def check_in_date_choice(message: telebot.types.Message) -> None:
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text5'],
                            reply_markup=calendar)
-    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func(calendar_id=1))
@@ -181,7 +190,7 @@ def chk_in_date_calendar(c: telebot.types.CallbackQuery) -> None:
     :return: Результатом выполнения является выбранная дата въезда Пользователя
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log13'])
+    logging.info(lang_dict[search.lang]['command_logging']['log13'], extra=search.user_id)
     
     result, key, step = DetailedTelegramCalendar(calendar_id=1,
                                                  locale=search.lang,
@@ -199,7 +208,8 @@ def chk_in_date_calendar(c: telebot.types.CallbackQuery) -> None:
                               message_id=c.message.message_id,
                               reply_markup=IKM_date_chk_in_change()
                               )
-        logging.info(lang_dict[search.lang]['command_logging']['log14'].format(time_res=search.check_in))
+        logging.info(lang_dict[search.lang]['command_logging']['log14'].format(time_res=search.check_in),
+                     extra=search.user_id)
 
 
 @bot.callback_query_handler(
@@ -214,16 +224,19 @@ def chk_in_date_change(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log15'])
+    logging.info(lang_dict[search.lang]['command_logging']['log15'], extra=search.user_id)
     
     if call.data == 'cancel':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         check_in_date_choice(call.message)
     
     elif call.data == 'continue':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         check_out_date_choice(call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def check_out_date_choice(message: telebot.types.Message) -> None:
@@ -234,17 +247,17 @@ def check_out_date_choice(message: telebot.types.Message) -> None:
     :return: Создается календарь для выбора даты въезда
     :rtype None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log17'])
+    logging.info(lang_dict[search.lang]['command_logging']['log17'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     
     calendar, step = DetailedTelegramCalendar(calendar_id=2,
                                               locale=search.lang,
-                                              min_date=date.today(),
-                                              max_date=date.today() + relativedelta(months=2)).build()
+                                              min_date=search.check_in,
+                                              max_date=search.check_in + relativedelta(months=2)).build()
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text7'],
                            reply_markup=calendar)
-    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func(calendar_id=2))
@@ -256,12 +269,12 @@ def chk_out_date_calendar(c: telebot.types.CallbackQuery) -> None:
     :return: Результатом выполнения является выбранная дата въезда Пользователя
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log18'])
+    logging.info(lang_dict[search.lang]['command_logging']['log18'], extra=search.user_id)
     
     result, key, step = DetailedTelegramCalendar(calendar_id=2,
                                                  locale=search.lang,
-                                                 min_date=date.today(),
-                                                 max_date=date.today() + relativedelta(months=2)).process(c.data)
+                                                 min_date=search.check_in,
+                                                 max_date=search.check_in + relativedelta(months=2)).process(c.data)
     if not result and key:
         bot.edit_message_text(text=lang_dict[search.lang]['command']['text7'],
                               chat_id=c.message.chat.id,
@@ -272,7 +285,8 @@ def chk_out_date_calendar(c: telebot.types.CallbackQuery) -> None:
             bot.answer_callback_query(callback_query_id=c.id,
                                       text=lang_dict[search.lang]['command']['text9'],
                                       show_alert=True)
-            logging.info(lang_dict[search.lang]['command_logging']['log19'].format(time_res=date_change(result)))
+            logging.info(lang_dict[search.lang]['command_logging']['log19'].format(time_res=date_change(result)),
+                         extra=search.user_id)
             bot.delete_message(chat_id=c.message.chat.id, message_id=c.message.message_id)
             
             check_out_date_choice(c.message)
@@ -282,7 +296,8 @@ def chk_out_date_calendar(c: telebot.types.CallbackQuery) -> None:
                                   chat_id=c.message.chat.id,
                                   message_id=c.message.message_id,
                                   reply_markup=IKM_date_chk_out_change())
-            logging.info(lang_dict[search.lang]['command_logging']['log20'].format(time_res=search.check_out))
+            logging.info(lang_dict[search.lang]['command_logging']['log20'].format(time_res=search.check_out),
+                         extra=search.user_id)
 
 
 @bot.callback_query_handler(
@@ -297,45 +312,73 @@ def chk_out_date_change(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log21'])
+    logging.info(lang_dict[search.lang]['command_logging']['log21'], extra=search.user_id)
     
     if call.data == 'cancel':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         check_out_date_choice(call.message)
     
     elif call.data == 'continue':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         
         if search.sort == 'DISTANCE_FROM_LANDMARK':
             price_range(call.message)
         else:
             qty_hotels(call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def price_range(message: telebot.types.Message) -> None:
-    logging.info(lang_dict[search.lang]['command_logging']['log30'])
+    logging.info(lang_dict[search.lang]['command_logging']['log30'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text13'])
-    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
     
     bot.register_next_step_handler(message=msg, callback=price_limiter)
 
 
 def price_limiter(message: telebot.types.Message) -> None:
-    logging.info(lang_dict[search.lang]['command_logging']['log31'])
+    logging.info(lang_dict[search.lang]['command_logging']['log41'].format(msg=message.text), extra=search.user_id)
+    logging.info(lang_dict[search.lang]['command_logging']['log31'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     
     try:
         search.min_price, search.max_price = int(message.text.split()[0]), int(message.text.split()[1])
+        
+        if search.max_price <= search.min_price:
+            raise Max_more_min
+        
+        elif search.min_price < 0 or search.max_price < 0:
+            raise Negative_value
     
-    except Exception as Ex:
-        logging.info(lang_dict[search.lang]['command_logging']['log37'])
+    except IndexError as Ex:
+        logging.info(lang_dict[search.lang]['command_logging']['log37'], extra=search.user_id)
         msg = bot.send_message(chat_id=message.chat.id,
                                text=lang_dict[search.lang]['command']['text18'])
-        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
-        logging.info(lang_dict[search.lang]['command_logging']['log38'].format(Ex))
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        logging.info(lang_dict[search.lang]['command_logging']['log38'].format(Ex), extra=search.user_id)
+        price_range(message=message)
+    
+    except Negative_value:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text20'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        price_range(message=message)
+    
+    except Max_more_min:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text21'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        price_range(message=message)
+    
+    except ValueError:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text22'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
         price_range(message=message)
     
     else:
@@ -343,7 +386,7 @@ def price_limiter(message: telebot.types.Message) -> None:
                                text=lang_dict[search.lang]['command']['text15'].format(search.min_price,
                                                                                        search.max_price),
                                reply_markup=IKM_price_distance_approve())
-        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
 
 
 @bot.callback_query_handler(
@@ -358,43 +401,65 @@ def price_limiter_approve(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log34'])
+    logging.info(lang_dict[search.lang]['command_logging']['log34'], extra=search.user_id)
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
     if call.data == 'cancel':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         price_range(call.message)
     
     elif call.data == 'continue':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         distance_range(call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def distance_range(message: telebot.types.Message) -> None:
-    logging.info(lang_dict[search.lang]['command_logging']['log32'])
+    logging.info(lang_dict[search.lang]['command_logging']['log32'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text14'])
-    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
     
     bot.register_next_step_handler(message=msg, callback=distance_limiter)
 
 
 def distance_limiter(message: telebot.types.Message) -> None:
-    logging.info(lang_dict[search.lang]['command_logging']['log33'])
+    logging.info(lang_dict[search.lang]['command_logging']['log41'].format(msg=message.text), extra=search.user_id)
+    logging.info(lang_dict[search.lang]['command_logging']['log33'], extra=search.user_id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     
     try:
         search.min_dist, search.max_dist = int(message.text.split()[0]), int(message.text.split()[1])
     
-    except Exception as Ex:
+    except IndexError as Ex:
         
-        logging.info(lang_dict[search.lang]['command_logging']['log39'])
+        logging.info(lang_dict[search.lang]['command_logging']['log39'], extra=search.user_id)
         msg = bot.send_message(chat_id=message.chat.id,
                                text=lang_dict[search.lang]['command']['text19'])
-        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
-        logging.info(lang_dict[search.lang]['command_logging']['log40'].format(Ex))
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        logging.info(lang_dict[search.lang]['command_logging']['log40'].format(Ex), extra=search.user_id)
+        distance_range(message=message)
+    
+    except Negative_value:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text23'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        distance_range(message=message)
+    
+    except Max_more_min:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text24'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
+        distance_range(message=message)
+    
+    except ValueError:
+        msg = bot.send_message(chat_id=message.chat.id,
+                               text=lang_dict[search.lang]['command']['text22'])
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
         distance_range(message=message)
     
     else:
@@ -402,7 +467,7 @@ def distance_limiter(message: telebot.types.Message) -> None:
                                text=lang_dict[search.lang]['command']['text16'].format(search.min_dist,
                                                                                        search.max_dist),
                                reply_markup=IKM_price_distance_approve())
-        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text))
+        logging.info(lang_dict[search.lang]['command_logging']['log7'].format(msg=msg.text), extra=search.user_id)
 
 
 @bot.callback_query_handler(
@@ -417,17 +482,20 @@ def distance_limiter_approve(call: telebot.types.CallbackQuery) -> None:
     :return: Либо выбор даты въезда начинается снова, либо переход к следующему шагу по выбору даты выезда
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log35'])
+    logging.info(lang_dict[search.lang]['command_logging']['log35'], extra=search.user_id)
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
     if call.data == 'cancel':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
         distance_range(call.message)
     
     elif call.data == 'continue':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         qty_hotels(call.message)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
 
 
 def qty_hotels(message: telebot.types.Message) -> None:
@@ -438,14 +506,14 @@ def qty_hotels(message: telebot.types.Message) -> None:
     :return: После выбора количество отелей информация передается в функцию hotels_poisk_in_the_city
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log22'])
+    logging.info(lang_dict[search.lang]['command_logging']['log22'], extra=search.user_id)
     
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[search.lang]['command']['text10'],
                            reply_markup=IKM_for_hotels_poisk()
                            )
-    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+    logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
     
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
 
@@ -460,19 +528,30 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     :return: Значение передается в функцию hotels_poisk_in_the_city
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log23'])
+    
+    logging.info(lang_dict[search.lang]['command_logging']['log23'], extra=search.user_id)
+    
+    bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
     if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     else:
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.answer_callback_query(callback_query_id=call.id,
                                   text=lang_dict[search.lang]['command_acq']['acq2'])
         bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
         search.hotels_qty = int(call.data)
         hotels_poisk_in_the_city(message=call.message, hotels_qty=search.hotels_qty)
+    
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
+    bot.edit_message_text(text=lang_dict[search.lang]['command']['text25'].format(button=button_text(call)),
+                          chat_id=call.message.chat.id,
+                          message_id=call.message.message_id,
+                          parse_mode=telegram.ParseMode.HTML)
 
 
 def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) -> None:
@@ -488,7 +567,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
     Информация по отелю содержит в себе ID отеля, адрес, координаты, удаленность от центра, цену за 1 сутки, рейтинг
     отеля по мнению сайта, рейтинг отеля с точки зрения посетителей, ссылку на сайт.
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log24'])
+    logging.info(lang_dict[search.lang]['command_logging']['log24'], extra=search.user_id)
     
     search.hotels = dict()
     count = 0
@@ -509,7 +588,8 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
                                     )['data']['body']['searchResults']['results']:
             
             bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
-            logging.info(lang_dict[search.lang]['command_logging']['log36'].format(search.pagenumber))
+            logging.info(lang_dict[search.lang]['command_logging']['log36'].format(search.pagenumber),
+                         extra=search.user_id)
             landmark_distance = float(hotel['landmarks'][0]['distance'].split()[0].replace(',', '.')) * 1000
             
             if search.sort == 'DISTANCE_FROM_LANDMARK' and (
@@ -557,7 +637,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
                                    text=lang_dict[search.lang]['command']['text11'],
                                    reply_markup=IKM_for_photos_search()
                                    )
-            logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+            logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text), extra=search.user_id)
             break
         else:
             search.pagenumber += 1
@@ -566,7 +646,8 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
                 bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
                 msg = bot.send_message(chat_id=message.chat.id,
                                        text=lang_dict[search.lang]['command']['text17'])
-                logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text))
+                logging.info(lang_dict[search.lang]['command_logging']['log3'].format(msg=msg.text),
+                             extra=search.user_id)
                 search.pagenumber = 1
                 price_range(message=message)
                 break
@@ -583,23 +664,33 @@ def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     :return: Значение передается в функцию hotels_info
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log25'])
+    
+    logging.info(lang_dict[search.lang]['command_logging']['log25'], extra=search.user_id)
     
     bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
     
     if call.data == 'Back':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     bot.answer_callback_query(callback_query_id=call.id, text=lang_dict[search.lang]['command_acq']['acq3'])
     
     if call.data == 'Yes':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         hotels_info(call.message, search.hotels, photo_need=True)
     
     if call.data == 'No':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         hotels_info(call.message, search.hotels, photo_need=False)
+    
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=None)
+    bot.edit_message_text(text=lang_dict[search.lang]['command']['text26'].format(button=button_text(call)),
+                          chat_id=call.message.chat.id,
+                          message_id=call.message.message_id,
+                          parse_mode=telegram.ParseMode.HTML)
 
 
 def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: bool) -> None:
@@ -614,7 +705,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
     :return: Выводится сообщение ботом с информацией обо всех найденных отелях и фотоальбомом (опционально)
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log26'])
+    logging.info(lang_dict[search.lang]['command_logging']['log26'], extra=search.user_id)
     search.photos_dict = dict()
     search.photos_dict_urls = dict()
     for every_hotel in found_hotels:
@@ -663,7 +754,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                                     parse_mode=telegram.ParseMode.HTML,
                                     disable_web_page_preview=True
                                     )
-        logging.info(lang_dict[search.lang]['command_logging']['log27'])
+        logging.info(lang_dict[search.lang]['command_logging']['log27'], extra=search.user_id)
         data_add(sql_base='user_database.db', user_id=message.chat.id,
                  message_id=msg_info.message_id, msg_content='hotel_information_message')
         
@@ -677,12 +768,12 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             """
             hotel_photos = photos_for_hotel(message=message, hotel_id=hotel_id)
             """
-            Получив ранее ID отеля, мы обращаемся к функции hotel_photos для того чтобы получить JSON ответ,
+            Получив ранее ID отеля, мы обращаемся к функции photos_for_hotel для того чтобы получить JSON ответ,
             содержащий фотографии отеля
             """
             search.photos_dict[hotel_id] = list()
             """
-            В экземпляре класса User_search в аттрибуте photos_dict создается пустой список, в который далее мы
+            В экземпляре класса User_search в атрибуте photos_dict создается пустой список, в который далее мы
             сохраним все имеющиеся фотографии в виде ссылок
             """
             for every_photos in hotel_photos['hotelImages']:
@@ -692,7 +783,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                 search.photos_dict[hotel_id].append(
                     every_photos['baseUrl'].format(size=every_photos['sizes'][0]['suffix']))
                 """
-                А теперь в аттрибут photos_dict, где создан пустой список, добавляем все ссылки циклом, так как они все
+                А теперь в атрибут photos_dict, где создан пустой список, добавляем все ссылки циклом, так как они все
                 лежат в определенных местах независимо друг от друга
                 """
             
@@ -715,7 +806,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             call.message.id (в следующем обработчике) и a.message.id одинаковые.
             """
             search.photos_dict_urls.update({a.message_id: all_photos})
-            logging.info(lang_dict[search.lang]['command_logging']['log28'])
+            logging.info(lang_dict[search.lang]['command_logging']['log28'], extra=search.user_id)
 
 
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'photo')
@@ -728,10 +819,11 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
     :return: При нажатии на кнопку меняется фотография.
     :rtype: None
     """
-    logging.info(lang_dict[search.lang]['command_logging']['log29'])
+    logging.info(lang_dict[search.lang]['command_logging']['log29'], extra=search.user_id)
     
     if call.data == 'next':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.UPLOAD_PHOTO)
         
         next_photo = search.photos_dict_urls[call.message.id].next()
@@ -742,7 +834,8 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
                                reply_markup=IKM_photos_sliding())
     
     if call.data == 'previous':
-        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)))
+        logging.info(lang_dict[search.lang]['command_logging']['log16'].format(button=button_text(call)),
+                     extra=search.user_id)
         bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.UPLOAD_PHOTO)
         
         prev_photo = search.photos_dict_urls[call.message.id].prev()
