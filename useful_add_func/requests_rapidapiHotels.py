@@ -2,7 +2,7 @@
 from typing import Dict
 import telebot
 import requests
-from my_bot.loader import rapidkey, rapidhost, bot, search
+from loader import rapidkey, rapidhost, bot, search
 import logging
 
 from utils.languages_for_bot import lang_dict

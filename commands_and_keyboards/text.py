@@ -1,6 +1,6 @@
 import logging
 import telebot
-from my_bot.loader import bot, search
+from loader import bot, search
 from useful_add_func.auxiliary_functions import greeting_check
 from utils.languages_for_bot import lang_dict
 

@@ -3,7 +3,7 @@ import telegram
 import re
 import emoji
 from telegram_bot_calendar import DetailedTelegramCalendar
-from my_bot.loader import bot, search
+from loader import bot, search
 from commands_and_keyboards.keyboards import IKM_price_distance_approve
 from utils.errors import Negative_value, Max_more_min
 from utils.sqlite import data_add

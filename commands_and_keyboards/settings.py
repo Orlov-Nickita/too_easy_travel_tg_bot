@@ -4,7 +4,7 @@ import emoji
 import telegram
 
 from useful_add_func.auxiliary_functions import button_text
-from my_bot.loader import bot, search
+from loader import bot, search
 from commands_and_keyboards.keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
 from utils.languages_for_bot import lang_dict
 

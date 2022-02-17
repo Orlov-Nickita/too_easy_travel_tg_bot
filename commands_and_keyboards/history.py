@@ -3,7 +3,7 @@ import telebot
 import telegram
 
 from utils.languages_for_bot import lang_dict
-from my_bot.loader import bot, search
+from loader import bot, search
 from utils.sqlite import data_select
 
 
