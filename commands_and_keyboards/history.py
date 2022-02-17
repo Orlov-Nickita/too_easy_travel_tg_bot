@@ -1,9 +1,9 @@
-import logging
 import telebot
 import telegram
 
 from utils.languages_for_bot import lang_dict
 from loader import bot, search
+from utils.logger import logger
 from utils.sqlite import data_select
 
 
@@ -16,7 +16,7 @@ def start(message: telebot.types.Message) -> None:
     :rtype: telebot.types.Message
 
     """
-    logging.info(lang_dict[search.lang]['history_logging']['log1'], extra=search.user_id)
+    logger.info(lang_dict[search.lang]['history_logging']['log1'])
     
     history = data_select(sql_base='user_database.db', bot_user_id=message.chat.id)
     for every in history:
@@ -27,11 +27,11 @@ def start(message: telebot.types.Message) -> None:
                                                                                           tm=every[3]),
                                    parse_mode=telegram.ParseMode.HTML)
             
-            logging.info(lang_dict[search.lang]['history_logging']['log2'].format(msg.text), extra=search.user_id)
+            logger.info(lang_dict[search.lang]['history_logging']['log2'].format(msg.text))
         
         else:
             bot.forward_message(chat_id=message.chat.id,
                                 from_chat_id=message.chat.id,
                                 message_id=every[0])
             
-            logging.info(lang_dict[search.lang]['history_logging']['log3'], extra=search.user_id)
+            logger.info(lang_dict[search.lang]['history_logging']['log3'])

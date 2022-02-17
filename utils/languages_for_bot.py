@@ -42,7 +42,7 @@ lang_dict = {
                 'text2': 'Английский',
                 'text3': 'Главное меню',
                 'text4': 'Закрыть меню',
-    
+                
             },
             'IKM_settings_currency': {
                 'text1': '{emoji1} Рубль',
@@ -50,7 +50,7 @@ lang_dict = {
                 'text3': '{emoji3} Евро',
                 'text4': 'Главное меню',
                 'text5': 'Закрыть меню',
-    
+                
             },
             'IKM_price_distance_approve': {
                 'text1': 'Изменить',
@@ -110,6 +110,11 @@ lang_dict = {
             'text24': 'Ошибка ввода данных. Максимальное расстояние не может быть меньше минимального',
             'text25': 'Итак, какое количество отелей подобрать?\n - <code>Вы выбрали {button}</code>',
             'text26': 'Потребуются ли фотографии для ознакомления?\n - <code>Вы выбрали {button}</code>',
+            'text27': 'Ваше местоположение город {city}.\nХотите поменять город поиска или ищем по месту '
+                      'нахождения?\n - <code>Вы выбрали {button}</code>',
+            'text28': 'Вот, что мне удалось найти по запросу - город {city}.\nНажмите кнопку соответствующую Вашему '
+                      'запросу\n - <code>Вы выбрали {button}</code>',
+            'text29': 'В каком городе будем искать отели?\n - <code>Вы выбрали {city}</code>'
             
         },
         'command_logging': {
@@ -325,14 +330,14 @@ lang_dict = {
                 'text1': 'Change language',
                 'text2': 'Change currency',
                 'text3': 'Close menu',
-    
+                
             },
             'IKM_settings_lang': {
                 'text1': 'Russian',
                 'text2': 'English',
                 'text3': 'Main menu',
                 'text4': 'Close menu',
-    
+                
             },
             'IKM_settings_currency': {
                 'text1': '{emoji1} Ruble',
@@ -340,7 +345,7 @@ lang_dict = {
                 'text3': '{emoji3} Euro',
                 'text4': 'Main menu',
                 'text5': 'Close menu',
-    
+                
             },
             'IKM_price_distance_approve': {
                 'text1': 'Change',
@@ -401,6 +406,13 @@ lang_dict = {
             'text24': 'Data entry error. The maximum distance cannot be less than the minimum',
             'text25': 'So, how many hotels to pick up?\n - <code>You have selected {button}</code>',
             'text26': 'Will photos be required for familiarization?\n - <code>You have selected {button}</code>',
+            'text27': 'Your location is city {city}\n'
+                      'Do you want to change the search city or are we looking by '
+                      'location?\n - <code>You have selected {button}</code>',
+            'text28': 'Here`s what I was able to find on request - city {city}\n'
+                      'Press the button corresponding to your query\n - <code>You have selected {button}</code>',
+            'text29': 'In which city will we look for hotels?\n - <code>You have chosen {city}</code>'
+            
         },
         'command_logging': {
             'log1': 'The command.start function with User location detection is started',
