@@ -1,7 +1,7 @@
 import logging
 import telebot
 
-from my_bot.loader import bot, search
+from loader import bot, search
 from utils.languages_for_bot import lang_dict
 
 

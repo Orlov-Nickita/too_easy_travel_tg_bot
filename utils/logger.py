@@ -1,8 +1,8 @@
 import logging
 
-logging.basicConfig(filename='../logs/bot_detail.log',
+logging.basicConfig(filename='logs/bot_detail.log',
                     level=logging.INFO,
-                    encoding='utf-8',
+                    # encoding='utf-8',
                     format='[%(username)s] - '
                            '[%(userid)s] - '
                            '[%(levelname)s] - '

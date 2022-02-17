@@ -1,6 +1,6 @@
 import telebot.types
 from commands_and_keyboards import text, hello_world, start, command, history, settings, help_command
-from my_bot.loader import bot, search
+from loader import bot, search
 import logging
 
 from utils.languages_for_bot import lang_dict

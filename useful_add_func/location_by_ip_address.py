@@ -1,7 +1,7 @@
 import json
 from urllib.request import urlopen
 from googletrans import Translator
-from my_bot.loader import search
+from loader import search
 
 translator = Translator()
 

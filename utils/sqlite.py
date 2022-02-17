@@ -3,7 +3,7 @@ import sqlite3 as sq
 import datetime
 
 from utils.languages_for_bot import lang_dict
-from my_bot.loader import search, bot
+from loader import search, bot
 
 
 def data_add(sql_base: str, user_id: int, message_id: int, msg_content: str) -> None:

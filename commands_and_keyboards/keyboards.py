@@ -5,7 +5,7 @@ from useful_add_func.location_by_ip_address import ip_search
 from typing import Dict
 
 from utils.languages_for_bot import lang_dict
-from my_bot.loader import search
+from loader import search
 
 
 def IKM_for_greeting_msg() -> types.InlineKeyboardMarkup:
