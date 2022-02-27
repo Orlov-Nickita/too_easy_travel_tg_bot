@@ -10,6 +10,8 @@ rapidhost = os.getenv("rapidapi-host")
 
 
 class User_search:
+    users = dict()
+    # TODO исправить описание
     """
     Класс, необходимый для хранения поисковой информации
     Attributes:
@@ -62,6 +64,13 @@ class User_search:
         self.check_in = None
         self.check_out = None
         self.rest_days = None
-
-
-search = User_search()
+    
+    def get_user(self, user_id):
+        if user_id not in self.users:
+            User_search.add_user(self, user_id)
+        
+        return User_search.users[user_id]
+    
+    @classmethod
+    def add_user(cls, user, user_id):
+        cls.users[user_id] = user

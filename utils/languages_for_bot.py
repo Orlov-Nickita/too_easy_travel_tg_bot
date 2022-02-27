@@ -100,7 +100,8 @@ lang_dict = {
             'text15.1': 'Вы выбрали диапазон цен от',
             'text16': 'Вы выбрали желаемое расстояние от центра города от {} метров до {} метров',
             'text16.1': 'Вы выбрали желаемое расстояние от центра города от',
-            'text17': 'По Вашему запросу не удалось ничего найти. Попробуйте изменить параметры поиска',
+            'text17': 'Скорее всего все номера уже раскупили, потому что по Вашему запросу не удалось ничего найти. '
+                      'Попробуйте изменить параметры поиска',
             'text18': 'Ошибка ввода данных. Диапазон цен необходимо написать через пробел',
             'text19': 'Ошибка ввода данных. Диапазон расстояния необходимо написать через пробел',
             'text20': 'Ошибка ввода данных. Стоимость не может быть отрицательной',
@@ -265,14 +266,14 @@ lang_dict = {
             'log3': 'Бот переслал сообщение Пользователя',
             
         },
-        'sqlite': {
+        'sqlite_history': {
             'text1': 'Произошла ошибка. Попробуйте, пожалуйста, еще раз. '
                      'Если ошибка повторится, обратитесь к Администратору'
         },
-        'sqlite_logging': {
-            'log1': 'Запущена команда sqlite.data_add',
+        'sqlite_history_logging': {
+            'log1': 'Запущена команда sqlite_history.data_add',
             'log2': 'Произошла ошибка:\n{}',
-            'log3': 'Запущена команда sqlite.data_select',
+            'log3': 'Запущена команда sqlite_history.data_select',
             'log4': 'В базу данных добавлена запись',
             'log5': 'Из базы данных получена запись/записи',
             
@@ -396,7 +397,8 @@ lang_dict = {
             'text15.1': 'You have selected a price range from',
             'text16': 'You have selected the desired distance from the city center from {} meters to {} meters',
             'text16.1': 'You have selected the desired distance from the city center from',
-            'text17': 'Nothing could be found for your query. Try changing the search parameters',
+            'text17': 'Most likely, all the rooms have already been sold out, because nothing could be found '
+                      'according to your request. Try changing the search parameters',
             'text18': 'Data entry error. The price range must be separated by a space',
             'text19': 'Data entry error. The distance range must be separated by a space',
             'text20': 'Data entry error. The cost cannot be negative',
@@ -563,14 +565,14 @@ lang_dict = {
             'log3': 'The bot forwarded the User`s message',
             
         },
-        'sqlite': {
+        'sqlite_history': {
             'text1': 'An error has occurred. Please try again. '
                      'If the error persists, contact the Administrator'
         },
-        'sqlite_logging': {
-            'log1': 'The sqlite.data_add command is running',
+        'sqlite_history_logging': {
+            'log1': 'The sqlite_history.data_add command is running',
             'log2': 'An error has occurred:\n{}',
-            'log3': 'The sqlite.data_select command is running',
+            'log3': 'The sqlite_history.data_select command is running',
             'log4': 'An entry has been added to the database',
             'log5': 'A record/records was obtained from the database',
         },

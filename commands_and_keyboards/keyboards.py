@@ -1,32 +1,10 @@
 import emoji
 import telegram
 from telebot import types
-from useful_add_func.location_by_ip_address import ip_search
 from typing import Dict
 
 from utils.languages_for_bot import lang_dict
-from loader import search
-
-
-def IKM_for_greeting_msg() -> types.InlineKeyboardMarkup:
-    """
-    Функция, которая определяет клавиатуру при запуске команды поиска отелей. Функция ip_search() определяет
-    местоположение Пользователя и предлагает сделать поиск отеля по этому местоположению или задать другой город для
-    поиска
-    :return: Возвращается клавиатура (функция) как объект
-    :rtype: telegram.InlineKeyboardMarkup
-    """
-    ikm_greeting_msg = types.InlineKeyboardMarkup(row_width=2)
-    
-    item1 = types.InlineKeyboardButton(
-        text=lang_dict[search.lang]['keyboards']['IKM_for_greeting_msg']['text1'].format(ip_search()),
-        callback_data=ip_search())
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_greeting_msg']['text2'],
-                                       callback_data='No')
-    
-    ikm_greeting_msg.add(item1, item2)
-    
-    return ikm_greeting_msg
+from loader import User_search
 
 
 def IKM_for_city_choice(found_cities_dict: Dict) -> types.InlineKeyboardMarkup:
@@ -70,7 +48,7 @@ def IKM_for_hotels_poisk() -> types.InlineKeyboardMarkup:
     return ikm_hotels_qty
 
 
-def IKM_for_photos_search() -> types.InlineKeyboardMarkup:
+def IKM_for_photos_search(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для принятия решения о необходимости фотографий для ознакомления с отелем
     :return: Возвращается клавиатура (функция) как объект
@@ -79,10 +57,10 @@ def IKM_for_photos_search() -> types.InlineKeyboardMarkup:
     """
     ikm_hotels_photo = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_photos_search']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search']['text1'],
                                        callback_data='Yes')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_photos_search']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search']['text2'],
                                        callback_data='No')
         
     ikm_hotels_photo.add(item1, item2)
@@ -90,7 +68,7 @@ def IKM_for_photos_search() -> types.InlineKeyboardMarkup:
     return ikm_hotels_photo
 
 
-def IKM_photos_sliding() -> types.InlineKeyboardMarkup:
+def IKM_photos_sliding(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для смены фотографий в фотоальбоме для отелей
     :return: Возвращается клавиатура (функция) как объект
@@ -99,10 +77,10 @@ def IKM_photos_sliding() -> types.InlineKeyboardMarkup:
     """
     ikm_photo_slide = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_photos_sliding']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding']['text1'],
                                        callback_data='previous')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_photos_sliding']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding']['text2'],
                                        callback_data='next')
     
     ikm_photo_slide.add(item1, item2)
@@ -110,7 +88,7 @@ def IKM_photos_sliding() -> types.InlineKeyboardMarkup:
     return ikm_photo_slide
 
 
-def IKM_date_chk_in_change() -> types.InlineKeyboardMarkup:
+def IKM_date_chk_in_change(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для подтверждения даты въезда
     :return: Возвращается клавиатура (функция) как объект
@@ -119,17 +97,17 @@ def IKM_date_chk_in_change() -> types.InlineKeyboardMarkup:
     """
     ikm_chk_in_date_change = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_date_chk_in_change']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change']['text1'],
                                        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_date_chk_in_change']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change']['text2'],
                                        callback_data='continue')
     ikm_chk_in_date_change.add(item1, item2)
     
     return ikm_chk_in_date_change
 
 
-def IKM_date_chk_out_change() -> types.InlineKeyboardMarkup:
+def IKM_date_chk_out_change(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для подтверждения даты выезда
     :return: Возвращается клавиатура (функция) как объект
@@ -138,17 +116,17 @@ def IKM_date_chk_out_change() -> types.InlineKeyboardMarkup:
     """
     ikm_chk_out_date_change = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_date_chk_out_change']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change']['text1'],
                                        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_date_chk_out_change']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change']['text2'],
                                        callback_data='continue')
     ikm_chk_out_date_change.add(item1, item2)
     
     return ikm_chk_out_date_change
 
 
-def IKM_for_settings() -> types.InlineKeyboardMarkup:
+def IKM_for_settings(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру с командами выбора языка или валюты
     :return: Возвращается клавиатура (функция) как объект
@@ -157,13 +135,13 @@ def IKM_for_settings() -> types.InlineKeyboardMarkup:
     """
     ikm_for_settings = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_settings']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text1'],
                                        callback_data='language')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_settings']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text2'],
                                        callback_data='currency')
     
-    item3 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_for_settings']['text3'],
+    item3 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text3'],
                                        callback_data='close')
     
     ikm_for_settings.add(item1, item2, item3)
@@ -171,7 +149,7 @@ def IKM_for_settings() -> types.InlineKeyboardMarkup:
     return ikm_for_settings
 
 
-def IKM_settings_lang() -> types.InlineKeyboardMarkup:
+def IKM_settings_lang(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру с командой выбора языка
     :return: Возвращается клавиатура (функция) как объект
@@ -180,16 +158,16 @@ def IKM_settings_lang() -> types.InlineKeyboardMarkup:
     """
     ikm_settings_lang = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text1'],
                                        callback_data='ru')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text2'],
                                        callback_data='en')
     
-    item3 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text3'],
+    item3 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text3'],
                                        callback_data='mainmenu')
     
-    item4 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_lang']['text4'],
+    item4 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text4'],
                                        callback_data='close')
     
     ikm_settings_lang.add(item1, item2, item3, item4)
@@ -197,7 +175,7 @@ def IKM_settings_lang() -> types.InlineKeyboardMarkup:
     return ikm_settings_lang
 
 
-def IKM_settings_currency() -> types.InlineKeyboardMarkup:
+def IKM_settings_currency(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру с командой выбора валюты
     :return: Возвращается клавиатура (функция) как объект
@@ -207,24 +185,24 @@ def IKM_settings_currency() -> types.InlineKeyboardMarkup:
     ikm_settings_currency = types.InlineKeyboardMarkup()
     
     item1 = types.InlineKeyboardButton(
-        text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text1'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text1'].format(
             emoji1=emoji.emojize(":pound:", use_aliases=True)),
         callback_data='RUB')
 
     item2 = types.InlineKeyboardButton(
-        text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text2'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text2'].format(
             emoji2=emoji.emojize(":dollar:", use_aliases=True)),
         callback_data='USD')
     
     item3 = types.InlineKeyboardButton(
-        text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text3'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text3'].format(
             emoji3=emoji.emojize(":euro:", use_aliases=True)),
         callback_data='EUR')
     
-    item4 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text4'],
+    item4 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text4'],
                                        callback_data='mainmenu')
     
-    item5 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_settings_currency']['text5'],
+    item5 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text5'],
                                        callback_data='close')
     
     ikm_settings_currency.add(item1, item2, item3, item4, item5)
@@ -232,7 +210,7 @@ def IKM_settings_currency() -> types.InlineKeyboardMarkup:
     return ikm_settings_currency
 
 
-def IKM_price_distance_approve() -> types.InlineKeyboardMarkup:
+def IKM_price_distance_approve(message) -> types.InlineKeyboardMarkup:
     """
     Функция, которая определяет клавиатуру для подтверждения диапазонов цен и расстояния от центра для отелей
     :return: Возвращается клавиатура (функция) как объект
@@ -240,10 +218,10 @@ def IKM_price_distance_approve() -> types.InlineKeyboardMarkup:
     """
     ikm_price_distance_approve = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_price_distance_approve']['text1'],
+    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve']['text1'],
                                        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[search.lang]['keyboards']['IKM_price_distance_approve']['text2'],
+    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve']['text2'],
                                        callback_data='continue')
     ikm_price_distance_approve.add(item1, item2)
     
