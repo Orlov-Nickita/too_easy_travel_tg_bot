@@ -2,7 +2,7 @@ import telebot.types
 from commands_and_keyboards import text, hello_world, start, command, history, settings, help_command
 from loader import bot, User_search
 from utils.languages_for_bot import lang_dict
-from utils.logger import log_log, logger
+from utils.logger import logger
 from utils.sqlite_history import history_data_add
 
 
@@ -16,9 +16,9 @@ def send_welcome_func(message: telebot.types.Message) -> None:
     :rtype telebot.types.Message
 
     """
-    log_log(message.from_user.username, message.chat.id)
-    # logger = log_log(message.from_user.username, message.chat.id)
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log1'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log1'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     User_search().get_user(user_id=message.chat.id).lang = message.from_user.language_code
     start.start(message)
 
@@ -33,10 +33,9 @@ def help_command_func(message: telebot.types.Message) -> None:
     :rtype telebot.types.Message
 
     """
-    log_log(message.from_user.username, message.chat.id)
-    # logger = log_log(message.from_user.username, message.chat.id)
-
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log9'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log9'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     help_command.start(message)
 
 
@@ -50,9 +49,9 @@ def hello_world_func(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    log_log(message.from_user.username, message.chat.id)
-    
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log2'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log2'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     hello_world.start(message)
 
 
@@ -65,12 +64,12 @@ def low_price_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message.from_user.username, message.chat.id)
-    
     history_data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id,
                      msg_content=message.text)
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log3'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
 
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log3'])
     User_search().get_user(user_id=message.chat.id).sort = 'PRICE'
     command.start(message)
 
@@ -84,12 +83,12 @@ def high_price_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message.from_user.username, message.chat.id)
-    
     history_data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id,
                      msg_content=message.text)
     
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log4'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log4'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     User_search().get_user(user_id=message.chat.id).sort = 'PRICE_HIGHEST_FIRST'
     command.start(message)
 
@@ -104,12 +103,12 @@ def bestdeal_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message.from_user.username, message.chat.id)
-    
     history_data_add(sql_base='user_database.db', user_id=message.chat.id, message_id=message.id,
                      msg_content=message.text)
     
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log8'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log8'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     User_search().get_user(user_id=message.chat.id).sort = 'DISTANCE_FROM_LANDMARK'
     command.start(message)
 
@@ -123,9 +122,9 @@ def history_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message.from_user.username, message.chat.id)
-    
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log7'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log7'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     history.start(message)
 
 
@@ -138,9 +137,9 @@ def settings_func(message: telebot.types.Message) -> None:
     :return: None
     :rtype: telebot.types.Message
     """
-    log_log(message.from_user.username, message.chat.id)
-    
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log5'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log5'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     settings.start(message)
 
 
@@ -154,7 +153,7 @@ def text_func(message: telebot.types.Message):
     :rtype: telebot.types.Message
 
     """
-    log_log(message.from_user.username, message.chat.id)
-    
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log6'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log6'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     text.start(message)

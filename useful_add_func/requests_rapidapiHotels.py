@@ -1,9 +1,8 @@
-import json
+# import json
 from typing import Dict
 import telebot
 import requests
 from loader import rapidkey, rapidhost, bot, User_search
-import logging
 
 from utils.languages_for_bot import lang_dict
 from utils.logger import logger
@@ -40,12 +39,21 @@ def city_search(message: telebot.types.Message, locale: str, city_name: str, cur
                                   ).json()
         # with open('cities.json', 'w', encoding='utf-8') as file:
         #     json.dump(cities, file, indent=4, ensure_ascii=False)
-        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['city_search']['log1'])
+        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                        'city_search']['log1'],
+                    user_id=message.chat.id)
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
-        logging.warning(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['city_search']['log2'])
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(
+            user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'city_search']['log2'],
+            user_id=message.chat.id)
     except Exception as Ex:
-        logging.exception(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['city_search']['log3'].format(Ex))
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'city_search']['log3'].format(Ex),
+            user_id=message.chat.id)
     
     else:
         return cities
@@ -91,14 +99,22 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
                                   ).json()
         # with open('hotels_in_city.json', 'w', encoding='utf-8') as file:
         #     json.dump(hotels, file, indent=4, ensure_ascii=False)
-        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log1'])
+        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                        'hotels_search_price']['log1'],
+                    user_id=message.chat.id)
     
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
-        logging.warning(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log2'])
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(
+            user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'hotels_search_price']['log2'],
+            user_id=message.chat.id)
     except Exception as Ex:
-        logging.exception(
-            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['hotels_search_price']['log3'].format(Ex))
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'hotels_search_price']['log3'].format(Ex),
+            user_id=message.chat.id)
     
     else:
         return hotels
@@ -123,14 +139,21 @@ def photos_for_hotel(message: telebot.types.Message, hotel_id: int) -> None or D
                                   ).json()
         # with open('photos.json', 'w', encoding='utf-8') as file:
         #     json.dump(photos, file, indent=4, ensure_ascii=False)
-        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log1'])
+        logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                        'photos_for_hotel']['log1'],
+                    user_id=message.chat.id)
     
     except requests.Timeout:
-        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
-        logging.warning(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log2'])
+        bot.send_message(chat_id=message.chat.id, text=lang_dict[User_search().get_user(
+            user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'photos_for_hotel']['log2'],
+            user_id=message.chat.id)
     except Exception as Ex:
-        logging.exception(
-            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging']['photos_for_hotel']['log3'].format(Ex))
-    
+        logger.error(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
+                'photos_for_hotel']['log3'].format(Ex),
+            user_id=message.chat.id)
     else:
         return photos

@@ -18,7 +18,9 @@ def start(message: telebot.types.Message) -> None:
     :rtype: telebot.types.Message
 
     """
-    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['settings_logging']['log1'])
+    logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['settings_logging']['log1'],
+                username=message.from_user.username,
+                user_id=message.chat.id)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id
                                                                  ).lang]['settings']['text1'].format(
@@ -28,7 +30,8 @@ def start(message: telebot.types.Message) -> None:
                            )
     
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id
-                                                 ).lang]['settings_logging']['log2'].format(msg.text))
+                                                 ).lang]['settings_logging']['log2'].format(msg.text),
+                user_id=message.chat.id)
 
 
 # Реакция в главном меню
@@ -43,11 +46,14 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log3'])
+    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log3'],
+                username=call.message.from_user.username,
+                user_id=call.message.chat.id)
     
     if call.data == 'language':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -59,11 +65,13 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     parse_mode=telegram.ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log2'].format(msg.text))
+                                                     ).lang]['settings_logging']['log2'].format(msg.text),
+                    user_id=call.message.chat.id)
     
     elif call.data == 'currency':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -76,11 +84,13 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     parse_mode=telegram.ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log2'].format(msg.text))
+                                                     ).lang]['settings_logging']['log2'].format(msg.text),
+                    user_id=call.message.chat.id)
     
     elif call.data == 'close':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
@@ -97,11 +107,14 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log5'])
+    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log5'],
+                username=call.message.from_user.username,
+                user_id=call.message.chat.id)
     
     if call.data == 'mainmenu':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -112,17 +125,20 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     parse_mode=telegram.ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log2'].format(msg.text))
+                                                     ).lang]['settings_logging']['log2'].format(msg.text),
+                    user_id=call.message.chat.id)
     
     elif call.data == 'close':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     elif call.data == 'ru' or call.data == 'en':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log7'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log7'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         bot.answer_callback_query(callback_query_id=call.id,
                                   text=lang_dict[User_search().get_user(
@@ -130,30 +146,12 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                   ).lang]['settings']['text4'].format(lan=button_text(call)))
         User_search().get_user(user_id=call.message.chat.id).lang = call.data
         User_search().users[call.message.chat.id].lang = call.data
-
-###################
-        
-        print('user_id', call.message.chat.id)
-        print(User_search().get_user(user_id=call.message.chat.id).lang)
-        print(User_search().users[call.message.chat.id].lang)
-        User_search().get_user(user_id=call.message.chat.id).sort = 'PRICE'
-        User_search().users[call.message.chat.id].sort = 'PRICE'
-
-###################
         
         if call.data == 'ru':
             User_search().get_user(user_id=call.message.chat.id).locale = 'ru_RU'
         elif call.data == 'en':
             User_search().get_user(user_id=call.message.chat.id).locale = 'en_US'
-
-###################
         
-        print('user_id', call.message.chat.id)
-        print(User_search().get_user(user_id=call.message.chat.id).locale)
-        print(User_search().users[call.message.chat.id].locale)
-
-###################
-
         bot.edit_message_text(chat_id=call.message.chat.id,
                               message_id=call.message.message_id,
                               text=lang_dict[User_search().get_user(user_id=call.message.chat.id
@@ -177,11 +175,14 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
     :rtype: None
     """
     
-    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log6'])
+    logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings_logging']['log6'],
+                username=call.message.from_user.username,
+                user_id=call.message.chat.id)
     
     if call.data == 'mainmenu':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         msg = bot.edit_message_text(chat_id=call.message.chat.id,
                                     message_id=call.message.message_id,
@@ -191,17 +192,20 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     reply_markup=IKM_for_settings(call.message),
                                     parse_mode=telegram.ParseMode.HTML)
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log2'].format(msg.text))
+                                                     ).lang]['settings_logging']['log2'].format(msg.text),
+                    user_id=call.message.chat.id)
     
     elif call.data == 'close':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log4'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log4'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     
     elif call.data == 'RUB' or call.data == 'USD' or call.data == 'EUR':
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
-                                                     ).lang]['settings_logging']['log8'].format(button_text(call)))
+                                                     ).lang]['settings_logging']['log8'].format(button_text(call)),
+                    user_id=call.message.chat.id)
         
         bot.answer_callback_query(callback_query_id=call.id,
                                   text=lang_dict[User_search().get_user(

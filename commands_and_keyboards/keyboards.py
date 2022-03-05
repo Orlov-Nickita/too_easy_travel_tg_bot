@@ -57,12 +57,16 @@ def IKM_for_photos_search(message) -> types.InlineKeyboardMarkup:
     """
     ikm_hotels_photo = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search']['text1'],
-                                       callback_data='Yes')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search'][
+            'text1'],
+        callback_data='Yes')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search']['text2'],
-                                       callback_data='No')
-        
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_photos_search'][
+            'text2'],
+        callback_data='No')
+    
     ikm_hotels_photo.add(item1, item2)
     
     return ikm_hotels_photo
@@ -77,11 +81,15 @@ def IKM_photos_sliding(message) -> types.InlineKeyboardMarkup:
     """
     ikm_photo_slide = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding']['text1'],
-                                       callback_data='previous')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding'][
+            'text1'],
+        callback_data='previous')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding']['text2'],
-                                       callback_data='next')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_photos_sliding'][
+            'text2'],
+        callback_data='next')
     
     ikm_photo_slide.add(item1, item2)
     
@@ -97,11 +105,15 @@ def IKM_date_chk_in_change(message) -> types.InlineKeyboardMarkup:
     """
     ikm_chk_in_date_change = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change']['text1'],
-                                       callback_data='cancel')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change'][
+            'text1'],
+        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change']['text2'],
-                                       callback_data='continue')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_in_change'][
+            'text2'],
+        callback_data='continue')
     ikm_chk_in_date_change.add(item1, item2)
     
     return ikm_chk_in_date_change
@@ -116,11 +128,15 @@ def IKM_date_chk_out_change(message) -> types.InlineKeyboardMarkup:
     """
     ikm_chk_out_date_change = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change']['text1'],
-                                       callback_data='cancel')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change'][
+            'text1'],
+        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change']['text2'],
-                                       callback_data='continue')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_date_chk_out_change'][
+            'text2'],
+        callback_data='continue')
     ikm_chk_out_date_change.add(item1, item2)
     
     return ikm_chk_out_date_change
@@ -135,14 +151,17 @@ def IKM_for_settings(message) -> types.InlineKeyboardMarkup:
     """
     ikm_for_settings = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text1'],
-                                       callback_data='language')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text1'],
+        callback_data='language')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text2'],
-                                       callback_data='currency')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text2'],
+        callback_data='currency')
     
-    item3 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text3'],
-                                       callback_data='close')
+    item3 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_for_settings']['text3'],
+        callback_data='close')
     
     ikm_for_settings.add(item1, item2, item3)
     
@@ -158,17 +177,21 @@ def IKM_settings_lang(message) -> types.InlineKeyboardMarkup:
     """
     ikm_settings_lang = types.InlineKeyboardMarkup(row_width=2)
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text1'],
-                                       callback_data='ru')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text1'],
+        callback_data='ru')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text2'],
-                                       callback_data='en')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text2'],
+        callback_data='en')
     
-    item3 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text3'],
-                                       callback_data='mainmenu')
+    item3 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text3'],
+        callback_data='mainmenu')
     
-    item4 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text4'],
-                                       callback_data='close')
+    item4 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_lang']['text4'],
+        callback_data='close')
     
     ikm_settings_lang.add(item1, item2, item3, item4)
     
@@ -185,25 +208,32 @@ def IKM_settings_currency(message) -> types.InlineKeyboardMarkup:
     ikm_settings_currency = types.InlineKeyboardMarkup()
     
     item1 = types.InlineKeyboardButton(
-        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text1'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
+            'text1'].format(
             emoji1=emoji.emojize(":pound:", use_aliases=True)),
         callback_data='RUB')
-
+    
     item2 = types.InlineKeyboardButton(
-        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text2'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
+            'text2'].format(
             emoji2=emoji.emojize(":dollar:", use_aliases=True)),
         callback_data='USD')
     
     item3 = types.InlineKeyboardButton(
-        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text3'].format(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
+            'text3'].format(
             emoji3=emoji.emojize(":euro:", use_aliases=True)),
         callback_data='EUR')
     
-    item4 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text4'],
-                                       callback_data='mainmenu')
+    item4 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
+            'text4'],
+        callback_data='mainmenu')
     
-    item5 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency']['text5'],
-                                       callback_data='close')
+    item5 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
+            'text5'],
+        callback_data='close')
     
     ikm_settings_currency.add(item1, item2, item3, item4, item5)
     
@@ -218,11 +248,15 @@ def IKM_price_distance_approve(message) -> types.InlineKeyboardMarkup:
     """
     ikm_price_distance_approve = types.InlineKeyboardMarkup()
     
-    item1 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve']['text1'],
-                                       callback_data='cancel')
+    item1 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve'][
+            'text1'],
+        callback_data='cancel')
     
-    item2 = types.InlineKeyboardButton(text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve']['text2'],
-                                       callback_data='continue')
+    item2 = types.InlineKeyboardButton(
+        text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_price_distance_approve'][
+            'text2'],
+        callback_data='continue')
     ikm_price_distance_approve.add(item1, item2)
     
     return ikm_price_distance_approve
