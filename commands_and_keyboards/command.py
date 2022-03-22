@@ -502,10 +502,18 @@ def distance_limiter(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log33'],
                 user_id=message.chat.id)
     bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
-    
+
     try:
         User_search().get_user(user_id=message.chat.id).min_dist, User_search().get_user(
             user_id=message.chat.id).max_dist = int(message.text.split()[0]), int(message.text.split()[1])
+    
+        if User_search().get_user(user_id=message.chat.id).max_dist <= User_search().get_user(
+                user_id=message.chat.id).min_dist:
+            raise Max_more_min
+    
+        elif User_search().get_user(user_id=message.chat.id).min_dist < 0 or User_search().get_user(
+                user_id=message.chat.id).max_dist < 0:
+            raise Negative_value
     
     except IndexError as Ex:
         

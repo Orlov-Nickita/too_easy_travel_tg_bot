@@ -19,7 +19,10 @@ def send_welcome_func(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log1'],
                 username=message.from_user.username,
                 user_id=message.chat.id)
-    User_search().get_user(user_id=message.chat.id).lang = message.from_user.language_code
+    if message.from_user.language_code == 'ru' or 'en':
+        User_search().get_user(user_id=message.chat.id).lang = message.from_user.language_code
+    else:
+        User_search().get_user(user_id=message.chat.id).lang = 'en'
     start.start(message)
 
 
