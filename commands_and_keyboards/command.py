@@ -1,7 +1,8 @@
 import telebot
-import telegram
 import re
 import emoji
+from telegram.chataction import ChatAction
+from telegram.parsemode import ParseMode
 from telegram_bot_calendar import DetailedTelegramCalendar
 from loader import bot, User_search
 from utils.errors import Negative_value, Max_more_min
@@ -30,7 +31,7 @@ def start(message: telebot.types.Message) -> None:
     
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log6'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     first_msg = bot.send_message(chat_id=message.chat.id,
                                  text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
                                      'text2'])
@@ -54,7 +55,7 @@ def city_poisk(message: telebot.types.Message) -> None:
                 user_id=message.chat.id)
     
     User_search().get_user(user_id=message.chat.id).found_cities = dict()
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     User_search().get_user(user_id=message.chat.id).city = message.text.title()
     
     msg = bot.send_message(chat_id=message.chat.id,
@@ -76,7 +77,7 @@ def city_poisk(message: telebot.types.Message) -> None:
                     {re.sub(r"<span class='highlighted'>|</span>", '',
                             something['caption']): int(something['destinationId'])})
     
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     bot.delete_message(chat_id=msg.chat.id, message_id=msg.message_id)
     
     msg2 = bot.send_message(chat_id=message.chat.id,
@@ -111,7 +112,7 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
             button=button_text(call)),
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
-        parse_mode=telegram.ParseMode.HTML)
+        parse_mode=ParseMode.HTML)
     
     logger.info(
         lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command_logging']['log10'].format(
@@ -123,7 +124,7 @@ def city_choice_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     bot.answer_callback_query(callback_query_id=temp_call.id,
                               text=lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                                     ).lang]['command_acq']['acq2'])
-    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=ChatAction.TYPING)
     
     check_in_date_choice(temp_call.message)
 
@@ -138,7 +139,7 @@ def check_in_date_choice(message: telebot.types.Message) -> None:
     """
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log12'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     
     calendar, step = DetailedTelegramCalendar(calendar_id=1,
                                               locale=User_search().get_user(user_id=message.chat.id).lang,
@@ -239,7 +240,7 @@ def check_out_date_choice(message: telebot.types.Message) -> None:
     """
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log17'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     
     calendar, step = DetailedTelegramCalendar(calendar_id=2,
                                               locale=User_search().get_user(user_id=message.chat.id).lang,
@@ -356,7 +357,7 @@ def chk_out_date_change(call: telebot.types.CallbackQuery) -> None:
 def price_range(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log30'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
                                'text13'])
@@ -373,7 +374,7 @@ def price_limiter(message: telebot.types.Message) -> None:
         user_id=message.chat.id)
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log31'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     
     try:
         User_search().get_user(user_id=message.chat.id).min_price, User_search().get_user(
@@ -458,7 +459,7 @@ def price_limiter_approve(call: telebot.types.CallbackQuery) -> None:
     """
     logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command_logging']['log34'],
                 user_id=call.message.chat.id)
-    bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=call.message.chat.id, action=ChatAction.TYPING)
     
     if call.data == 'cancel':
         logger.info(
@@ -484,7 +485,7 @@ def price_limiter_approve(call: telebot.types.CallbackQuery) -> None:
 def distance_range(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log32'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
                                'text14'])
@@ -501,7 +502,7 @@ def distance_limiter(message: telebot.types.Message) -> None:
         user_id=message.chat.id)
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log33'],
                 user_id=message.chat.id)
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
 
     try:
         User_search().get_user(user_id=message.chat.id).min_dist, User_search().get_user(
@@ -589,7 +590,7 @@ def distance_limiter_approve(call: telebot.types.CallbackQuery) -> None:
     """
     logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command_logging']['log35'],
                 user_id=call.message.chat.id)
-    bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=call.message.chat.id, action=ChatAction.TYPING)
     
     if call.data == 'cancel':
         logger.info(
@@ -623,7 +624,7 @@ def qty_hotels(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log22'],
                 user_id=message.chat.id)
     
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
                                'text10'],
@@ -633,7 +634,7 @@ def qty_hotels(message: telebot.types.Message) -> None:
         msg=msg.text),
         user_id=message.chat.id)
     
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
 
 
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
@@ -655,9 +656,9 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
             button=button_text(call)),
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
-        parse_mode=telegram.ParseMode.HTML)
+        parse_mode=ParseMode.HTML)
     
-    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=ChatAction.TYPING)
     bot.answer_callback_query(callback_query_id=temp_call.id,
                               text=lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                                     ).lang]['command_acq']['acq2'])
@@ -670,7 +671,7 @@ def city_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
             button=button_text(temp_call)),
         username=call.message.from_user.username,
         user_id=call.message.chat.id)
-    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=ChatAction.TYPING)
     hotels_poisk_in_the_city(message=temp_call.message,
                              hotels_qty=User_search().get_user(user_id=call.message.chat.id).hotels_qty)
 
@@ -693,7 +694,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
     
     User_search().get_user(user_id=message.chat.id).hotels = dict()
     count = 0
-    bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     
     while True:
         for hotel in \
@@ -709,7 +710,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
                                     currency=User_search().get_user(user_id=message.chat.id).currency
                                     )['data']['body']['searchResults']['results']:
             
-            bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+            bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
             logger.info(
                 lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log36'].format(
                     User_search().get_user(user_id=message.chat.id).pagenumber),
@@ -719,11 +720,11 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
             if User_search().get_user(user_id=message.chat.id).sort == 'DISTANCE_FROM_LANDMARK' and (
                     landmark_distance >= User_search().get_user(user_id=message.chat.id).max_dist or
                     landmark_distance <= User_search().get_user(user_id=message.chat.id).min_dist):
-                bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
                 continue
             
             else:
-                bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
                 User_search().get_user(user_id=message.chat.id).hotels.update({hotel['name']: {
                     lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
                         'key1']: hotel['id'],
@@ -781,7 +782,7 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
             User_search().get_user(user_id=message.chat.id).pagenumber += 1
             
             if User_search().get_user(user_id=message.chat.id).pagenumber == 4:
-                bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
                 msg = bot.send_message(chat_id=message.chat.id,
                                        text=lang_dict[User_search().get_user(user_id=message.chat.id
                                                                              ).lang]['command']['text17'])
@@ -813,12 +814,12 @@ def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
             button=button_text(call)),
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
-        parse_mode=telegram.ParseMode.HTML)
+        parse_mode=ParseMode.HTML)
     
     logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command_logging']['log25'],
                 user_id=call.message.chat.id)
     
-    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=telegram.ChatAction.TYPING)
+    bot.send_chat_action(chat_id=temp_call.message.chat.id, action=ChatAction.TYPING)
     
     bot.answer_callback_query(callback_query_id=temp_call.id,
                               text=lang_dict[User_search().get_user(user_id=call.message.chat.id
@@ -862,21 +863,21 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
     User_search().get_user(user_id=message.chat.id).photos_dict = dict()
     User_search().get_user(user_id=message.chat.id).photos_dict_urls = dict()
     for every_hotel in found_hotels:
-        bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.TYPING)
+        bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
         msg_info = bot.send_message(chat_id=message.chat.id,
                                     text=lang_dict[User_search().get_user(user_id=message.chat.id
                                                                           ).lang]['command']['text12'].format(
-                                        emoji1=emoji.emojize(":hotel:", use_aliases=True),
+                                        emoji1=emoji.emojize(":hotel:", language='alias'),
                                         hotel_name=every_hotel,
-                                        emoji2=emoji.emojize(":globe_with_meridians:", use_aliases=True),
+                                        emoji2=emoji.emojize(":globe_with_meridians:", language='alias'),
                                         web=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
-                                                'command_print_search_info']['key9']],
-                                        emoji3=emoji.emojize(":earth_americas:", use_aliases=True),
+                                                'command_print_search_info']['key9']].replace('ru.', ''),
+                                        emoji3=emoji.emojize(":earth_americas:", language='alias'),
                                         address=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key2']],
-                                        emoji4=emoji.emojize(":pushpin:", use_aliases=True),
+                                        emoji4=emoji.emojize(":pushpin:", language='alias'),
                                         yamaps=yandex_maps(found_hotels[every_hotel][
                                                                lang_dict[User_search().get_user(
                                                                    user_id=message.chat.id).lang][
@@ -889,36 +890,36 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                                                                    'command_print_search_info'][
                                                                    'key3']]['lon']
                                                            ),
-                                        emoji5=emoji.emojize(":left_right_arrow:", use_aliases=True),
+                                        emoji5=emoji.emojize(":left_right_arrow:", language='alias'),
                                         center=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key4']],
-                                        emoji6=emoji.emojize(":credit_card:", use_aliases=True),
+                                        emoji6=emoji.emojize(":credit_card:", language='alias'),
                                         price=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key5']],
-                                        emoji7=emoji.emojize(":soon:", use_aliases=True),
-                                        emoji8=emoji.emojize(":back:", use_aliases=True),
+                                        emoji7=emoji.emojize(":soon:", language='alias'),
+                                        emoji8=emoji.emojize(":back:", language='alias'),
                                         chk_in_date=date_change(
                                             User_search().get_user(user_id=message.chat.id).check_in),
                                         chk_out_date=date_change(
                                             User_search().get_user(user_id=message.chat.id).check_out),
-                                        emoji9=emoji.emojize(":one:", use_aliases=True),
+                                        emoji9=emoji.emojize(":one:", language='alias'),
                                         one_day_price='{0:,} {cur}'.format(
                                             found_hotels[every_hotel][
                                                 lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                     'command_print_search_info']['key6']],
                                             cur=User_search().get_user(user_id=message.chat.id).currency),
-                                        emoji10=emoji.emojize(":star:", use_aliases=True),
+                                        emoji10=emoji.emojize(":star:", language='alias'),
                                         rating=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key7']],
-                                        emoji11=emoji.emojize(":sparkles:", use_aliases=True),
+                                        emoji11=emoji.emojize(":sparkles:", language='alias'),
                                         user_rating=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key8']],
                                     ),
-                                    parse_mode=telegram.ParseMode.HTML,
+                                    parse_mode=ParseMode.HTML,
                                     disable_web_page_preview=True
                                     )
         logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log27'],
@@ -927,7 +928,7 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                          message_id=msg_info.message_id, msg_content='hotel_information_message')
         
         if photo_need:
-            bot.send_chat_action(chat_id=message.chat.id, action=telegram.ChatAction.UPLOAD_PHOTO)
+            bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.UPLOAD_PHOTO)
             
             hotel_id = found_hotels[every_hotel][
                 lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
@@ -1001,7 +1002,7 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
                 button=button_text(call)),
             username=call.message.from_user.username,
             user_id=call.message.chat.id)
-        bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.UPLOAD_PHOTO)
+        bot.send_chat_action(chat_id=call.message.chat.id, action=ChatAction.UPLOAD_PHOTO)
         
         next_photo = User_search().get_user(user_id=call.message.chat.id).photos_dict_urls[call.message.id].next()
         bot.edit_message_media(media=telebot.types.InputMedia(type='photo',
@@ -1017,7 +1018,7 @@ def photo_slide(call: telebot.types.CallbackQuery) -> None:
                 button=button_text(call)),
             username=call.message.from_user.username,
             user_id=call.message.chat.id)
-        bot.send_chat_action(chat_id=call.message.chat.id, action=telegram.ChatAction.UPLOAD_PHOTO)
+        bot.send_chat_action(chat_id=call.message.chat.id, action=ChatAction.UPLOAD_PHOTO)
         
         prev_photo = User_search().get_user(user_id=call.message.chat.id).photos_dict_urls[call.message.id].prev()
         bot.edit_message_media(media=telebot.types.InputMedia(type='photo',

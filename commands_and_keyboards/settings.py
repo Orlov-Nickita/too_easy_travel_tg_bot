@@ -1,7 +1,6 @@
 import telebot
 import emoji
-import telegram
-
+from telegram.parsemode import ParseMode
 from useful_add_func.auxiliary_functions import button_text
 from loader import bot, User_search
 from commands_and_keyboards.keyboards import IKM_for_settings, IKM_settings_lang, IKM_settings_currency
@@ -24,9 +23,9 @@ def start(message: telebot.types.Message) -> None:
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id
                                                                  ).lang]['settings']['text1'].format(
-                               emoji=emoji.emojize(":file_folder:", use_aliases=True)),
+                               emoji=emoji.emojize(":file_folder:", language='alias')),
                            reply_markup=IKM_for_settings(message),
-                           parse_mode=telegram.ParseMode.HTML
+                           parse_mode=ParseMode.HTML
                            )
     
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id
@@ -59,10 +58,10 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     message_id=call.message.message_id,
                                     text=lang_dict[User_search().get_user(
                                         user_id=call.message.chat.id).lang]['settings']['text2'].format(
-                                        emoji=emoji.emojize(":open_file_folder:", use_aliases=True)),
+                                        emoji=emoji.emojize(":open_file_folder:", language='alias')),
         
                                     reply_markup=IKM_settings_lang(call.message),
-                                    parse_mode=telegram.ParseMode.HTML)
+                                    parse_mode=ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                      ).lang]['settings_logging']['log2'].format(msg.text),
@@ -77,11 +76,11 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     message_id=call.message.message_id,
                                     text=lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                                           ).lang]['settings']['text3'].format(
-                                        emoji=emoji.emojize(":open_file_folder:", use_aliases=True),
-                                        emoji1=emoji.emojize(":currency_exchange:", use_aliases=True)),
+                                        emoji=emoji.emojize(":open_file_folder:", language='alias'),
+                                        emoji1=emoji.emojize(":currency_exchange:", language='alias')),
         
                                     reply_markup=IKM_settings_currency(call.message),
-                                    parse_mode=telegram.ParseMode.HTML)
+                                    parse_mode=ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                      ).lang]['settings_logging']['log2'].format(msg.text),
@@ -120,9 +119,9 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     message_id=call.message.message_id,
                                     text=lang_dict[User_search().get_user(
                                         user_id=call.message.chat.id).lang]['settings']['text1'].format(
-                                        emoji=emoji.emojize(":file_folder:", use_aliases=True)),
+                                        emoji=emoji.emojize(":file_folder:", language='alias')),
                                     reply_markup=IKM_for_settings(call.message),
-                                    parse_mode=telegram.ParseMode.HTML)
+                                    parse_mode=ParseMode.HTML)
         
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                      ).lang]['settings_logging']['log2'].format(msg.text),
@@ -156,16 +155,16 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                               message_id=call.message.message_id,
                               text=lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                                     ).lang]['settings']['text2'].format(
-                                  emoji=emoji.emojize(":open_file_folder:", use_aliases=True)),
+                                  emoji=emoji.emojize(":open_file_folder:", language='alias')),
         
                               reply_markup=IKM_settings_lang(call.message),
-                              parse_mode=telegram.ParseMode.HTML)
+                              parse_mode=ParseMode.HTML)
 
 
 # Выбор валюты
 @bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.endswith(
     lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['settings']['text03'].format(
-        emoji1=emoji.emojize(":currency_exchange:", use_aliases=True))))
+        emoji1=emoji.emojize(":currency_exchange:", language='alias'))))
 def change_settings(call: telebot.types.CallbackQuery) -> None:
     """
     Функция, предназначенная для обработки нажатия на кнопку клавиатуры IKM_settings_currency выбора валюты
@@ -188,9 +187,9 @@ def change_settings(call: telebot.types.CallbackQuery) -> None:
                                     message_id=call.message.message_id,
                                     text=lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                                           ).lang]['settings']['text1'].format(
-                                        emoji=emoji.emojize(":file_folder:", use_aliases=True)),
+                                        emoji=emoji.emojize(":file_folder:", language='alias')),
                                     reply_markup=IKM_for_settings(call.message),
-                                    parse_mode=telegram.ParseMode.HTML)
+                                    parse_mode=ParseMode.HTML)
         logger.info(lang_dict[User_search().get_user(user_id=call.message.chat.id
                                                      ).lang]['settings_logging']['log2'].format(msg.text),
                     user_id=call.message.chat.id)

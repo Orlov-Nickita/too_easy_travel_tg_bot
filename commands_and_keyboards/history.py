@@ -1,6 +1,5 @@
 import telebot
-import telegram
-
+from telegram.parsemode import ParseMode
 from utils.languages_for_bot import lang_dict
 from loader import bot, User_search
 from utils.logger import logger
@@ -29,7 +28,7 @@ def start(message: telebot.types.Message) -> None:
                                        user_id=message.chat.id).lang]['history']['text1'].format(com=every[1],
                                                                                                  dt=every[2],
                                                                                                  tm=every[3]),
-                                   parse_mode=telegram.ParseMode.HTML)
+                                   parse_mode=ParseMode.HTML)
             
             logger.info(
                 lang_dict[User_search().get_user(user_id=message.chat.id).lang]['history_logging']['log2'].format(

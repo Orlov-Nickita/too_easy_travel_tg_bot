@@ -1,5 +1,4 @@
 import emoji
-import telegram
 from telebot import types
 from typing import Dict
 
@@ -210,19 +209,19 @@ def IKM_settings_currency(message) -> types.InlineKeyboardMarkup:
     item1 = types.InlineKeyboardButton(
         text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
             'text1'].format(
-            emoji1=emoji.emojize(":pound:", use_aliases=True)),
+            emoji1=emoji.emojize(":pound:", language='alias')),
         callback_data='RUB')
     
     item2 = types.InlineKeyboardButton(
         text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
             'text2'].format(
-            emoji2=emoji.emojize(":dollar:", use_aliases=True)),
+            emoji2=emoji.emojize(":dollar:", language='alias')),
         callback_data='USD')
     
     item3 = types.InlineKeyboardButton(
         text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['keyboards']['IKM_settings_currency'][
             'text3'].format(
-            emoji3=emoji.emojize(":euro:", use_aliases=True)),
+            emoji3=emoji.emojize(":euro:", language='alias')),
         callback_data='EUR')
     
     item4 = types.InlineKeyboardButton(

@@ -20,7 +20,7 @@ def start(message: telebot.types.Message) -> None:
     msg = bot.send_message(chat_id=message.chat.id,
                            text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['hello_world'][
                                'text1'].format(
-                               emoji=emoji.emojize(":raised_hand:", use_aliases=True))
+                               emoji=emoji.emojize(":raised_hand:", language='alias'))
                            )
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['hello_world_logging']['log2'].format(
         msg=msg.text),
