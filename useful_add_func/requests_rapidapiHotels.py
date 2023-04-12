@@ -1,8 +1,9 @@
-# import json
+import json
 from typing import Dict
 import telebot
 import requests
 from loader import rapidkey, rapidhost, bot, User_search
+import datetime
 
 from utils.languages_for_bot import lang_dict
 from utils.logger import logger
@@ -31,14 +32,14 @@ def city_search(message: telebot.types.Message, locale: str, city_name: str, cur
     :rtype: Dict
     """
     try:
-        url = "https://hotels4.p.rapidapi.com/locations/v2/search"
-        querystring = {"query": city_name, "locale": locale, "currency": currency}
+        url = "https://hotels4.p.rapidapi.com/locations/v3/search"
+        querystring = {"q": city_name, "locale": locale, "currency": currency}
         
         cities = requests.request(method="GET", url=url, headers=headers, params=querystring,
                                   timeout=20
                                   ).json()
-        # with open('cities.json', 'w', encoding='utf-8') as file:
-        #     json.dump(cities, file, indent=4, ensure_ascii=False)
+        with open('cities.json', 'w', encoding='utf-8') as file:
+            json.dump(cities, file, indent=4, ensure_ascii=False)
         logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
                         'city_search']['log1'],
                     user_id=message.chat.id)
@@ -59,8 +60,8 @@ def city_search(message: telebot.types.Message, locale: str, city_name: str, cur
         return cities
 
 
-def hotels_search_price(message: telebot.types.Message, city_destination_id: int, pagenumber: int, chk_in: str,
-                        chk_out: str, sort: str, locale: str, currency: str, min_price: int = None,
+def hotels_search_price(message: telebot.types.Message, city_destination_id: int, pagenumber: int, chk_in: datetime.date,
+                        chk_out: datetime.date, sort: str, locale: str, currency: str, min_price: int = None,
                         max_price: int = None) -> None or Dict:
     """
     Функция для нахождения самых дешевых отелей в выбранном городе
@@ -89,16 +90,43 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
     :rtype: Dict
     """
     try:
-        url = "https://hotels4.p.rapidapi.com/properties/list"
-        querystring = {"destinationId": city_destination_id, "pageNumber": pagenumber, "pageSize": 25,
-                       "checkIn": chk_in, "checkOut": chk_out, "priceMin": min_price, "priceMax": max_price,
-                       "sortOrder": sort, "locale": locale, "currency": currency}
-        
-        hotels = requests.request(method="GET", url=url, headers=headers, params=querystring,
-                                  timeout=20
-                                  ).json()
-        # with open('hotels_in_city.json', 'w', encoding='utf-8') as file:
-        #     json.dump(hotels, file, indent=4, ensure_ascii=False)
+        url = "https://hotels4.p.rapidapi.com/properties/v2/list"
+
+        payload = {
+            "currency": currency,
+            "locale": locale,
+            "destination":
+                {"regionId": city_destination_id},
+            "checkInDate": {
+                "day": int(chk_in.strftime('%d')),
+                "month": int(chk_in.strftime('%m')),
+                "year": int(chk_in.strftime('%y'))
+            },
+            "checkOutDate": {
+                "day": int(chk_out.strftime('%d')),
+                "month": int(chk_out.strftime('%m')),
+                "year": int(chk_out.strftime('%y'))
+            },
+            "rooms": [
+                {
+                    "adults": 1,
+                }
+            ],
+            "resultsStartingIndex": 0,
+            "resultsSize": 200,
+            "sort": sort,
+            "filters": {"price": {
+                "max": max_price,
+                "min": min_price
+            }}
+        }
+        headers.update({"content-type": "application/json"})
+
+        hotels = requests.request(method="POST", url=url, json=payload, headers=headers, timeout=20).json()
+
+        with open('hotels_in_city.json', 'w', encoding='utf-8') as file:
+            json.dump(hotels, file, indent=4, ensure_ascii=False)
+            
         logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
                         'hotels_search_price']['log1'],
                     user_id=message.chat.id)
@@ -120,27 +148,41 @@ def hotels_search_price(message: telebot.types.Message, city_destination_id: int
         return hotels
 
 
-def photos_for_hotel(message: telebot.types.Message, hotel_id: int) -> None or Dict:
+def additional_info_photos_for_hotel(message: telebot.types.Message, hotel_id: int,
+                                     locale: str, currency: str) -> None or Dict:
     """
     Функция для нахождения фотографий найденных отелей в выбранном городе.
     :param message: В качестве параметра передается сообщение из чата
     :type message: telebot.types.Message
-    :param hotel_id: В качестве параметра передается id отеля для поиска фотографий для этого отеля.
+    :param hotel_id: В качестве параметра передается id отеля для поиска информации для этого отеля.
     :type hotel_id: int
-    :return: Если код ответа сервера 200, тогда возвращается словарь с фотографиями с сайта Hotels.com, если код
+    :return: Если код ответа сервера 200, тогда возвращается словарь с данными с сайта Hotels.com, если код
     ответа иной в чат отправляется сообщение о том, что сервер недоступен.
     :rtype: Dict
     """
     try:
-        url = "https://hotels4.p.rapidapi.com/properties/get-hotel-photos"
-        querystring = {"id": hotel_id}
-        photos = requests.request(method="GET", url=url, headers=headers, params=querystring,
-                                  timeout=20
-                                  ).json()
-        # with open('photos.json', 'w', encoding='utf-8') as file:
-        #     json.dump(photos, file, indent=4, ensure_ascii=False)
+        # url = "https://hotels4.p.rapidapi.com/properties/get-hotel-photos"
+        # querystring = {"id": hotel_id}
+        
+        url = "https://hotels4.p.rapidapi.com/properties/v2/detail"
+        headers.update({"content-type": "application/json"})
+        payload = {
+            "currency": currency,
+            "locale": locale,
+            "propertyId": hotel_id
+        }
+        
+        # photos = requests.request(method="GET", url=url, headers=headers, params=querystring,
+        #                           timeout=20
+        #                           ).json()
+        
+        info_and_photo = requests.request(method="POST", url=url, json=payload, headers=headers).json()
+
+        with open('info_and_photo.json', 'w', encoding='utf-8') as file:
+            json.dump(info_and_photo, file, indent=4, ensure_ascii=False)
+
         logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
-                        'photos_for_hotel']['log1'],
+                        'additional_info_photos_for_hotel']['log1'],
                     user_id=message.chat.id)
     
     except requests.Timeout:
@@ -148,12 +190,12 @@ def photos_for_hotel(message: telebot.types.Message, hotel_id: int) -> None or D
             user_id=message.chat.id).lang]['requests_rapidapiHotels']['text1'])
         logger.error(
             lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
-                'photos_for_hotel']['log2'],
+                'additional_info_photos_for_hotel']['log2'],
             user_id=message.chat.id)
     except Exception as Ex:
         logger.error(
             lang_dict[User_search().get_user(user_id=message.chat.id).lang]['requests_rapidapiHotels_logging'][
-                'photos_for_hotel']['log3'].format(Ex),
+                'additional_info_photos_for_hotel']['log3'].format(Ex),
             user_id=message.chat.id)
     else:
-        return photos
+        return info_and_photo

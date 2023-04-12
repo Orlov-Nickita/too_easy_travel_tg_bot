@@ -74,44 +74,36 @@ def user_rating_false(hotel):  # Я пока не решил проблему о
     # Наверно для этих случаев надо мне сделать одну общую функцию, которая будет делать проверку ключей в словаре.
     # Пока так оставил эту и следующую
     try:
-        hotel['guestReviews']
+        return hotel['guestReviews']
     except KeyError:
         return ''
-    else:
-        return hotel['guestReviews']['unformattedRating']
 
 
 def streetaddress_false(hotel):  # Я пока не решил проблему отсутствия в некоторых местах тех или иных параметров.
     # Наверно для этих случаев надо мне сделать одну общую функцию, которая будет делать проверку ключей в словаре.
     # Пока так оставил эту и следующую
     try:
-        hotel['address']['streetAddress']
+        return hotel['address']['streetAddress']
     except KeyError:
         return ''
-    else:
-        return hotel['address']['streetAddress']
 
 
 def info_check(info):  # Я пока не решил проблему отсутствия в некоторых местах тех или иных параметров.
     # Наверно для этих случаев надо мне сделать одну общую функцию, которая будет делать проверку ключей в словаре.
     # Пока так оставил эту и следующую
     try:
-        info['ratePlan']['price']['info']
+        return info['ratePlan']['price']['info']
     except KeyError:
         return ''
-    else:
-        return info['ratePlan']['price']['info']
 
 
 def summary_check(info):  # Я пока не решил проблему отсутствия в некоторых местах тех или иных параметров.
     # Наверно для этих случаев надо мне сделать одну общую функцию, которая будет делать проверку ключей в словаре.
     # Пока так оставил эту
     try:
-        info['ratePlan']['price']['summary']
+        return info['ratePlan']['price']['summary']
     except KeyError:
         return ''
-    else:
-        return info['ratePlan']['price']['summary']
 
 
 def greeting_check(greeting_message: telebot.types.Message) -> bool:  # Не знаю насколько она нужна, пока оставил

@@ -73,7 +73,7 @@ def low_price_func(message: telebot.types.Message) -> None:
                 username=message.from_user.username,
                 user_id=message.chat.id)
 
-    User_search().get_user(user_id=message.chat.id).sort = 'PRICE'
+    User_search().get_user(user_id=message.chat.id).sort = 'PRICE_LOW_TO_HIGH'
     command.start(message)
 
 
@@ -92,7 +92,7 @@ def high_price_func(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log4'],
                 username=message.from_user.username,
                 user_id=message.chat.id)
-    User_search().get_user(user_id=message.chat.id).sort = 'PRICE_HIGHEST_FIRST'
+    User_search().get_user(user_id=message.chat.id).sort = 'PRICE'
     command.start(message)
 
 
@@ -112,7 +112,7 @@ def bestdeal_func(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['message_handlers_logging']['log8'],
                 username=message.from_user.username,
                 user_id=message.chat.id)
-    User_search().get_user(user_id=message.chat.id).sort = 'DISTANCE_FROM_LANDMARK'
+    User_search().get_user(user_id=message.chat.id).sort = 'DISTANCE'
     command.start(message)
 
 

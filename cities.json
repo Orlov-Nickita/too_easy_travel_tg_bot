@@ -1,0 +1,314 @@
+{
+    "q": "Dubai",
+    "rid": "a5d67d61b81f4461a6a9397646eaa708",
+    "rc": "OK",
+    "sr": [
+        {
+            "@type": "gaiaRegionResult",
+            "index": "0",
+            "gaiaId": "6053839",
+            "type": "CITY",
+            "regionNames": {
+                "fullName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Дубай",
+                "displayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Дубай",
+                "secondaryDisplayName": "Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Дубай"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "6053839"
+            },
+            "coordinates": {
+                "lat": "25.27063",
+                "long": "55.30037"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            }
+        },
+        {
+            "@type": "gaiaHotelResult",
+            "index": "1",
+            "hotelId": "985916",
+            "type": "HOTEL",
+            "regionNames": {
+                "fullName": "Dubai Marine Beach Resort & Spa, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Dubai Marine Beach Resort & Spa",
+                "displayName": "Dubai Marine Beach Resort & Spa, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Dubai Marine Beach Resort & Spa",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Dubai Marine Beach Resort & Spa"
+            },
+            "essId": {
+                "sourceName": "LCM",
+                "sourceId": "985916"
+            },
+            "coordinates": {
+                "lat": "25.233526",
+                "long": "55.263618"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "isoCode3": "ARE"
+                }
+            },
+            "cityId": "6053839",
+            "hotelAddress": {
+                "street": "Jumierah Beach Road",
+                "city": "Dubai",
+                "province": ""
+            }
+        },
+        {
+            "@type": "gaiaHotelResult",
+            "index": "2",
+            "hotelId": "35155538",
+            "type": "HOTEL",
+            "regionNames": {
+                "fullName": "Dubai Marina, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Dubai Marina",
+                "displayName": "Dubai Marina, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Dubai Marina",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Dubai Marina"
+            },
+            "essId": {
+                "sourceName": "LCM",
+                "sourceId": "35155538"
+            },
+            "coordinates": {
+                "lat": "25.07077",
+                "long": "55.1386"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "isoCode3": "ARE"
+                }
+            },
+            "cityId": "6053839",
+            "hotelAddress": {
+                "street": "Dubai Marina",
+                "city": "Dubai",
+                "province": ""
+            }
+        },
+        {
+            "@type": "gaiaHotelResult",
+            "index": "3",
+            "hotelId": "1546463",
+            "type": "HOTEL",
+            "regionNames": {
+                "fullName": "Dubai International Hotel, Dubai Airport , Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Dubai International Hotel, Dubai Airport ",
+                "displayName": "Dubai International Hotel, Dubai Airport , Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Dubai International Hotel, Dubai Airport ",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Dubai International Hotel, Dubai Airport "
+            },
+            "essId": {
+                "sourceName": "LCM",
+                "sourceId": "1546463"
+            },
+            "coordinates": {
+                "lat": "25.248473",
+                "long": "55.361756"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "isoCode3": "ARE"
+                }
+            },
+            "cityId": "6053839",
+            "hotelAddress": {
+                "street": "Dubai Airports",
+                "city": "Dubai",
+                "province": ""
+            }
+        },
+        {
+            "@type": "gaiaRegionResult",
+            "index": "4",
+            "gaiaId": "6147415",
+            "type": "NEIGHBORHOOD",
+            "regionNames": {
+                "fullName": "Дубайская пристань, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Дубайская пристань",
+                "displayName": "Дубайская пристань, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Дубайская пристань",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Дубайская пристань"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "6147415"
+            },
+            "coordinates": {
+                "lat": "25.080542",
+                "long": "55.140343"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            }
+        },
+        {
+            "@type": "gaiaHotelResult",
+            "index": "5",
+            "hotelId": "1596020",
+            "type": "HOTEL",
+            "regionNames": {
+                "fullName": "Dubai Marriott Harbour Hotel & Suites, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Dubai Marriott Harbour Hotel & Suites",
+                "displayName": "Dubai Marriott Harbour Hotel & Suites, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Dubai Marriott Harbour Hotel & Suites",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Dubai Marriott Harbour Hotel & Suites"
+            },
+            "essId": {
+                "sourceName": "LCM",
+                "sourceId": "1596020"
+            },
+            "coordinates": {
+                "lat": "25.087536",
+                "long": "55.145817"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "isoCode3": "ARE"
+                }
+            },
+            "cityId": "6053839",
+            "hotelAddress": {
+                "street": "King Salman Bin Abdulaziz Al Saud St",
+                "city": "Dubai",
+                "province": ""
+            }
+        },
+        {
+            "@type": "gaiaRegionResult",
+            "index": "6",
+            "gaiaId": "4347972",
+            "type": "AIRPORT",
+            "regionNames": {
+                "fullName": "Дубаи, Объединенные Арабские Эмираты (DXB-Дубаи, международный)",
+                "shortName": "Дубаи (DXB-Дубаи, международный)",
+                "displayName": "Дубаи (DXB - Дубаи, международный), Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Дубаи (DXB - Дубаи, международный)",
+                "secondaryDisplayName": "Объединенные Арабские Эмираты",
+                "lastSearchName": "Дубаи (DXB - Дубаи, международный)"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "4347972"
+            },
+            "coordinates": {
+                "lat": "25.249077",
+                "long": "55.352795"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            },
+            "isMinorAirport": "false"
+        },
+        {
+            "@type": "gaiaRegionResult",
+            "index": "7",
+            "gaiaId": "6126689",
+            "type": "POI",
+            "regionNames": {
+                "fullName": "Dubai Marina Mall, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Dubai Marina Mall",
+                "displayName": "Dubai Marina Mall, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Dubai Marina Mall",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Dubai Marina Mall"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "6126689"
+            },
+            "coordinates": {
+                "lat": "25.07654914767393",
+                "long": "55.14039239799826"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            }
+        },
+        {
+            "@type": "gaiaRegionResult",
+            "index": "8",
+            "gaiaId": "553248622847106103",
+            "type": "NEIGHBORHOOD",
+            "regionNames": {
+                "fullName": "Развлекательный комплекс Dubai Parks and Resorts, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Развлекательный комплекс Dubai Parks and Resorts",
+                "displayName": "Развлекательный комплекс Dubai Parks and Resorts, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Развлекательный комплекс Dubai Parks and Resorts",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Развлекательный комплекс Dubai Parks and Resorts"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "553248622847106103"
+            },
+            "coordinates": {
+                "lat": "24.920008866020165",
+                "long": "55.00751078508091"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            }
+        },
+        {
+            "@type": "gaiaRegionResult",
+            "index": "9",
+            "gaiaId": "6147429",
+            "type": "NEIGHBORHOOD",
+            "regionNames": {
+                "fullName": "Аль-Барша, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "shortName": "Аль-Барша",
+                "displayName": "Аль-Барша, Дубай, Дубай, Объединенные Арабские Эмираты",
+                "primaryDisplayName": "Аль-Барша",
+                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
+                "lastSearchName": "Аль-Барша"
+            },
+            "essId": {
+                "sourceName": "GAI",
+                "sourceId": "6147429"
+            },
+            "coordinates": {
+                "lat": "25.088757111689272",
+                "long": "55.21815709236155"
+            },
+            "hierarchyInfo": {
+                "country": {
+                    "name": "ОАЭ",
+                    "isoCode2": "AE",
+                    "isoCode3": "ARE"
+                }
+            }
+        }
+    ]
+}

@@ -83,7 +83,6 @@ lang_dict = {
             'text10': 'Итак, какое количество отелей подобрать?',
             'text11': 'Потребуются ли фотографии для ознакомления?',
             'text12': '{emoji1} Название отеля: <b>{hotel_name}</b>\n'
-                      '{emoji2} Веб-сайт отеля: <a>{web}</a>\n'
                       '{emoji3} Адрес: <code>{address}</code>\n'
                       '{emoji4} Открыть Яндекс карты: <a>{yamaps}</a>\n'
                       '{emoji5} Удаленность от центра: <code>{center}</code>\n'
@@ -91,8 +90,7 @@ lang_dict = {
                       '{emoji7} Дата въезда: <code>{chk_in_date}</code>\n'
                       '{emoji8} Дата выезда: <code>{chk_out_date}</code>\n'
                       '{emoji9} Цена за сутки: <code>{one_day_price}</code>\n'
-                      '{emoji10} Рейтинг: <code>{rating}</code>\n'
-                      '{emoji11} Рейтинг по мнению посетителей: <code>{user_rating}</code>\n',
+                      '{emoji10} Рейтинг: <code>{rating}</code>\n',
             'text13': 'Укажите допустимый диапазон цен за проживание в отеле через пробел',
             'text14': 'Укажите допустимый диапазон расстояния в метрах, на котором может находиться отель '
                       'от центра через пробел',
@@ -204,10 +202,10 @@ lang_dict = {
                 'log2': 'Ответ с сервера в функции hotels_search_price превысил заданный тайм-аут',
                 'log3': 'В функции hotels_search_price произошла ошибка {}'
             },
-            'photos_for_hotel': {
-                'log1': 'Запрос на сервер в функции photos_for_hotel прошел успешно',
-                'log2': 'Ответ с сервера в функции photos_for_hotel превысил заданный тайм-аут',
-                'log3': 'В функции photos_for_hotel произошла ошибка {}'
+            'additional_info_photos_for_hotel': {
+                'log1': 'Запрос на сервер в функции additional_info_photos_for_hotel прошел успешно',
+                'log2': 'Ответ с сервера в функции additional_info_photos_for_hotel превысил заданный тайм-аут',
+                'log3': 'В функции additional_info_photos_for_hotel произошла ошибка {}'
             }
         },
         'requests_rapidapiHotels': {
@@ -380,7 +378,6 @@ lang_dict = {
             'text10': 'So, how many hotels to choose?',
             'text11': 'Will photos be required for familiarization?',
             'text12': '{emoji1} Name of the hotel: <b>{hotel_name}</b>\n'
-                      '{emoji2} Hotel website: <a>{web}</a>\n'
                       '{emoji3} Address: <code>{address}</code>\n'
                       '{emoji4} Open Yandex Maps: <a>{yamaps}</a>\n'
                       '{emoji5} Distance from the center: <code>{center}</code>\n'
@@ -388,8 +385,7 @@ lang_dict = {
                       '{emoji7} Date of entry: <code>{chk_in_date}</code>\n'
                       '{emoji8} Departure date: <code>{chk_out_date}</code>\n'
                       '{emoji9} Price per day: <code>{one_day_price}</code>\n'
-                      '{emoji10} Rating: <code>{rating}</code>\n'
-                      '{emoji11} Rating according to visitors: <code>{user_rating}</code>\n',
+                      '{emoji10} Rating: <code>{rating}</code>\n',
             'text13': 'Please indicate the acceptable range of prices for hotel accommodation separated by a space',
             'text14': 'Specify the acceptable range of distance in meters at which the hotel can be located '
                       'from the center separated by a space',
@@ -503,10 +499,10 @@ lang_dict = {
                         'timeout',
                 'log3': 'An error occurred in the hotels_search_price function {}'
             },
-            'photos_for_hotel': {
-                'log1': 'The request to the server in the photos_for_hotel function was successful',
-                'log2': 'The response from the server in the photos_for_hotel function exceeded the specified timeout',
-                'log3': 'An error occurred in the photos_for_hotel function {}'
+            'additional_info_photos_for_hotel': {
+                'log1': 'The request to the server in the additional_info_photos_for_hotel function was successful',
+                'log2': 'The response from the server in the additional_info_photos_for_hotel function exceeded the specified timeout',
+                'log3': 'An error occurred in the additional_info_photos_for_hotel function {}'
             }
         },
         'requests_rapidapiHotels': {

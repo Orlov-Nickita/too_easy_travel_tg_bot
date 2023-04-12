@@ -8,7 +8,7 @@ from loader import bot, User_search
 from utils.errors import Negative_value, Max_more_min
 from utils.logger import logger
 from utils.sqlite_history import history_data_add
-from useful_add_func.requests_rapidapiHotels import city_search, hotels_search_price, photos_for_hotel
+from useful_add_func.requests_rapidapiHotels import city_search, hotels_search_price, additional_info_photos_for_hotel
 from commands_and_keyboards.keyboards import IKM_for_hotels_poisk, IKM_for_photos_search, \
     IKM_for_city_choice, IKM_photos_sliding, IKM_date_chk_in_change, IKM_date_chk_out_change, IKM_price_distance_approve
 from useful_add_func.photo_album_class import Photo_album
@@ -65,17 +65,18 @@ def city_poisk(message: telebot.types.Message) -> None:
         msg=msg.text),
         user_id=message.chat.id)
     
-    for group in city_search(
+    for item in city_search(
             message=msg,
             locale=User_search().get_user(user_id=message.chat.id).locale,
             city_name=User_search().get_user(user_id=message.chat.id).city,
             currency=User_search().get_user(user_id=message.chat.id).currency
-    )['suggestions']:
-        if group['group'] == 'CITY_GROUP':
-            for something in group['entities']:
-                User_search().get_user(user_id=message.chat.id).found_cities.update(
-                    {re.sub(r"<span class='highlighted'>|</span>", '',
-                            something['caption']): int(something['destinationId'])})
+    )['sr']:
+        if item["type"] == "CITY" or item["type"] == "NEIGHBORHOOD":
+            User_search().get_user(user_id=message.chat.id).found_cities.update(
+                {
+                    item['regionNames']['fullName']: int(item['gaiaId'])
+                }
+            )
     
     bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     bot.delete_message(chat_id=msg.chat.id, message_id=msg.message_id)
@@ -503,15 +504,15 @@ def distance_limiter(message: telebot.types.Message) -> None:
     logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log33'],
                 user_id=message.chat.id)
     bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-
+    
     try:
         User_search().get_user(user_id=message.chat.id).min_dist, User_search().get_user(
             user_id=message.chat.id).max_dist = int(message.text.split()[0]), int(message.text.split()[1])
-    
+        
         if User_search().get_user(user_id=message.chat.id).max_dist <= User_search().get_user(
                 user_id=message.chat.id).min_dist:
             raise Max_more_min
-    
+        
         elif User_search().get_user(user_id=message.chat.id).min_dist < 0 or User_search().get_user(
                 user_id=message.chat.id).max_dist < 0:
             raise Negative_value
@@ -696,108 +697,99 @@ def hotels_poisk_in_the_city(message: telebot.types.Message, hotels_qty: int) ->
     count = 0
     bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     
-    while True:
-        for hotel in \
-                hotels_search_price(message=message,
-                                    city_destination_id=User_search().get_user(user_id=message.chat.id).city_id,
-                                    pagenumber=User_search().get_user(user_id=message.chat.id).pagenumber,
-                                    chk_in=User_search().get_user(user_id=message.chat.id).check_in,
-                                    chk_out=User_search().get_user(user_id=message.chat.id).check_out,
-                                    min_price=User_search().get_user(user_id=message.chat.id).min_price,
-                                    max_price=User_search().get_user(user_id=message.chat.id).max_price,
-                                    sort=User_search().get_user(user_id=message.chat.id).sort,
-                                    locale=User_search().get_user(user_id=message.chat.id).locale,
-                                    currency=User_search().get_user(user_id=message.chat.id).currency
-                                    )['data']['body']['searchResults']['results']:
-            
-            bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-            logger.info(
-                lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log36'].format(
-                    User_search().get_user(user_id=message.chat.id).pagenumber),
-                user_id=message.chat.id)
-            landmark_distance = float(hotel['landmarks'][0]['distance'].split()[0].replace(',', '.')) * 1000
-            
-            if User_search().get_user(user_id=message.chat.id).sort == 'DISTANCE_FROM_LANDMARK' and (
-                    landmark_distance >= User_search().get_user(user_id=message.chat.id).max_dist or
-                    landmark_distance <= User_search().get_user(user_id=message.chat.id).min_dist):
-                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-                continue
-            
-            else:
-                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-                User_search().get_user(user_id=message.chat.id).hotels.update({hotel['name']: {
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key1']: hotel['id'],
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key2']: '{}, {}'.format(
-                        hotel['address']['locality'],
-                        streetaddress_false(hotel)),
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key3']: hotel['coordinate'],
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key4']: hotel['landmarks'][0]['distance'],
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key5']: '{price} {days} {tax}'.format(
-                        price=hotel['ratePlan']['price']['current'],
-                        days=info_check(hotel),
-                        tax=summary_check(hotel)
-                    ),
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key6']: int(
-                        hotel['ratePlan']['price']['exactCurrent'] / int(
-                            str(User_search().get_user(user_id=message.chat.id).check_out - User_search().get_user(
-                                user_id=message.chat.id).check_in).split()[0])
-                    ),
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key7']: '{stars} звезд{letter}'.format(
-                        stars=hotel['starRating'],
-                        letter='а' if hotel['starRating'] == 1
-                        else 'ы'
-                    ),
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key8']: '{user_rating}'.format(
-                        user_rating=user_rating_false(hotel)),
-                    lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_print_search_info'][
-                        'key9']: 'https://ru.hotels.com/ho{hotelid}'.format(
-                        hotelid=hotel['id'])
-                }
-                }
-                )
-                count += 1
-                if count == hotels_qty:
-                    break
+    all_hotels = hotels_search_price(message=message,
+                                     city_destination_id=User_search().get_user(user_id=message.chat.id).city_id,
+                                     pagenumber=User_search().get_user(user_id=message.chat.id).pagenumber,
+                                     chk_in=User_search().get_user(user_id=message.chat.id).check_in,
+                                     chk_out=User_search().get_user(user_id=message.chat.id).check_out,
+                                     min_price=User_search().get_user(user_id=message.chat.id).min_price,
+                                     max_price=User_search().get_user(user_id=message.chat.id).max_price,
+                                     sort=User_search().get_user(user_id=message.chat.id).sort,
+                                     locale=User_search().get_user(user_id=message.chat.id).locale,
+                                     currency=User_search().get_user(user_id=message.chat.id).currency
+                                     )['data']['propertySearch']['properties']
+    
+    for hotel in all_hotels:
         
-        if count == hotels_qty:
-            msg = bot.send_message(chat_id=message.chat.id,
-                                   text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
-                                       'text11'],
-                                   reply_markup=IKM_for_photos_search(message)
-                                   )
-            logger.info(
-                lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log3'].format(
-                    msg=msg.text),
-                user_id=message.chat.id)
-            break
-        else:
-            User_search().get_user(user_id=message.chat.id).pagenumber += 1
+        bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+        logger.info(
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log36'].format(
+                User_search().get_user(user_id=message.chat.id).pagenumber),
+            user_id=message.chat.id)
+        
+        landmark_distance = float(hotel['destinationInfo']['distanceFromDestination']['value']) * 1000
+        
+        if hotel['destinationInfo']['distanceFromDestination']['unit'] != "KILOMETER":
+            landmark_distance /= 1000
+        
+            # 'command_print_search_info': {
+            #     'key1': 'ID отеля',
+            #     'key2': 'Адрес',
+            #     'key3': 'Координаты',
+            #     'key4': 'Удаленность от центра',
+            #     'key5': 'Цена за весь период',
+            #     'key6': 'Цена за 1 сутки',
+            #     'key7': 'Рейтинг отеля',
+            # },
+        
+        address = additional_info_photos_for_hotel(message=message, hotel_id=hotel['id'],
+                                                   locale=User_search().get_user(user_id=message.chat.id).locale,
+                                                   currency=User_search().get_user(user_id=message.chat.id).currency)
+        
+        bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
+        User_search().get_user(user_id=message.chat.id).hotels.update({hotel['name']: {
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key1']: hotel['id'],
             
-            if User_search().get_user(user_id=message.chat.id).pagenumber == 4:
-                bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-                msg = bot.send_message(chat_id=message.chat.id,
-                                       text=lang_dict[User_search().get_user(user_id=message.chat.id
-                                                                             ).lang]['command']['text17'])
-                logger.info(lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging'][
-                                'log3'].format(msg=msg.text),
-                            user_id=message.chat.id)
-                User_search().get_user(user_id=message.chat.id).pagenumber = 1
-                
-                check_in_date_choice(message=message)
-                
-                break
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key2']: address['data']['propertyInfo']['summary']['location']
+            ['address']['addressLine'],
+            
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key3']: hotel['mapMarker']['latLong'],
+            
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key4']: landmark_distance,
+            
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key5']: '{price}{currency}'.format(
+                price=int(hotel['price']['lead']['amount']) * int(
+                    str(User_search().get_user(user_id=message.chat.id).check_out - User_search().get_user(
+                        user_id=message.chat.id).check_in).split()[0]),
+                currency=hotel['price']['lead']['currencyInfo']['symbol']
+            ),
+            
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key6']: '{price}{currency}'.format(
+                price=int(hotel['price']['lead']['amount']),
+                currency=hotel['price']['lead']['currencyInfo']['symbol']
+            ),
+            
+            lang_dict[User_search().get_user(user_id=message.chat.id).lang]
+            ['command_print_search_info']['key7']: '{stars}'.format(
+                stars=hotel['reviews']['score']
+            ),
+            
+        }})
+        
+        count += 1
+        if count == hotels_qty:
+            break
+        
+    msg = bot.send_message(chat_id=message.chat.id,
+                           text=lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command'][
+                               'text11'],
+                           reply_markup=IKM_for_photos_search(message)
+                           )
+    logger.info(
+        lang_dict[User_search().get_user(user_id=message.chat.id).lang]['command_logging']['log3'].format(
+            msg=msg.text),
+        user_id=message.chat.id)
+    
 
-
-@bot.callback_query_handler(func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
-    lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command']['text11']))
+@bot.callback_query_handler(
+    func=lambda call: call.message.content_type == 'text' and call.message.text.startswith(
+        lang_dict[User_search().get_user(user_id=call.message.chat.id).lang]['command']['text11']))
 def hotels_poisk_keyboard_callback(call: telebot.types.CallbackQuery) -> None:
     """
     Функция предназначенная для обработки нажатия на кнопки IKM_for_photos_search
@@ -869,10 +861,6 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                                                                           ).lang]['command']['text12'].format(
                                         emoji1=emoji.emojize(":hotel:", language='alias'),
                                         hotel_name=every_hotel,
-                                        emoji2=emoji.emojize(":globe_with_meridians:", language='alias'),
-                                        web=found_hotels[every_hotel][
-                                            lang_dict[User_search().get_user(user_id=message.chat.id).lang][
-                                                'command_print_search_info']['key9']].replace('ru.', ''),
                                         emoji3=emoji.emojize(":earth_americas:", language='alias'),
                                         address=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
@@ -883,12 +871,12 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                                                                    user_id=message.chat.id).lang][
                                                                    'command_print_search_info'][
                                                                    'key3']][
-                                                               'lat'],
+                                                               'latitude'],
                                                            found_hotels[every_hotel][
                                                                lang_dict[User_search().get_user(
                                                                    user_id=message.chat.id).lang][
                                                                    'command_print_search_info'][
-                                                                   'key3']]['lon']
+                                                                   'key3']]['longitude']
                                                            ),
                                         emoji5=emoji.emojize(":left_right_arrow:", language='alias'),
                                         center=found_hotels[every_hotel][
@@ -905,19 +893,13 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
                                         chk_out_date=date_change(
                                             User_search().get_user(user_id=message.chat.id).check_out),
                                         emoji9=emoji.emojize(":one:", language='alias'),
-                                        one_day_price='{0:,} {cur}'.format(
-                                            found_hotels[every_hotel][
-                                                lang_dict[User_search().get_user(user_id=message.chat.id).lang][
-                                                    'command_print_search_info']['key6']],
-                                            cur=User_search().get_user(user_id=message.chat.id).currency),
+                                        one_day_price=found_hotels[every_hotel][
+                                            lang_dict[User_search().get_user(user_id=message.chat.id).lang][
+                                                'command_print_search_info']['key6']],
                                         emoji10=emoji.emojize(":star:", language='alias'),
                                         rating=found_hotels[every_hotel][
                                             lang_dict[User_search().get_user(user_id=message.chat.id).lang][
                                                 'command_print_search_info']['key7']],
-                                        emoji11=emoji.emojize(":sparkles:", language='alias'),
-                                        user_rating=found_hotels[every_hotel][
-                                            lang_dict[User_search().get_user(user_id=message.chat.id).lang][
-                                                'command_print_search_info']['key8']],
                                     ),
                                     parse_mode=ParseMode.HTML,
                                     disable_web_page_preview=True
@@ -937,9 +919,13 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             В рамках общего цикла, где мы перебираем все отели от 1 до выбранного количества Пользователем, мы сохраняем
             значение ID каждого из этих отелей в переменную
             """
-            hotel_photos = photos_for_hotel(message=message, hotel_id=hotel_id)
+            hotel_photos = additional_info_photos_for_hotel(
+                message=message, hotel_id=hotel_id,
+                locale=User_search().get_user(user_id=message.chat.id).locale,
+                currency=User_search().get_user(user_id=message.chat.id).currency
+            )['data']['propertyInfo']['propertyGallery']['images']
             """
-            Получив ранее ID отеля, мы обращаемся к функции photos_for_hotel для того чтобы получить JSON ответ,
+            Получив ранее ID отеля, мы обращаемся к функции additional_info_photos_for_hotel для того чтобы получить JSON ответ,
             содержащий фотографии отеля
             """
             User_search().get_user(user_id=message.chat.id).photos_dict[hotel_id] = list()
@@ -947,12 +933,12 @@ def hotels_info(message: telebot.types.Message, found_hotels: dict, photo_need: 
             В экземпляре класса User_search в атрибуте photos_dict создается пустой список, в который далее мы
             сохраним все имеющиеся фотографии в виде ссылок
             """
-            for every_photos in hotel_photos['hotelImages']:
+            for every_photos in hotel_photos:
                 """
                 Циклом проходим по всем имеющимся фотографиям в JSON ответе с сервера
                 """
                 User_search().get_user(user_id=message.chat.id).photos_dict[hotel_id].append(
-                    every_photos['baseUrl'].format(size=every_photos['sizes'][0]['suffix']))
+                    every_photos['image']['url'])
                 """
                 А теперь в атрибут photos_dict, где создан пустой список, добавляем все ссылки циклом, так как они все
                 лежат в определенных местах независимо друг от друга
