@@ -1,224 +1,220 @@
 {
-    "q": "Dubai",
-    "rid": "a5d67d61b81f4461a6a9397646eaa708",
+    "q": "London",
+    "rid": "6ec40adb6108406bb7f3c7f865df7efa",
     "rc": "OK",
     "sr": [
         {
             "@type": "gaiaRegionResult",
             "index": "0",
-            "gaiaId": "6053839",
+            "gaiaId": "2114",
             "type": "CITY",
             "regionNames": {
-                "fullName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Дубай",
-                "displayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Дубай",
-                "secondaryDisplayName": "Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Дубай"
+                "fullName": "Лондон, Англия, Великобритания",
+                "shortName": "Лондон",
+                "displayName": "Лондон, Англия, Великобритания",
+                "primaryDisplayName": "Лондон",
+                "secondaryDisplayName": "Англия, Великобритания",
+                "lastSearchName": "Лондон"
             },
             "essId": {
                 "sourceName": "GAI",
-                "sourceId": "6053839"
+                "sourceId": "2114"
             },
             "coordinates": {
-                "lat": "25.27063",
-                "long": "55.30037"
+                "lat": "51.50746",
+                "long": "-0.127673"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
             }
         },
         {
-            "@type": "gaiaHotelResult",
+            "@type": "gaiaRegionResult",
             "index": "1",
-            "hotelId": "985916",
-            "type": "HOTEL",
+            "gaiaId": "800056",
+            "type": "NEIGHBORHOOD",
             "regionNames": {
-                "fullName": "Dubai Marine Beach Resort & Spa, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Dubai Marine Beach Resort & Spa",
-                "displayName": "Dubai Marine Beach Resort & Spa, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Dubai Marine Beach Resort & Spa",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Dubai Marine Beach Resort & Spa"
+                "fullName": "Лондонский Сити, Лондон, Англия, Великобритания",
+                "shortName": "Лондонский Сити",
+                "displayName": "Лондонский Сити (\"City Of London\"), Лондон, Англия, Великобритания",
+                "primaryDisplayName": "Лондонский Сити (\"City Of London\")",
+                "secondaryDisplayName": "Лондон, Англия, Великобритания",
+                "lastSearchName": "Лондонский Сити (\"City Of London\")"
             },
             "essId": {
-                "sourceName": "LCM",
-                "sourceId": "985916"
+                "sourceName": "GAI",
+                "sourceId": "800056"
             },
             "coordinates": {
-                "lat": "25.233526",
-                "long": "55.263618"
+                "lat": "51.515618",
+                "long": "-0.091998"
             },
             "hierarchyInfo": {
                 "country": {
-                    "isoCode3": "ARE"
-                }
-            },
-            "cityId": "6053839",
-            "hotelAddress": {
-                "street": "Jumierah Beach Road",
-                "city": "Dubai",
-                "province": ""
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
+                },
+                "relation": [
+                    "alias"
+                ]
             }
         },
         {
-            "@type": "gaiaHotelResult",
+            "@type": "gaiaRegionResult",
             "index": "2",
-            "hotelId": "35155538",
-            "type": "HOTEL",
+            "gaiaId": "5133388",
+            "type": "AIRPORT",
             "regionNames": {
-                "fullName": "Dubai Marina, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Dubai Marina",
-                "displayName": "Dubai Marina, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Dubai Marina",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Dubai Marina"
+                "fullName": "Лондон, Великобритания (LTN-Лютон)",
+                "shortName": "Лондон (LTN-Лютон)",
+                "displayName": "Лондон (LTN - Лютон), Великобритания",
+                "primaryDisplayName": "Лондон (LTN - Лютон)",
+                "secondaryDisplayName": "Великобритания",
+                "lastSearchName": "Лондон (LTN - Лютон)"
             },
             "essId": {
-                "sourceName": "LCM",
-                "sourceId": "35155538"
+                "sourceName": "GAI",
+                "sourceId": "5133388"
             },
             "coordinates": {
-                "lat": "25.07077",
-                "long": "55.1386"
+                "lat": "51.878796",
+                "long": "-0.376453"
             },
             "hierarchyInfo": {
                 "country": {
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
             },
-            "cityId": "6053839",
-            "hotelAddress": {
-                "street": "Dubai Marina",
-                "city": "Dubai",
-                "province": ""
-            }
+            "isMinorAirport": "false"
         },
         {
             "@type": "gaiaHotelResult",
             "index": "3",
-            "hotelId": "1546463",
+            "hotelId": "19749304",
             "type": "HOTEL",
             "regionNames": {
-                "fullName": "Dubai International Hotel, Dubai Airport , Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Dubai International Hotel, Dubai Airport ",
-                "displayName": "Dubai International Hotel, Dubai Airport , Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Dubai International Hotel, Dubai Airport ",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Dubai International Hotel, Dubai Airport "
+                "fullName": "Отель London Boutique, Кишинёв, Кишинёв, Молдова",
+                "shortName": "Отель London Boutique",
+                "displayName": "Отель London Boutique, Кишинёв, Кишинёв, Молдова",
+                "primaryDisplayName": "Отель London Boutique",
+                "secondaryDisplayName": "Кишинёв, Кишинёв, Молдова",
+                "lastSearchName": "Отель London Boutique"
             },
             "essId": {
                 "sourceName": "LCM",
-                "sourceId": "1546463"
+                "sourceId": "19749304"
             },
             "coordinates": {
-                "lat": "25.248473",
-                "long": "55.361756"
+                "lat": "47.01523",
+                "long": "28.84472"
             },
             "hierarchyInfo": {
                 "country": {
-                    "isoCode3": "ARE"
+                    "isoCode3": "MDA"
                 }
             },
-            "cityId": "6053839",
+            "cityId": "601844",
             "hotelAddress": {
-                "street": "Dubai Airports",
-                "city": "Dubai",
+                "street": "17, Ismail Str.",
+                "city": "Chisinau",
                 "province": ""
             }
         },
         {
             "@type": "gaiaRegionResult",
             "index": "4",
-            "gaiaId": "6147415",
-            "type": "NEIGHBORHOOD",
+            "gaiaId": "5392460",
+            "type": "AIRPORT",
             "regionNames": {
-                "fullName": "Дубайская пристань, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Дубайская пристань",
-                "displayName": "Дубайская пристань, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Дубайская пристань",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Дубайская пристань"
+                "fullName": "Лондон, Великобритания (LHR-Хитроу)",
+                "shortName": "Лондон (LHR-Хитроу)",
+                "displayName": "Лондон (LHR - Хитроу), Великобритания",
+                "primaryDisplayName": "Лондон (LHR - Хитроу)",
+                "secondaryDisplayName": "Великобритания",
+                "lastSearchName": "Лондон (LHR - Хитроу)"
             },
             "essId": {
                 "sourceName": "GAI",
-                "sourceId": "6147415"
+                "sourceId": "5392460"
             },
             "coordinates": {
-                "lat": "25.080542",
-                "long": "55.140343"
+                "lat": "51.470878",
+                "long": "-0.449753"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
-            }
+            },
+            "isMinorAirport": "false"
         },
         {
-            "@type": "gaiaHotelResult",
+            "@type": "gaiaRegionResult",
             "index": "5",
-            "hotelId": "1596020",
-            "type": "HOTEL",
+            "gaiaId": "6195474",
+            "type": "NEIGHBORHOOD",
             "regionNames": {
-                "fullName": "Dubai Marriott Harbour Hotel & Suites, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Dubai Marriott Harbour Hotel & Suites",
-                "displayName": "Dubai Marriott Harbour Hotel & Suites, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Dubai Marriott Harbour Hotel & Suites",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Dubai Marriott Harbour Hotel & Suites"
+                "fullName": "Центральный район Лондона, Лондон, Англия, Великобритания",
+                "shortName": "Центральный район Лондона",
+                "displayName": "Центральный район Лондона (\"Central London\"), Лондон, Англия, Великобритания",
+                "primaryDisplayName": "Центральный район Лондона (\"Central London\")",
+                "secondaryDisplayName": "Лондон, Англия, Великобритания",
+                "lastSearchName": "Центральный район Лондона (\"Central London\")"
             },
             "essId": {
-                "sourceName": "LCM",
-                "sourceId": "1596020"
+                "sourceName": "GAI",
+                "sourceId": "6195474"
             },
             "coordinates": {
-                "lat": "25.087536",
-                "long": "55.145817"
+                "lat": "51.508362",
+                "long": "-0.129026"
             },
             "hierarchyInfo": {
                 "country": {
-                    "isoCode3": "ARE"
-                }
-            },
-            "cityId": "6053839",
-            "hotelAddress": {
-                "street": "King Salman Bin Abdulaziz Al Saud St",
-                "city": "Dubai",
-                "province": ""
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
+                },
+                "relation": [
+                    "alias"
+                ]
             }
         },
         {
             "@type": "gaiaRegionResult",
             "index": "6",
-            "gaiaId": "4347972",
+            "gaiaId": "5133395",
             "type": "AIRPORT",
             "regionNames": {
-                "fullName": "Дубаи, Объединенные Арабские Эмираты (DXB-Дубаи, международный)",
-                "shortName": "Дубаи (DXB-Дубаи, международный)",
-                "displayName": "Дубаи (DXB - Дубаи, международный), Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Дубаи (DXB - Дубаи, международный)",
-                "secondaryDisplayName": "Объединенные Арабские Эмираты",
-                "lastSearchName": "Дубаи (DXB - Дубаи, международный)"
+                "fullName": "Лондон, Великобритания (STN-Станстед)",
+                "shortName": "Лондон (STN-Станстед)",
+                "displayName": "Лондон (STN - Станстед), Великобритания",
+                "primaryDisplayName": "Лондон (STN - Станстед)",
+                "secondaryDisplayName": "Великобритания",
+                "lastSearchName": "Лондон (STN - Станстед)"
             },
             "essId": {
                 "sourceName": "GAI",
-                "sourceId": "4347972"
+                "sourceId": "5133395"
             },
             "coordinates": {
-                "lat": "25.249077",
-                "long": "55.352795"
+                "lat": "51.889432",
+                "long": "0.262148"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
             },
             "isMinorAirport": "false"
@@ -226,88 +222,92 @@
         {
             "@type": "gaiaRegionResult",
             "index": "7",
-            "gaiaId": "6126689",
-            "type": "POI",
+            "gaiaId": "800051",
+            "type": "NEIGHBORHOOD",
             "regionNames": {
-                "fullName": "Dubai Marina Mall, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Dubai Marina Mall",
-                "displayName": "Dubai Marina Mall, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Dubai Marina Mall",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Dubai Marina Mall"
+                "fullName": "Виктория, Лондон, Графство Большой Лондон, Англия, Великобритания",
+                "shortName": "Виктория",
+                "displayName": "Виктория, Лондон, Графство Большой Лондон, Англия, Великобритания",
+                "primaryDisplayName": "Виктория",
+                "secondaryDisplayName": "Лондон, Графство Большой Лондон, Англия, Великобритания",
+                "lastSearchName": "Виктория"
             },
             "essId": {
                 "sourceName": "GAI",
-                "sourceId": "6126689"
+                "sourceId": "800051"
             },
             "coordinates": {
-                "lat": "25.07654914767393",
-                "long": "55.14039239799826"
+                "lat": "51.495979",
+                "long": "-0.141317"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
             }
         },
         {
             "@type": "gaiaRegionResult",
             "index": "8",
-            "gaiaId": "553248622847106103",
+            "gaiaId": "800049",
             "type": "NEIGHBORHOOD",
             "regionNames": {
-                "fullName": "Развлекательный комплекс Dubai Parks and Resorts, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Развлекательный комплекс Dubai Parks and Resorts",
-                "displayName": "Развлекательный комплекс Dubai Parks and Resorts, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Развлекательный комплекс Dubai Parks and Resorts",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Развлекательный комплекс Dubai Parks and Resorts"
+                "fullName": "Паддингтон, Лондон, Англия, Великобритания",
+                "shortName": "Паддингтон",
+                "displayName": "Паддингтон, Лондон, Англия, Великобритания",
+                "primaryDisplayName": "Паддингтон",
+                "secondaryDisplayName": "Лондон, Англия, Великобритания",
+                "lastSearchName": "Паддингтон"
             },
             "essId": {
                 "sourceName": "GAI",
-                "sourceId": "553248622847106103"
+                "sourceId": "800049"
             },
             "coordinates": {
-                "lat": "24.920008866020165",
-                "long": "55.00751078508091"
+                "lat": "51.515972",
+                "long": "-0.174943"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "name": "Великобритания",
+                    "isoCode2": "GB",
+                    "isoCode3": "GBR"
                 }
             }
         },
         {
-            "@type": "gaiaRegionResult",
+            "@type": "gaiaHotelResult",
             "index": "9",
-            "gaiaId": "6147429",
-            "type": "NEIGHBORHOOD",
+            "hotelId": "26769",
+            "type": "HOTEL",
             "regionNames": {
-                "fullName": "Аль-Барша, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "shortName": "Аль-Барша",
-                "displayName": "Аль-Барша, Дубай, Дубай, Объединенные Арабские Эмираты",
-                "primaryDisplayName": "Аль-Барша",
-                "secondaryDisplayName": "Дубай, Дубай, Объединенные Арабские Эмираты",
-                "lastSearchName": "Аль-Барша"
+                "fullName": "London Hilton on Park Lane, Лондон, Англия, Великобритания",
+                "shortName": "London Hilton on Park Lane",
+                "displayName": "London Hilton on Park Lane, Лондон, Англия, Великобритания",
+                "primaryDisplayName": "London Hilton on Park Lane",
+                "secondaryDisplayName": "Лондон, Англия, Великобритания",
+                "lastSearchName": "London Hilton on Park Lane"
             },
             "essId": {
-                "sourceName": "GAI",
-                "sourceId": "6147429"
+                "sourceName": "LCM",
+                "sourceId": "26769"
             },
             "coordinates": {
-                "lat": "25.088757111689272",
-                "long": "55.21815709236155"
+                "lat": "51.505417",
+                "long": "-0.150609"
             },
             "hierarchyInfo": {
                 "country": {
-                    "name": "ОАЭ",
-                    "isoCode2": "AE",
-                    "isoCode3": "ARE"
+                    "isoCode3": "GBR"
                 }
+            },
+            "cityId": "2114",
+            "hotelAddress": {
+                "street": "22 Park Lane",
+                "city": "London",
+                "province": "England"
             }
         }
     ]
