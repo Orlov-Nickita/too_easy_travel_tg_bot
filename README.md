@@ -1,5 +1,7 @@
 ###### Версия бота 1.0:
 
+![](https://github.com/Orlov-Nickita/too_easy_travel_tg_bot/blob/master/%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B.gif)
+
 ## ОПИСАНИЕ БОТА
 
 #### Данный бот разработан для турагенства Too Easy Travel и работает с сайтом Hotels.com.
